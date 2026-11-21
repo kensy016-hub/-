@@ -418,7 +418,7 @@ function upd(){
         ['기타비용 포함 총합계',t.totalMarkup==null?'-':W(t.totalMarkup),'개발비 '+W(p.d)+' · 추가 '+W(p.e)],
         ['개발비 포함 개당원가 (VAT포함)',t.unitMarkup==null?'-':W(t.unitMarkup),'g'],
         ['권장 공급가 (원가율 '+baseRate+'%, VAT포함)',e.ok?W(e.price):'-','VAT별도 '+W(e.ok?e.vatEx:0)],
-        ['공헌이익 (VAT포함)',e.ok?W(e.ci):'-',e.ok?'공헌이익률 '+onePct(e.ciRate)+' · 부가세(참고) '+W(e.vatPay):'-']
+        ['공헌이익 (VAT포함)',e.ok?W(e.ci):'-',e.ok?'공헌이익률 '+onePct(e.ciRate)+' · 부가세 '+W(e.vatPay):'-']
       ];
       cs.innerHTML=cards.map(function(x){return '<div class="card '+(x[2]==='g'?'g':'')+'"><span>'+x[0]+'</span><b>'+x[1]+'</b>'+(x[2]&&x[2]!=='g'?'<em>'+x[2]+'</em>':(x[2]==='g'?'<em>개발비 포함</em>':''))+'</div>';}).join('');
     }
@@ -498,7 +498,7 @@ function cmp2HTML(){
     return '<tr><td>'+d[0]+'</td>'+es.map(function(e,i){return '<td class="'+(i===best?'best':'')+'">'+(e.ok?d[2](d[1](e)):'-')+'</td>';}).join('')+'</tr>';
   }).join('');
   var deltas=P.length>1?defs.slice(0,3).map(function(d){
-    return '<tr class="d"><td>Δ '+d[0]+' (1번 대비)</td><td>기준</td>'+es.slice(1).map(function(e,i){
+    return '<tr class="d"><td>Δ '+d[0].replace(' (VAT포함)','')+' (1번 대비)</td><td>기준</td>'+es.slice(1).map(function(e,i){
       var b=es[0];
       if(!e.ok||!b.ok)return '<td>-</td>';
       var v=d[1](e)-d[1](b);
@@ -526,10 +526,10 @@ function sensHTML(){
     var q=u[0]?mk(Object.assign({},p,{c:C.N(p.c)*(1+u[0])})):p;
     return '<tr><td>'+u[1]+'</td>'+R.map(function(r){
       var e=C.economics(q,mode,r,rnd);
-      return '<td>'+(e.ok?W(e.price)+'<small class="alt">VAT별도 '+W(e.vatEx)+' · 공헌 '+W(e.ci)+'</small>':'-')+'</td>';
+      return '<td>'+(e.ok?W(e.price)+'<small class="alt">공헌 '+W(e.ci)+'</small>':'-')+'</td>';
     }).join('')+'</tr>';
   }).join('');
-  return '<table class="m2"><thead>'+th+'</thead><tbody>'+rows+'</tbody></table><p class="mut" style="text-align:left;margin:8px 0 0">원가만 올렸을 때의 공급가·공헌이익 변화입니다 (모든 금액 VAT 포함).</p>';
+  return '<table class="m2"><thead>'+th+'</thead><tbody>'+rows+'</tbody></table><p class="mut" style="text-align:left;margin:8px 0 0">원가만 올렸을 때의 공급가·공헌이익 변화입니다 (모든 금액 VAT 포함 · VAT별도는 공급가÷1.1).</p>';
 }
 function rev(){
   var el=document.getElementById('tvOut');if(!el)return;
