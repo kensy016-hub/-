@@ -526,10 +526,10 @@ function sensHTML(){
     var q=u[0]?mk(Object.assign({},p,{c:C.N(p.c)*(1+u[0])})):p;
     return '<tr><td>'+u[1]+'</td>'+R.map(function(r){
       var e=C.economics(q,mode,r,rnd);
-      return '<td>'+(e.ok?W(e.price)+'<small class="alt">공헌 '+W(e.ci)+'</small>':'-')+'</td>';
+      return '<td>'+(e.ok?W(e.price)+'<small class="alt">'+W(e.ci)+'</small>':'-')+'</td>';
     }).join('')+'</tr>';
   }).join('');
-  return '<table class="m2"><thead>'+th+'</thead><tbody>'+rows+'</tbody></table><p class="mut" style="text-align:left;margin:8px 0 0">원가만 올렸을 때의 공급가·공헌이익 변화입니다 (모든 금액 VAT 포함 · VAT별도는 공급가÷1.1).</p>';
+  return '<table class="m2"><thead>'+th+'</thead><tbody>'+rows+'</tbody></table><p class="mut" style="text-align:left;margin:8px 0 0">위 금액은 공급가, 아래 작은 숫자는 개당 공헌이익입니다 (모든 금액 VAT 포함 · VAT별도 = 공급가÷1.1).</p>';
 }
 function rev(){
   var el=document.getElementById('tvOut');if(!el)return;
