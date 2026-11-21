@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>원가율 시뮬레이터</title><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="원가시뮬"><meta name="theme-color" content="#14213d">
+<style>
+:root{--bg:#f1f4f8;--card:#fff;--ink:#14213d;--mut:#64748b;--line:#d9e0ea;--head:#14213d;--headink:#fff;--sub:#e8eef6;--in:#fff6c2;--inink:#14213d;--ok:#0a8f62;--cost:#1e3a6e;--blue:#2563eb;--warn:#c62828;--sel:#eef6ff;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0d1420;--card:#16202f;--ink:#e6ecf5;--mut:#93a3b8;--line:#2a374b;--head:#0a111c;--sub:#1d2a3d;--in:#3a3512;--inink:#fff4b8;--ok:#34d399;--cost:#6f9be0;--sel:#1a2a40}}
+:root[data-theme="dark"]{--bg:#0d1420;--card:#16202f;--ink:#e6ecf5;--mut:#93a3b8;--line:#2a374b;--head:#0a111c;--sub:#1d2a3d;--in:#3a3512;--inink:#fff4b8;--ok:#34d399;--cost:#6f9be0;--sel:#1a2a40}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.45 'Pretendard','Noto Sans KR','Malgun Gothic',system-ui,sans-serif}
+header{background:var(--head);color:var(--headink);padding:18px 24px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between}
+h1{margin:0;font-size:21px}header p{margin:4px 0 0;color:#aab8cc;font-size:12.5px}
+.btns{display:flex;gap:8px;flex-wrap:wrap}button,select,input{font:inherit;color:inherit}
+.b{border:0;border-radius:6px;padding:8px 14px;font-weight:700;color:#fff;cursor:pointer;background:#475569}.b.blue{background:var(--blue)}.b.green{background:#0f9d6b}
+button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid var(--blue);outline-offset:1px}
+.wrap{padding:18px 24px;max-width:1500px;margin:auto}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:14px}
+.card{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--cost);border-radius:6px;padding:12px 14px}
+.card small{color:var(--mut);display:block}.card b{display:block;text-align:right;font-size:21px;margin-top:6px;font-variant-numeric:tabular-nums}.card.g{border-left-color:var(--ok)}.card.g b{color:var(--ok)}
+.bar{display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin-bottom:12px;color:var(--mut)}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:6px;overflow:hidden}.seg button{border:0;background:var(--card);padding:7px 12px;cursor:pointer}.seg button.on{background:var(--blue);color:#fff;font-weight:700}
+.main{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:16px;align-items:start}
+@media(max-width:1100px){.main{grid-template-columns:1fr}}
+.scroll{overflow-x:auto;background:var(--card);border:1px solid var(--line);border-radius:6px}
+table{border-collapse:collapse;width:100%;min-width:760px}
+th,td{border:1px solid var(--line);padding:6px 8px;vertical-align:middle}
+td.l{background:var(--sub);font-weight:700;white-space:nowrap;width:150px}
+th.h{background:var(--cost);color:#fff;text-align:left;font-size:14px}th.s{background:var(--sub);color:var(--mut);font-weight:600;font-size:12.5px;text-align:center}
+th.h button{float:right;background:var(--warn);color:#fff;border:0;border-radius:3px;font-size:11px;cursor:pointer;padding:2px 7px}
+td.n{text-align:right;font-variant-numeric:tabular-nums}td.p{color:var(--ok);font-weight:700;text-align:right;font-variant-numeric:tabular-nums}
+tr.sh td{background:var(--sel);font-weight:700}tr.sh td.n{color:var(--blue);font-size:15px}
+textarea{font:inherit;resize:vertical;width:100%;background:var(--in);color:var(--inink);border:1px solid var(--line);border-radius:4px;padding:6px 8px}
+input[type=text],input[type=number],select{width:100%;background:var(--in);color:var(--inink);border:1px solid var(--line);border-radius:4px;padding:6px 8px}
+input[type=number],input.nm{text-align:right}select:disabled{opacity:.45}
+.row{display:flex;gap:4px;align-items:center}.row input{min-width:60px}.mini{border:1px solid var(--line);background:var(--card);border-radius:4px;padding:5px 8px;cursor:pointer;font-weight:700;white-space:nowrap}
+.ox{flex:1;border:1px solid var(--line);background:var(--card);border-radius:4px;padding:6px;cursor:pointer;font-weight:700}.ox.on{background:#0e7bc4;color:#fff;border-color:#0e7bc4}.ox.on.x{background:#475569;border-color:#475569}
+.mut{color:var(--mut);font-size:12.5px;text-align:center}
+aside .box{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:14px;margin-bottom:14px}
+aside h3{margin:0 0 10px;font-size:14px;border-bottom:2px solid var(--ink);padding-bottom:8px}
+.rb{margin:10px 0}.rb div.t{display:flex;justify-content:space-between;font-weight:700;font-size:13px}.rb .g{color:var(--ok)}
+.trk{height:11px;background:var(--sub);border-radius:3px;overflow:hidden;display:flex;margin-top:4px}.trk i{display:block;height:100%}.c{background:var(--cost)}.pf{background:var(--ok)}
+.lg{display:flex;gap:14px;font-size:12px;color:var(--mut);margin-top:6px}.lg span:before{content:"";display:inline-block;width:10px;height:10px;margin-right:5px;border-radius:2px;vertical-align:-1px}.lg .c:before{background:var(--cost)}.lg .pf:before{background:var(--ok)}
+ul.f{margin:0;padding-left:16px;color:var(--mut);font-size:12.5px}ul.f li{margin-bottom:6px}
+#cards{display:block}.crow{margin-bottom:12px}.crow .lb{width:auto;min-width:260px;font-weight:700;margin-bottom:6px;background:var(--card)}.cs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}@media(max-width:1100px){.cs{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.card span{display:block;font-size:18px;font-weight:800;line-height:1.3;min-height:47px}.card b{font-size:18px;font-weight:800;margin-top:10px}.card em{display:block;text-align:right;font-style:normal;color:var(--mut);font-size:12px;margin-top:2px}
+.chips{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px;align-items:center}.chips b{margin-right:6px}.chips button{border:1px solid var(--line);background:var(--card);border-radius:14px;padding:4px 9px;cursor:pointer;font-size:12.5px}.chips button.on{background:var(--blue);color:#fff;border-color:var(--blue);font-weight:700}
+.hf input,.hf select{min-width:0;padding:5px 4px}.hfx:not(:empty){margin-top:6px;background:var(--sel);color:var(--blue);font-weight:800;border-radius:4px;padding:4px 8px}
+.tt{font-size:20px;font-weight:800}.hl{background:var(--blue);color:#fff;border-radius:4px;padding:2px 8px;margin-left:4px;white-space:nowrap}
+.card{padding:6px 12px}.card span{min-height:0;line-height:1.2}.card b{margin-top:2px}.card em{margin-top:0;font-size:11px;line-height:1.2}
+.main{grid-template-columns:64px minmax(0,1fr) 340px}.chips{flex-direction:column;flex-wrap:nowrap;align-items:stretch;gap:3px;margin:0;position:sticky;top:8px;align-self:start}.chips b{font-size:11px;text-align:center;line-height:1.2;margin:0 0 3px;color:var(--mut)}.chips button{border-radius:6px;padding:2px 0;font-size:12px;text-align:center}
+@media(max-width:1100px){.main{grid-template-columns:1fr}.chips{flex-direction:row;flex-wrap:wrap;position:static}.chips button{padding:4px 9px}}
+input::placeholder,textarea::placeholder{color:var(--inink);opacity:.4}
+#dtw input{width:auto;background:transparent;color:inherit;border:0;padding:0;font-weight:700;color-scheme:dark}#docno{max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;background:#334155}
+dialog{border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);width:min(720px,94vw);max-height:80vh;overflow:auto;padding:14px}dialog::backdrop{background:#0008}.dh{display:flex;gap:8px;align-items:center;margin-bottom:8px}.dh input{flex:1}.dr{display:grid;grid-template-columns:150px 1fr 96px auto;gap:8px;align-items:center;padding:8px 0;border-bottom:1px solid var(--line)}
+#toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--head);color:#fff;padding:9px 16px;border-radius:6px;opacity:0;transition:opacity .2s;pointer-events:none;z-index:50}
+@media(max-width:700px){.dr{grid-template-columns:1fr auto}}
+@media(max-width:700px){header{padding:14px}h1{font-size:17px}header p{display:none}.wrap{padding:10px}table{min-width:600px}.l{position:sticky;left:0;z-index:1;width:96px!important;white-space:normal!important;font-size:12px}input,select,textarea{font-size:16px!important}.card b{font-size:18px}}
+@media print{header .btns,.bar,.mini,th.h button{display:none}body{background:#fff}}
+</style></head><body>
+<header><div><h1>제품개발 손익 및 공급가 시뮬레이션 대시보드</h1><p>규격·개발비·추가비용·MOQ·브랜드 수수료를 넣으면 판매원가율별 권장판매가와 수익금이 바로 계산됩니다</p></div>
+<div class="btns"><span class="b" id="dtw">기준일자 <input type="date" id="dt"></span><span class="b" id="docno"></span><button class="b" id="rst">새 문서</button><button class="b blue" id="sv">저장</button><button class="b" id="ld">불러오기</button><button class="b blue" id="add">+ 신규 제품 추가</button><button class="b green" id="csv">엑셀(CSV) 내보내기</button><button class="b" onclick="print()">인쇄 / PDF</button></div></header>
+<div class="wrap">
+<div class="cards" id="cards"></div>
+<div class="bar"><b style="color:var(--ink)">판매가 계산 기준</b>
+<span class="seg" id="mode"><button data-m="ship" class="on">브랜드 반영 출하원가 (부가세 포함)</button><button data-m="unit">총 생산합계 개당 원가 (개발비 포함)</button></span>
+<span id="modeTip"></span></div>
+<div class="main"><div class="chips" id="chips"></div><div class="scroll"><table id="tb"></table></div>
+<aside><div class="box"><h3>판매원가율별 수익 구조 <select id="sel" style="width:auto;margin-left:6px"></select></h3><div id="rb"></div><div class="lg"><span class="c">원가(기준)</span><span class="pf">단위당 수익금</span></div></div>
+<div class="box"><h3>적용 산출 공식</h3><ul class="f">
+<li><b>부가세 포함 원가</b> = 개당 원가(VAT 별도) × 1.1</li>
+<li><b>브랜드 반영 출하원가</b> = 부가세 포함 원가 ÷ (1 − 브랜드 수수료%). 브랜드 X면 부가세 포함 원가 그대로</li>
+<li><b>권장판매가</b> = 기준 원가 ÷ 판매원가율 (원 단위 반올림)</li>
+<li><b>단위당 수익금</b> = 권장판매가 − 기준 원가</li>
+<li><b>총 생산합계금액</b> = 출하원가 × MOQ + 개발비 + 추가비용</li></ul></div></aside></div></div>
+<dialog id="dlg"><div class="dh"><b>저장된 시뮬레이션</b><input type="text" id="q" placeholder="문서번호·제품명 검색"><button class="b" id="dx">닫기</button></div><div id="dl"></div><p class="mut" id="dnote"></p></dialog>
+<dialog id="cfd"><p id="cm"></p><div class="row" style="justify-content:flex-end"><button class="mini" data-v="no">취소</button><button class="b blue" data-v="ok">확인</button></div></dialog><div id="toast" role="status"></div>
+<script>
+let R=[30,35,38,40],$=s=>document.querySelector(s),W=n=>Math.round(n).toLocaleString('ko-KR')+'원';
+const mk=(n,q,c,b,f,d,e,em,dr,nt)=>({n,mi:'',sb:'',ha:'',hu:'mg',hn:1,hd:1,cy:'1일 1회',q,u:'포',c,b,f,m:1000,d,e,em,dr,nt});
+let P=[mk('',26,2760,0,15,500000,0,'부자재 추가','','시뮬레이션 기본 예시'),mk('',30,500,1,15,500000,100000,'시험검사비',48,'브랜드 수수료 15% 적용')],mode='ship',cur=0;
+const hf=p=>p.ha?`${p.ha}${p.hu||'mg'}*${p.hn??1}회*${p.hd??1}일`:'';
+const mo=p=>{const d={'1일 1회':1,'1일 2회':2,'1일 3회':3,'주 1회':1/7}[p.cy];if(!d||!p.q)return'';const m=p.q/(d*30);return` (${Number.isInteger(m)?m:Math.round(m*10)/10}개월)`};
+const calc=p=>{const vat=p.c*1.1,ship=p.b?vat/(1-p.f/100):vat,total=ship*p.m+p.d+p.e,unit=total/p.m;return{vat,ship,total,unit,base:mode=='ship'?ship:unit}};
+const pr=(base,r)=>{const s=Math.round(base/(r/100));return[s,s-Math.round(base)]};
+let D={no:'',dt:new Date(Date.now()-new Date().getTimezoneOffset()*6e4).toISOString().slice(0,10)},DOCS=[],dbn=null;
+try{const s=JSON.parse(localStorage.getItem('csim')||'null');if(s&&s.P&&s.P.length){P=s.P;mode=s.mode||'ship';if(s.R&&s.R.length)R=s.R;if(s.D)D=s.D}}catch(e){}
+document.querySelectorAll('#mode button').forEach(b=>b.classList.toggle('on',b.dataset.m==mode));
+$('#rst').onclick=async()=>{if(await cf('새 문서를 시작합니다. 저장하지 않은 입력값은 사라집니다. 계속할까요?')){try{localStorage.removeItem('csim')}catch(e){}location.reload()}};
+$('#dt').value=D.dt;$('#dt').onchange=e=>{D.dt=e.target.value||D.dt;upd()};
+function build(){let h='<tr><th class="l" style="background:var(--head);color:#fff;text-align:center">구분</th>';
+P.forEach((p,i)=>h+=`<th class="h" colspan="2">${i+1}번 제품 시뮬${i?' (비교)':' (기준)'}<button data-a="del" data-i="${i}">삭제</button></th>`);
+h+='</tr><tr><td class="l" style="background:var(--sub)"></td>'+P.map(()=>'<th class="s">항목 / 권장 판매가</th><th class="s">옵션 / 단위당 수익금</th>').join('')+'</tr>';
+const row=(l,f,cls='')=>`<tr class="${cls}"><td class="l">${l}</td>${P.map((p,i)=>f(p,i)).join('')}</tr>`,sp=(x)=>`<td colspan="2">${x}</td>`;
+const fmt=v=>v===''?'':Number(v).toLocaleString('ko-KR',{maximumFractionDigits:2});
+const inp=(i,k,t='text',x='')=>t=='num'?`<input type="text" inputmode="decimal" class="nm" data-i="${i}" data-k="${k}" value="${fmt(P[i][k])}">`:`<input type="${t}" data-i="${i}" data-k="${k}" value="${P[i][k]}" ${x}>`;
+const step=(i,k,d,lab)=>`<div class="row"><button class="mini" data-a="st" data-i="${i}" data-k="${k}" data-d="${-d}">-${lab}</button>${inp(i,k,'num')}<button class="mini" data-a="st" data-i="${i}" data-k="${k}" data-d="${d}">+${lab}</button></div>`;
+h+=row('제품명',(p,i)=>sp(inp(i,'n','text','placeholder="제품명을 입력하세요"')));
+h+=row('성분 (주성분 / 부성분)',(p,i)=>`<td><textarea rows="2" placeholder="주성분" data-i="${i}" data-k="mi">${p.mi}</textarea></td><td><textarea rows="2" placeholder="부성분" data-i="${i}" data-k="sb">${p.sb}</textarea></td>`);
+h+=row('규격 (섭취주기 / 수량 / 단위)',(p,i)=>`<td><div class="row"><select data-i="${i}" data-k="cy" style="flex:1;min-width:100px;width:auto">${['1일 1회','1일 2회','1일 3회','주 1회','1회 용'].map(o=>`<option ${o==p.cy?'selected':''}>${o}</option>`).join('')}</select><input type="number" data-i="${i}" data-k="q" value="${p.q}" min="1" style="width:62px;flex:none;min-width:0"><select data-i="${i}" data-k="u" style="width:74px;flex:none;min-width:0">${['포','정','캡슐','병','개','박스'].map(o=>`<option ${o==p.u?'selected':''}>${o}</option>`).join('')}</select></div></td><td class="mut"><div id="sp${i}"></div><div class="row hf" style="flex-wrap:wrap;justify-content:center;margin-top:6px"><input type="number" data-i="${i}" data-k="ha" value="${p.ha??''}" placeholder="함량" style="width:72px"><select data-i="${i}" data-k="hu" style="width:64px">${['mg','g','mcg','IU','ml'].map(o=>`<option ${o==(p.hu||'mg')?'selected':''}>${o}</option>`).join('')}</select>×<input type="number" data-i="${i}" data-k="hn" value="${p.hn??1}" min="1" style="width:48px">회×<input type="number" data-i="${i}" data-k="hd" value="${p.hd??1}" min="1" style="width:48px">일</div><div class="hfx" id="hf${i}"></div></td>`);
+h+=row('개당 원가 (VAT별도) [직접입력]',(p,i)=>sp(inp(i,'c','num')));
+h+=row('부가세 포함 원가 (×1.1)',(p,i)=>`<td></td><td class="n" id="vat${i}"></td>`.replace('<td></td>','<td></td>'));
+h+=row('브랜드 (O/X, 수수료%)',(p,i)=>`<td><div class="row"><button class="ox ${p.b?'on':''}" data-a="br" data-i="${i}" data-v="1">O</button><button class="ox x ${p.b?'':'on'}" data-a="br" data-i="${i}" data-v="0">X</button></div></td><td><select data-i="${i}" data-k="f" ${p.b?'':'disabled'}>${[5,10,15,20,25,30].map(o=>`<option value="${o}" ${o==p.f?'selected':''}>${o}%</option>`).join('')}</select></td>`);
+h+=row('브랜드 반영 출하원가',(p,i)=>`<td></td><td class="n" id="ship${i}" style="color:var(--blue)"></td>`,'sh');
+R.forEach((r,j)=>h+=row(`판매원가율 ${r}%`,(p,i)=>`<td class="n" id="p${i}_${j}"></td><td class="p" id="g${i}_${j}"></td>`));
+h+=row('판매원가율 (직접입력) %',(p,i)=>`<td><div class="row">${inp(i,'dr','number','min=1 max=99 placeholder="%"')}<span>%</span></div></td><td class="p" id="dr${i}"></td>`);
+h+=row('MOQ (최소생산수량, 100단위)',(p,i)=>sp(step(i,'m',100,'100')));
+h+=row('기타비용① [개발비]',(p,i)=>`<td>${step(i,'d',100000,'10만')}</td><td class="mut" id="dv${i}"></td>`);
+h+=row('기타비용② [추가비용 & 메모]',(p,i)=>`<td>${step(i,'e',100000,'10만')}</td><td>${inp(i,'em')}</td>`);
+h+=row('총 생산합계금액 (개당 원가)',(p,i)=>`<td class="n tt" colspan="2" id="tot${i}"></td>`);
+h+=row('비고',(p,i)=>sp(inp(i,'nt')));
+$('#tb').innerHTML=h;
+$('#chips').innerHTML='<b>원가율<br>선택</b>'+Array.from({length:36},(_,k)=>k+5).map(r=>`<button data-r="${r}" class="${R.includes(r)?'on':''}">${r}%</button>`).join('');
+$('#cards').innerHTML=P.map((q,i)=>`<div class="crow"><input type="text" class="lb" data-i="${i}" data-k="lb" value="${q.lb??((i+1)+'번 제품 시뮬'+(i?' (비교)':' (기준)'))}"><div class="cs" id="cs${i}"></div></div>`).join('');
+$('#sel').innerHTML=P.map((p,i)=>`<option value="${i}">${i+1}번 ${p.n||'제품명 미입력'}</option>`).join('');$('#sel').value=cur;upd()}
+function upd(){try{localStorage.setItem('csim',JSON.stringify({P,mode,R,D}))}catch(e){}hdr();P.forEach((p,i)=>{const c=calc(p),s=(id,t)=>{const e=document.getElementById(id);if(e)e.textContent=t};
+s('sp'+i,`${p.cy} / ${p.q}${p.u}${mo(p)}`);s('hf'+i,hf(p));s('vat'+i,W(c.vat));s('ship'+i,W(c.ship));
+R.forEach((r,j)=>{const[a,b]=pr(c.base,r);s(`p${i}_${j}`,W(a));s(`g${i}_${j}`,W(b))});
+const d=Number(p.dr);if(d>0&&d<100){const[a,b]=pr(c.base,d);s('dr'+i,`${W(a)} (수익 ${W(b)})`)}else s('dr'+i,'-');
+s('dv'+i,`개당 ${W(p.d/p.m)}`);document.getElementById('tot'+i).innerHTML=`${W(c.total)} <span class="hl">(개당 ${W(c.unit)})</span>`;document.getElementById('cs'+i).innerHTML=[['원가 (부가세 포함)',W(c.vat),p.b?`브랜드 O · 수수료 ${p.f}%`:'브랜드 X'],['브랜드 반영원가',W(c.ship),''],['생산비용 (개당원가×MOQ)',W(c.ship*p.m),''],['기타비용포함 총합계금액',W(c.total),''],['기타비용포함 개당원가',W(c.unit),'g']].map(x=>`<div class="card ${x[2]=='g'?'g':''}"><span>${x[0]}</span><b>${x[1]}</b>${x[2]&&x[2]!='g'?`<em>${x[2]}</em>`:''}</div>`).join('')});
+if(cur>=P.length)cur=0;const p=P[cur],c=calc(p),a=pr(c.base,35);
+
+const mx=pr(c.base,R[0])[0];
+$('#rb').innerHTML=R.map(r=>{const[s,g]=pr(c.base,r),w=s/mx*100;return`<div class="rb"><div class="t"><span>원가율 ${r}%</span><span>판매가 ${W(s)} <span class="g">(+${W(g)})</span></span></div><div class="trk" style="width:${w}%"><i class="c" style="width:${c.base/s*100}%"></i><i class="pf" style="flex:1"></i></div></div>`}).join('');
+$('#modeTip').textContent=mode=='ship'?'개발비·추가비용은 판매가에 넣지 않고 총 생산합계에서만 따로 봅니다':'개발비·추가비용을 MOQ로 나눠 개당 원가에 더해서 판매가를 계산합니다'}
+document.addEventListener('input',e=>{const t=e.target,k=t.dataset.k;if(!k)return;const i=+t.dataset.i;if(t.classList.contains('nm')){const pos=t.selectionStart,n=t.value.slice(0,pos).replace(/[^\d.]/g,'').length,raw=t.value.replace(/[^\d.]/g,''),[a,b]=raw.split('.');P[i][k]=raw===''?'':+raw;t.value=raw===''?'':(+(a||0)).toLocaleString('ko-KR')+(b!==undefined?'.'+b:'');let c=0,q=0;while(q<t.value.length&&c<n){if(/[\d.]/.test(t.value[q]))c++;q++}t.setSelectionRange(q,q)}else P[i][k]=t.type=='number'?(t.value===''?'':+t.value):t.value;if(k=='n')document.querySelector('#sel option[value="'+i+'"]').textContent=`${i+1}번 ${t.value||'제품명 미입력'}`;upd()});
+document.addEventListener('change',e=>{const t=e.target,k=t.dataset.k;if(k&&t.tagName=='SELECT'){P[+t.dataset.i][k]=isNaN(t.value)?t.value:+t.value;upd()}});
+document.addEventListener('click',e=>{const t=e.target.closest('[data-a],[data-m],[data-r]');if(!t)return;if(t.dataset.r){const r=+t.dataset.r;if(R.includes(r)){if(R.length>1)R=R.filter(x=>x!=r)}else R=[...R,r].sort((a,b)=>a-b);return build()}
+if(t.dataset.m){mode=t.dataset.m;document.querySelectorAll('#mode button').forEach(b=>b.classList.toggle('on',b==t));return upd()}
+const i=+t.dataset.i,a=t.dataset.a;
+if(a=='st'){const k=t.dataset.k;P[i][k]=Math.max(0,(+P[i][k]||0)+ +t.dataset.d);if(k=='m')P[i][k]=Math.max(100,P[i][k]);build()}
+if(a=='br'){P[i].b=+t.dataset.v;build()}
+if(a=='del'){if(P.length>1){P.splice(i,1);cur=0;build()}else toast('제품이 1개 이상 있어야 합니다')}});
+$('#add').onclick=()=>{if(P.length>=4)return toast('비교는 최대 4개 제품까지 가능합니다');P.push(mk('신규 제품 '+(P.length+1),30,0,0,15,0,0,'','',''));build()};
+$('#sel').onchange=e=>{cur=+e.target.value;upd()};
+$('#csv').onclick=()=>{const q=v=>`"${String(v).replace(/"/g,'""')}"`,H=['구분'];P.forEach((p,i)=>H.push(`${i+1}번_항목_판매가`,`${i+1}번_옵션_수익금`));
+const C=P.map(calc),L=[H];const add=(l,f)=>L.push([l,...P.flatMap((p,i)=>f(p,i,C[i]))]);
+add('문서번호',()=>[D.no,'']);add('기준일자',()=>[D.dt,'']);add('제품명',p=>[p.n,'']);add('주성분',p=>[p.mi,'']);add('부성분',p=>[p.sb,'']);add('함량규격',p=>[hf(p),'']);add('규격',p=>[`${p.cy} / ${p.q}${p.u}${mo(p)}`,'']);add('개당원가(VAT별도)',p=>[p.c,'']);add('부가세포함원가',(p,i,c)=>[Math.round(c.vat),'']);
+add('브랜드적용',p=>[p.b?'O':'X',p.b?p.f+'%':'0%']);add('브랜드반영출하원가',(p,i,c)=>[Math.round(c.ship),'']);
+R.forEach(r=>add('판매원가율_'+r+'%',(p,i,c)=>pr(c.base,r)));
+add('판매원가율_직접입력',(p,i,c)=>Number(p.dr)>0?[pr(c.base,+p.dr)[0],pr(c.base,+p.dr)[1]]:['미입력','-']);
+add('MOQ',p=>[p.m,'']);add('개발비',p=>[p.d,'']);add('추가비용',p=>[p.e,p.em]);add('총생산합계금액',(p,i,c)=>[Math.round(c.total),'개당:'+Math.round(c.unit)]);add('비고',p=>[p.nt,'']);
+add('판매가계산기준',()=>[mode=='ship'?'출하원가(부가세포함)':'개발비포함 개당원가','']);
+const b=new Blob(['\ufeff'+L.map(r=>r.map(q).join(',')).join('\r\n')],{type:'text/csv'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='제품개발_손익_공급가_시뮬레이션_v5.csv';a.click()};
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function toast(m){const t=$('#toast');t.textContent=m;t.style.opacity=1;clearTimeout(toast.t);toast.t=setTimeout(()=>t.style.opacity=0,2800)}
+const cf=m=>new Promise(r=>{const d=$('#cfd');$('#cm').textContent=m;d.onclose=()=>r(d.returnValue=='ok');d.showModal()});
+$('#cfd').onclick=e=>{const v=e.target.dataset.v;if(v)$('#cfd').close(v)};
+function title(){return P.map(p=>p.n).filter(Boolean).join(' / ')||'제품명 미입력'}
+function hdr(){const t=title();$('#docno').textContent='문서번호 '+(D.no||'미저장')+' · '+t;$('#docno').title=t}
+const LS={get(){try{return JSON.parse(localStorage.getItem('csim_docs')||'{}')}catch(e){return{}}},set(o){try{localStorage.setItem('csim_docs',JSON.stringify(o))}catch(e){}}};
+function setDocs(a){DOCS=a.sort((x,y)=>(y.upd||0)-(x.upd||0));renderDocs()}
+function renderDocs(){const q=$('#q').value.trim().toLowerCase(),L=DOCS.filter(d=>((d.no||'')+' '+(d.title||'')).toLowerCase().includes(q));$('#dl').innerHTML=L.length?L.map(d=>`<div class="dr"><b>${esc(d.no)}</b><span>${esc(d.title)}</span><span class="mut">${esc(d.dt)}</span><span class="row"><button class="mini" data-ld="${esc(d.no)}">불러오기</button><button class="mini" data-dl="${esc(d.no)}">삭제</button></span></div>`).join(''):'<p class="mut">저장된 시뮬레이션이 없습니다.</p>';$('#dnote').textContent=dbn?'직원들과 함께 보는 공용 저장소입니다.':'이 기기에만 저장됩니다. 직원과 공유하려면 공유 링크로 접속해서 저장하세요.'}
+async function save(){if(!D.no){const pre='SIM-'+D.dt.replace(/-/g,'')+'-';let n=1;while(DOCS.some(d=>d.no==pre+String(n).padStart(3,'0')))n++;D.no=pre+String(n).padStart(3,'0')}else if(DOCS.some(d=>d.no==D.no)&&!(await cf(D.no+' 문서를 덮어씁니다. 계속할까요?')))return;
+const doc={no:D.no,title:title(),dt:D.dt,upd:Date.now(),state:JSON.stringify({P,mode,R,dt:D.dt})};
+try{if(dbn)await dbn.doc('sims/'+D.no).set(doc);else{const o=LS.get();o[D.no]=doc;LS.set(o);setDocs(Object.values(o))}toast(D.no+' 저장했습니다')}catch(e){toast('저장하지 못했습니다. 편집 권한이 있는지 확인해 주세요')}hdr();upd()}
+function load(no){const d=DOCS.find(x=>x.no==no);if(!d)return;try{const s=JSON.parse(d.state);P=s.P;mode=s.mode||'ship';if(s.R&&s.R.length)R=s.R;D.no=no;D.dt=s.dt||d.dt;$('#dt').value=D.dt;document.querySelectorAll('#mode button').forEach(b=>b.classList.toggle('on',b.dataset.m==mode));build();$('#dlg').close();toast(no+' 불러왔습니다')}catch(e){toast('문서를 불러오지 못했습니다')}}
+async function del(no){if(!(await cf(no+' 문서를 삭제합니다. 계속할까요?')))return;try{if(dbn)await dbn.doc('sims/'+no).delete();else{const o=LS.get();delete o[no];LS.set(o);setDocs(Object.values(o))}}catch(e){toast('삭제하지 못했습니다. 편집 권한이 있는지 확인해 주세요')}}
+$('#sv').onclick=save;$('#ld').onclick=()=>{renderDocs();$('#dlg').showModal()};$('#dx').onclick=()=>$('#dlg').close();$('#q').oninput=renderDocs;
+$('#dl').onclick=e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.ld)load(b.dataset.ld);if(b.dataset.dl)del(b.dataset.dl)};
+(async()=>{const loc=()=>setDocs(Object.values(LS.get()));try{const c=window.claude?await claude.use('db'):null;if(c){dbn=c;c.collection('sims').limit(500).onSnapshot(s=>setDocs(s.docs.map(d=>d.data())),()=>{dbn=null;loc()})}else loc()}catch(e){loc()}})();
+build();
+</script></body></html>
