@@ -2,61 +2,123 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>오프라인 제품 판매 제안 견적서 (원가손익)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>제품 판매 제안 견적서 시뮬레이터 (원가손익)</title>
 <style>
-:root{--bg:#15191e;--panel:#20262d;--panel2:#1b222a;--line:#39424d;--text:#e8edf3;--muted:#9aa7b5;--blue:#203858;--blue2:#294a72;--green:#1d432f;--green2:#286044;--accent:#2684ff;--yellow:#fff6bd;--red:#ff6565}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:13px/1.45 "Malgun Gothic","Apple SD Gothic Neo",Arial,sans-serif}
+:root{--bg:#15191e;--yellow:#fff6bd}
+*{box-sizing:border-box}
+body{margin:0;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);background:var(--bg);color:#e8edf3;font:13px/1.45 "Nanum Gothic","나눔고딕","Malgun Gothic","Apple SD Gothic Neo",Arial,sans-serif}
 header{background:#0e1728;border-bottom:1px solid #334155;padding:16px 22px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
 h1{font-size:20px;margin:0 0 4px;font-weight:800}header p{margin:0;color:#aab8c9;font-size:12px}
-.actions{display:flex;gap:7px;flex-wrap:wrap}.btn{border:1px solid #475569;background:#273449;color:white;padding:8px 12px;border-radius:7px;font-weight:700;cursor:pointer}.btn.primary{background:#2563eb;border-color:#2563eb}.btn.green{background:#059669;border-color:#059669}.btn:hover{filter:brightness(1.12)}
-.wrap{max-width:1600px;margin:auto;padding:14px 16px 26px}
-.kpis{display:grid;grid-template-columns:repeat(5,minmax(130px,1fr));gap:9px;margin-bottom:10px}.kpi{border:1px solid #364152;border-radius:9px;padding:10px 12px;background:#202832}.kpi:nth-child(2),.kpi:nth-child(3){background:#202f47}.kpi:nth-child(4),.kpi:nth-child(5){background:#1d3a2c}.kpi small{display:block;color:#aab6c4;font-size:11px}.kpi strong{display:block;font-size:19px;margin-top:2px}
-.toolbar{background:#1e252d;border:1px solid #35404b;border-radius:10px;padding:10px;margin-bottom:12px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}.toolbar label{color:#b8c4d1;font-size:11px}.toolbar input,.toolbar select{width:auto;min-width:52px;background:#111820;color:#f4f7fa;border:1px solid #3c4855;border-radius:5px;padding:5px}.toolbar .group{display:flex;align-items:center;gap:5px;padding-right:7px;border-right:1px solid #3a4652}.toolbar .spacer{flex:1}
-.sheet{background:#20262d;border:1px solid #39434e;border-radius:10px;padding:10px;box-shadow:0 10px 25px #0003}
-.sheethead{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:2px 0 9px}.sheethead h2{font-size:14px;margin:0 auto 0 0}.meta{display:flex;align-items:center;gap:6px;color:#aab6c4;font-size:11px}.meta input{background:#111820;border:1px solid #3b4652;color:#f4f7fa;padding:6px;border-radius:5px;min-width:105px}.meta input.long{min-width:180px}
+.actions{display:flex;gap:7px;flex-wrap:wrap}
+.btn{border:1px solid #475569;background:#273449;color:#fff;padding:8px 12px;border-radius:7px;font-weight:700;cursor:pointer}
+.btn.primary{background:#2563eb;border-color:#2563eb}.btn.green{background:#059669;border-color:#059669}.btn:hover{filter:brightness(1.12)}
+.wrap{max-width:1800px;margin:auto;padding:10px 8px 20px}
+.kpis{display:grid;grid-template-columns:repeat(5,minmax(130px,1fr));gap:9px;margin-bottom:10px}
+.kpi{border:1px solid #364152;border-radius:9px;padding:10px 12px;background:#202832}
+.kpi:nth-child(2),.kpi:nth-child(3){background:#202f47}.kpi:nth-child(4),.kpi:nth-child(5){background:#1d3a2c}
+.kpi small{display:block;color:#aab6c4;font-size:11px}.kpi strong{display:block;font-size:19px;margin-top:2px}
+.toolbar{background:#1e252d;border:1px solid #35404b;border-radius:10px;padding:10px;margin-bottom:12px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.toolbar label{color:#b8c4d1;font-size:11px}
+.toolbar input[type=number],.toolbar select{background:#111820;color:#f4f7fa;border:1px solid #3c4855;border-radius:5px;padding:5px}
+.toolbar .group{display:flex;align-items:center;gap:5px;padding-right:7px;border-right:1px solid #3a4652}
+.toolbar .spacer{flex:1}
+.sheet{background:#20262d;border:1px solid #39434e;border-radius:10px;padding:6px}
+.sheethead{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:2px 0 9px}
+.sheethead h2{font-size:14px;margin:0 auto 0 0}
+.meta{display:flex;align-items:center;gap:6px;color:#aab6c4;font-size:11px;flex-wrap:wrap}
+.meta input{background:#111820;border:1px solid #3b4652;color:#f4f7fa;padding:6px;border-radius:5px;min-width:105px}.meta input.long{min-width:170px}
 .tablewrap{overflow:auto;border:1px solid #3a4652;max-height:72vh}
-table{border-collapse:separate;border-spacing:0;min-width:1450px;width:100%;table-layout:fixed;font-size:11px}
-th,td{border-right:1px solid #3a4652;border-bottom:1px solid #3a4652;padding:5px 4px;text-align:center;vertical-align:middle}
+table{border-collapse:separate;border-spacing:0;table-layout:fixed;font-size:11px}
+th,td{border-right:1px solid #3a4652;border-bottom:1px solid #3a4652;padding:4px 2px;text-align:center;vertical-align:middle}
 thead th{position:sticky;top:0;z-index:3;background:#252e39;color:#e7edf5;font-weight:800}
-thead tr:first-child th{top:0;height:29px;font-size:11px}
 thead tr:nth-child(2) th{top:29px;background:#303c4b}
+thead tr:first-child th{height:29px}
 th.bluehead{background:#203b60!important}th.greenhead{background:#205039!important}
 td{background:#1d242c}td.blue{background:#203149}td.green{background:#1d3b2b}
-td.left{text-align:left}td input,td select{width:100%;min-width:0;background:transparent;border:0;color:#f1f5f9;text-align:center;font:inherit;padding:3px 1px;outline:none}
+td input,td select{width:100%;min-width:0;background:transparent;border:0;color:#f1f5f9;text-align:center;font:inherit;padding:3px 1px;outline:none}
 td input:focus,td select:focus{background:#34465a;box-shadow:inset 0 0 0 1px #60a5fa;border-radius:3px}
-td input.name,td input.spec{text-align:left}td input.num{text-align:right}
-td input.edit{background:var(--yellow);color:#18212b;border:1px solid #d5c977;border-radius:3px;padding:4px}
+td input.name,td input.spec,td input.desc{text-align:left;text-overflow:ellipsis}
+td input.num{text-align:right}
+td input.edit{background:var(--yellow);color:#18212b;border-radius:3px}
 td select{background:#263544;border:1px solid #536273;border-radius:4px}
-.profit{color:#39d49b;font-weight:800}.muted{color:#aab5c1}.cost{color:#f3f5f7}.tinybtn{background:#303b49;border:1px solid #4b5969;color:#fff;border-radius:4px;padding:2px 5px;cursor:pointer}
+.profit{color:#39d49b;font-weight:800}
+.tinybtn{background:#303b49;border:1px solid #4b5969;color:#fff;border-radius:4px;padding:2px 4px;cursor:pointer}
+.nocol{padding:0 2px!important;white-space:nowrap}.no{display:inline-block;min-width:16px;font-weight:700;color:#cbd5e1;font-size:11px;text-align:right}
+.rm{width:15px;height:15px;line-height:12px;padding:0;margin-left:3px;border-radius:50%;border:1px solid #4b5969;background:transparent;color:#8896a6;font-size:11px;cursor:pointer;opacity:.55;vertical-align:middle}
+.rm:hover{opacity:1;background:#7f1d1d;color:#fff;border-color:#b91c1c}
+.rate{white-space:nowrap}.rate b{display:inline-block;min-width:32px;font-weight:700}
 tfoot td{background:#101b2b;font-weight:800;color:#f4f7fb;position:sticky;bottom:0;z-index:2}
-.note{color:#9aa7b5;font-size:11px;padding:8px 2px 0}
-.status{font-size:11px;color:#93c5fd}
-@media(max-width:900px){.kpis{grid-template-columns:repeat(2,minmax(120px,1fr))}.wrap{padding:8px}.sheet{padding:7px}header{padding:13px}}
-@media print{body{background:white;color:#111}header,.toolbar,.actions,.deletecol,.note{display:none!important}.wrap{max-width:none;padding:0}.sheet{border:0;box-shadow:none;background:white;padding:0}.sheethead h2,.meta{color:#111}.meta input{color:#111;border:0}.tablewrap{overflow:visible;max-height:none}table{min-width:0;font-size:8px}th,td{padding:3px;color:#111!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}thead th{position:static}tfoot td{position:static}}
+.note{color:#9aa7b5;font-size:11px;padding:8px 2px 0}.status{font-size:11px;color:#93c5fd}
+.pv{display:none}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;z-index:50;padding:16px}
+.modal.on{display:flex}
+.mbox{background:#1e252d;border:1px solid #4b5969;border-radius:12px;padding:20px;max-width:440px;width:100%;box-shadow:0 20px 50px #0008}
+.mbox p{white-space:pre-line;margin:0 0 16px;line-height:1.65;font-size:14px}
+.mbtns{display:flex;gap:8px;justify-content:flex-end}
+/* 보기 전환 */
+table.hide-r .r,table.hide-q .q,table.hide-d .d{display:none}
+/* 화면 열너비(px) */
+@media screen{
+col:nth-child(1){width:46px}col:nth-child(2){width:62px}col:nth-child(3){width:176px}col:nth-child(4){width:128px}col:nth-child(5){width:48px}col:nth-child(6){width:62px}
+col:nth-child(7),col:nth-child(13){width:66px}col:nth-child(8),col:nth-child(14){width:58px}col:nth-child(9),col:nth-child(15){width:82px}
+col:nth-child(10),col:nth-child(16){width:48px}col:nth-child(11),col:nth-child(17){width:72px}col:nth-child(12),col:nth-child(18){width:72px}
+col:nth-child(19){width:250px}
+td.dcell{white-space:nowrap;overflow:hidden}
+}
+@media(max-width:900px){.kpis{grid-template-columns:repeat(2,minmax(120px,1fr))}.wrap{padding:8px}header{padding:13px}}
+/* 인쇄: A4 가로 한 장 폭에 맞춤 */
+@page{size:A4 landscape;margin:8mm}
+@media print{
+.modal{display:none!important}
+html,body{background:#fff!important;color:#000!important}
+header,.toolbar,.kpis,.note,.noprint{display:none!important}
+.wrap{max-width:none;padding:0}.sheet{border:0;background:#fff;padding:0}
+.sheethead h2{font-size:13px;color:#000}.meta{color:#000;font-size:9px}
+.meta input{color:#000;border:0;background:none;padding:0 4px;min-width:0}.meta input::placeholder{color:transparent}
+.tablewrap{overflow:visible;max-height:none;border:0}
+table{width:100%!important;table-layout:fixed;font-size:7.5pt;border-collapse:collapse}
+th,td{border:.4pt solid #666;padding:2px 2px;color:#000!important;background:#fff!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;line-height:1.25}
+thead{display:table-header-group}tfoot{display:table-row-group}
+thead th{position:static!important;background:#e6e9ee!important;font-size:7pt}
+th.bluehead,td.blue{background:#e3ecf8!important}th.greenhead,td.green{background:#e2f2e8!important}
+tfoot td{position:static!important;background:#eceff3!important}
+tr{break-inside:avoid;page-break-inside:avoid}
+td input,td select{display:none!important}
+.pv{display:block}
+td.l{text-align:left}td.n{text-align:right}td.nocol{text-align:center}.no{color:#000;min-width:0}
+td.name .pv,td.dcell .pv{white-space:normal;word-break:keep-all}
+.profit{color:#0a7a4f!important}
+col:nth-child(1){width:2%}col:nth-child(2){width:3.2%}col:nth-child(3){width:11%}col:nth-child(4){width:7%}col:nth-child(5){width:2.6%}col:nth-child(6){width:3.8%}
+col:nth-child(7),col:nth-child(13){width:4%}col:nth-child(8),col:nth-child(14){width:3.4%}col:nth-child(9),col:nth-child(15){width:3%}
+col:nth-child(10),col:nth-child(16){width:2.6%}col:nth-child(11),col:nth-child(17){width:4.6%}col:nth-child(12),col:nth-child(18){width:4.6%}
+col:nth-child(19){width:auto}
+}
 </style>
 </head>
 <body>
 <header>
- <div><h1>오프라인 제품 판매 제안 견적서 (원가손익)</h1><p>제품별 규격·원가·도매 및 소매 공급가를 관리하고, 마진율과 수익을 실시간 시뮬레이션합니다.</p></div>
- <div class="actions"><button class="btn" onclick="newDoc()">＋ 신규 견적</button><button class="btn primary" onclick="addRow()">＋ 제품 추가</button><button class="btn" onclick="shareDoc()">↗ 공유</button><button class="btn green" onclick="exportCSV()">⬇ 엑셀 저장(CSV)</button><button class="btn" onclick="window.print()">▣ 인쇄/PDF</button></div>
+ <div><h1>오프라인 제품 판매 제안 견적서 (원가손익)</h1><p>제품별 규격·원가·도매 및 소매 공급가를 관리하고, 이익률과 수익을 바로 계산합니다.</p></div>
+ <div class="actions"><button class="btn" onclick="newDoc()">＋ 신규 견적</button><button class="btn primary" onclick="addRow()">＋ 제품 추가</button><button class="btn" onclick="exportJSON()">💾 작업 저장(JSON)</button><button class="btn" onclick="$('jsonFile').click()">📂 불러오기</button><input type="file" id="jsonFile" accept=".json,application/json" hidden><button class="btn green" onclick="exportCSV()">⬇ 엑셀 저장(CSV)</button><button class="btn" onclick="window.print()">▣ 인쇄/PDF</button></div>
 </header>
+<div class="modal" id="modal"><div class="mbox"><p id="mmsg"></p><div class="mbtns"><button class="btn" id="mcancel">취소</button><button class="btn primary" id="mok">확인</button></div></div></div>
 <div class="wrap">
  <section class="kpis">
-  <div class="kpi"><small>선택 제품</small><strong id="kCount">20개</strong></div>
+  <div class="kpi"><small>선택 제품</small><strong id="kCount">0개</strong></div>
   <div class="kpi"><small>도매 총금액</small><strong id="kWholesale">0원</strong></div>
-  <div class="kpi"><small>도매 이익금</small><strong id="kWProfit">0원</strong></div>
+  <div class="kpi"><small>도매 이익금 (-)</small><strong id="kWProfit">0원</strong></div>
   <div class="kpi"><small>소매 총금액</small><strong id="kRetail">0원</strong></div>
-  <div class="kpi"><small>소매 이익금</small><strong id="kRProfit">0원</strong></div>
+  <div class="kpi"><small>소매 이익금 (-)</small><strong id="kRProfit">0원</strong></div>
  </section>
  <section class="toolbar">
-  <div class="group"><label>일괄 이익률 도매</label><input id="bulkW" type="number" value="15" min="0" max="99" style="width:48px"> % <button class="tinybtn" onclick="applyBulk('w')">적용</button></div>
-  <div class="group"><label>소매</label><input id="bulkR" type="number" value="15" min="0" max="99" style="width:48px"> % <button class="tinybtn" onclick="applyBulk('r')">적용</button></div>
-  <div class="group"><label>올림</label><select id="roundMode"><option value="10">10원</option><option value="1">1원</option><option value="100">100원</option></select><label>원 기준</label><select id="basis"><option value="supply">공급가 기준</option><option value="vat">VAT 포함 기준</option></select></div>
-  <label><input type="checkbox" id="showCost" checked> 소비자가</label>
-  <label><input type="checkbox" id="showSpec" checked> 제품설명</label>
-  <button class="tinybtn" onclick="sortByTotal()">수량·총금액 정렬</button>
-  <span class="spacer"></span><button class="tinybtn" onclick="loadSamples()">전체 불러오기</button><button class="tinybtn" onclick="addRow()">＋ 직접입력</button><span id="saveStatus" class="status">자동 계산</span>
+  <div class="group"><label>일괄 이익률 도매</label><input id="bulkW" type="number" value="15" min="0" max="99" style="width:56px"> % <button class="tinybtn" onclick="applyBulk('w')">적용</button></div>
+  <div class="group"><label>소매</label><input id="bulkR" type="number" value="15" min="0" max="99" style="width:56px"> % <button class="tinybtn" onclick="applyBulk('r')">적용</button></div>
+  <div class="group"><label>올림</label><select id="roundMode"><option value="10">10원</option><option value="1">1원</option><option value="100">100원</option></select><label>원 단위</label></div>
+  <label><input type="checkbox" id="showR" checked> 소매 칸</label>
+  <label><input type="checkbox" id="showD" checked> 제품설명</label>
+  <button class="tinybtn" id="qBtn" onclick="toggleQ()">수량·총금액 숨김</button>
+  <button class="tinybtn" onclick="sortByTotal()">총금액순 정렬</button>
+  <span class="spacer"></span><button class="tinybtn" onclick="addMissing()">＋ 전제품 추가 (없는 것만)</button><button class="tinybtn" onclick="loadSamples()">예시 불러오기</button><button class="tinybtn" onclick="addRow()">＋ 직접입력</button><span id="saveStatus" class="status">자동 계산</span>
  </section>
  <section class="sheet">
   <div class="sheethead">
@@ -64,126 +126,195 @@ tfoot td{background:#101b2b;font-weight:800;color:#f4f7fb;position:sticky;bottom
    <div class="meta">문서번호 <input id="docNo" value="DZK-261121-01">
     기준일자 <input id="docDate" type="date">
     거래처 <input id="client" class="long" placeholder="거래처명">
-    제안자명 <input id="owner" placeholder="작성자">
-    공유/제안명 <input id="proposal" class="long" placeholder="예: 2027년 1차 공급 제안">
+    제안자 <input id="owner" placeholder="작성자">
+    제안명 <input id="proposal" class="long" placeholder="예: 2027년 1차 공급 제안">
    </div>
   </div>
   <div class="tablewrap">
    <table id="products">
     <colgroup>
-     <col style="width:36px"><col style="width:76px"><col style="width:170px"><col style="width:145px"><col style="width:58px"><col style="width:78px">
-     <col span="6" style="width:76px"><col span="6" style="width:76px">
+     <col><col><col><col><col><col>
+     <col><col><col class="q"><col class="q"><col>
+     <col class="r"><col class="r"><col class="r"><col class="r q"><col class="r q"><col class="r">
+     <col class="d">
     </colgroup>
     <thead>
-     <tr><th rowspan="2" class="deletecol">No</th><th rowspan="2">유형</th><th rowspan="2">제품명</th><th rowspan="2">규격</th><th rowspan="2">카톤입수</th><th rowspan="2">원가<br>(VAT포함)</th>
-      <th colspan="6" class="bluehead">더존케이 → 도매</th><th colspan="6" class="greenhead">도매 → 소매</th></tr>
-     <tr><th class="bluehead">도매공급가</th><th class="bluehead">이익금</th><th class="bluehead">이익률</th><th class="bluehead">수량</th><th class="bluehead">총금액</th><th class="bluehead">이익합계</th>
-      <th class="greenhead">소매공급가</th><th class="greenhead">이익금</th><th class="greenhead">이익률</th><th class="greenhead">수량</th><th class="greenhead">총금액</th><th class="greenhead">이익합계</th></tr>
+     <tr><th rowspan="2">No</th><th rowspan="2">유형</th><th rowspan="2">제품명</th><th rowspan="2">규격</th><th rowspan="2">카톤<br>입수</th><th rowspan="2">원가<br>(VAT포함)</th>
+      <th colspan="6" class="bluehead" id="wGroup">더존케이 → 도매</th><th colspan="6" class="greenhead r" id="rGroup">도매 → 소매</th><th rowspan="2" class="d">제품설명</th></tr>
+     <tr><th class="bluehead">도매공급가</th><th class="bluehead">이익금</th><th class="bluehead">이익률</th><th class="bluehead q">수량</th><th class="bluehead q">총금액</th><th class="bluehead">이익합계</th>
+      <th class="greenhead r">소매공급가</th><th class="greenhead r">이익금</th><th class="greenhead r">이익률</th><th class="greenhead r q">수량</th><th class="greenhead r q">총금액</th><th class="greenhead r">이익합계</th></tr>
     </thead>
     <tbody id="body"></tbody>
-    <tfoot><tr><td colspan="10">합계 (<span id="footCount">0</span>개)</td><td id="sumWQty">0</td><td id="sumWTotal">0</td><td id="sumWProfit">0</td><td></td><td></td><td></td><td id="sumRQty">0</td><td id="sumRTotal">0</td><td id="sumRProfit">0</td></tr></tfoot>
+    <tfoot><tr><td colspan="9" style="text-align:center">합계 (<span id="footCount">0</span>개)</td>
+     <td class="q" id="sumWQty">0</td><td class="q" id="sumWTotal">0</td><td id="sumWProfit">0</td>
+     <td class="r"></td><td class="r"></td><td class="r"></td><td class="r q" id="sumRQty">0</td><td class="r q" id="sumRTotal">0</td><td class="r" id="sumRProfit">0</td><td class="d"></td></tr></tfoot>
    </table>
   </div>
-  <div class="note">원가·도매공급가·소매공급가는 VAT 포함 기준입니다. 이익률은 판매가 대비 이익금 비율이며, 공급가 직접 입력 시 이익률이 자동 역산됩니다. 규격·카톤입수·수량은 직접 입력할 수 있습니다.</div>
+  <div class="note">원가·도매공급가·소매공급가는 VAT 포함 기준입니다. 이익률은 판매가 대비 이익금 비율이며, 공급가를 직접 입력하면 이익률이 자동으로 다시 계산됩니다. 노란 칸은 규격이 비었거나 끝까지 입력되지 않아 확인이 필요한 칸입니다. 제품설명은 칸을 눌러 직접 수정할 수 있습니다. 이 파일을 받은 직원은 같은 제품 목록으로 시작하며, 각자 수정한 내용은 본인 컴퓨터의 이 브라우저에만 저장되고 서로 반영되지 않습니다. 작업 내용은 [작업 저장(JSON)]으로 파일로 보관·전달하고, 받은 사람은 [불러오기]로 열 수 있습니다. 소매 수량은 도매 수량을 그대로 따라가며, 소매 수량 칸에 숫자를 직접 입력하면 그 값이 우선하고 칸을 비우면 다시 도매 수량을 따라갑니다.</div>
  </section>
 </div>
 <script>
+/* [유형, 제품명, 규격, 카톤입수, 원가(VAT포함), 제품설명(1줄)] */
 const seed=[
-["건기식","광동 백경간건 알칼디마 연 프리미엄","1,100mg x 120정 (132g)",50,4921,15,0,15,0],
-["확인","광동 포스파티딜세린 PS 징코","",50,9807,15,0,15,0],
-["일반","굿헬씨 유기농 올리브오일 & 블루베리 NFC 데일리스틱","20g x 14포 (280g)",30,5789,15,0,15,0],
-["확인","굿헬씨 유기농 컬리케일 100 츄스케일","",50,4249,15,0,15,0],
-["확인","대웅 헬리코박터 증식억제 위건강 앤 장건강 유산균","",50,7142,15,0,15,0],
-["확인","대웅생명과학 간건강 눈건강엔","",20,9625,15,0,15,0],
-["확인","대웅생명과학 관절엔 글루코사민 맥스","",20,13646,15,0,15,0],
-["일반","대웅생명과학 멀티케어린 30정","30정",100,3385,15,0,15,0],
-["일반","대웅생명과학 멀티케어린 60정","500mg x 60정 (30g)",100,6449,15,0,15,0],
-["확인","대웅생명과학 혈행엔 징코 맥스","",20,13247,15,0,15,0],
-["일반","더진한 콜레드라지 데일리 스틱","10ml x 60포 (600ml)",15,7839,15,0,15,0],
-["일반","동화 마시는 실크알부민 알부맥스88","50g x 30병 (1,500g)",6,23158,15,0,15,0],
-["일반","라온랩 마시는 알부민 에너지 파워샷","22g x 15포 (330g)",30,3034,15,0,15,0],
-["건기식","라온랩 초임계 rTG 오메가3","1,150mg x 30캡슐 (34.5g)",60,3821,15,0,15,0],
-["일반","라온랩 파라다이스 그린 버닝 라이트핏","1,400mg(700mg x 2정) x",60,3474,15,0,15,0],
-["건기식","일동 아미케어 루테인 지아잔틴 미니","150mg x 30캡슐 (4.5g)",100,2531,15,0,15,0],
-["확인","일동 두뇌엔 인지력 포스파티딜세린 PS 80","",50,3419,15,0,15,0],
-["확인","일동 인생샷 마시는 젯산 마그네슘 영양제","",20,6555,15,0,15,0],
-["건기식","조아제약 키즈밸런스 성장엔 칼슘젤리","20g x 30포 (600g)",20,8476,15,0,15,0],
-["일반","퓨어 유기농 레몬즙 100 NFC","20g x 14포 (280g)",50,2709,15,0,15,0]
+["건기식","광동 뼈건강엔 칼마디K 아연 프리미엄","1,100mg x 120정 (132g)",50,4921,"식물성 칼슘+비타민D3·K+아연 복합"],
+["확인","광동 포스파티딜세린 PS 징코","",50,9807,"포스파티딜세린(PS)+징코 복합"],
+["일반","굿헬씨 유기농 올리브오일 & 블루베리 NFC 데일리스틱","20g x 14포 (280g)",30,5789,"유기농 올리브오일+블루베리 NFC 착즙 스틱"],
+["확인","굿헬씨 유기농 컬리케일 100 곱슬케일","",50,4249,"유기농 곱슬케일 100% 원료 제품"],
+["확인","대웅 헬리코박터 증식억제 위건강 앤 장건강 유산균","",50,7142,"헬리코박터 증식억제 유산균 (위·장 건강)"],
+["확인","대웅생명과학 간건강 눈건강엔","",20,9625,"간 건강·눈 건강 복합 케어 제품"],
+["확인","대웅생명과학 관절엔 글루코사민 맥스","",20,13646,"글루코사민 고함량 (관절 건강)"],
+["일반","대웅생명과학 멜라케어린 30정","30정",100,3385,"식물성 멜라토닌+타트체리 복합"],
+["일반","대웅생명과학 멜라케어린 60정","500mg x 60정 (30g)",100,6449,"식물성 멜라토닌 2mg+타트체리 복합"],
+["확인","대웅생명과학 혈행엔 징코 맥스","",20,13247,"징코(은행잎) 함유 (혈행 건강)"],
+["일반","더진한 꿀배도라지 데일리 스틱","10ml x 60포 (600ml)",15,7839,"국산 도라지·배·꿀, 환절기 목관리 스틱"],
+["일반","동화 마시는 실크알부민 알부맥스88","50g x 30병 (1,500g)",6,23158,"실크알부민 40,000mg 고함량, 선물용"],
+["일반","라온랩 마시는 알부민 에너지 파워샷","22g x 15포 (330g)",30,3034,"난백알부민 20,000mg+아르기닌 파워샷"],
+["건기식","라온랩 초임계 rTG 오메가3","1,150mg x 30캡슐 (34.5g)",60,3821,"rTG 오메가3 900mg+비타민D·E"],
+["일반","라온랩 파라다이스 그레인 버닝 라이트핏","1,400mg(700mg x 2정) x",60,3474,"파라다이스 그레인 함유 정제 제품"],
+["건기식","일동 아이케어 루테인 지아잔틴 미니","150mg x 30캡슐 (4.5g)",100,2531,"루테인 9.9mg+지아잔틴 2.1mg 미니캡슐"],
+["확인","일동 두뇌엔 인지력 포스파티딜세린 PS 80","",50,3419,"포스파티딜세린(PS) 80 함유 (두뇌·인지력)"],
+["확인","일동 인생샷 마시는 젖산 마그네슘 영양제","",20,6555,"마시는 젖산마그네슘, 간편 마그네슘 보충"],
+["건기식","조아제약 키즈빅 성장엔 칼슘젤리","20g x 30포 (600g)",20,8476,"어린이 성장기 칼슘젤리, 아연·비타민 함유"],
+["일반","퓨어 유기농 레몬즙 100 NFC","20g x 14포 (280g)",50,2709,"스페인산 유기농 레몬 100% NFC 착즙"]
 ];
-let items=[];
+/* 게시 페이지에서는 브라우저 팝업(alert/confirm)이 막히므로 화면 안 확인창을 사용 */
+function uiDialog(msg,okText,cancelText){return new Promise(res=>{
+ const m=$("modal"),ok=$("mok"),c=$("mcancel");$("mmsg").textContent=msg;ok.textContent=okText||"확인";
+ c.style.display=cancelText?"":"none";if(cancelText)c.textContent=cancelText;m.classList.add("on");
+ const done=v=>{m.classList.remove("on");ok.onclick=c.onclick=null;res(v)};ok.onclick=()=>done(true);c.onclick=()=>done(false);ok.focus();});}
+const uiAlert=m=>uiDialog(m);const uiConfirm=m=>uiDialog(m,"확인","취소");
+const TYPES=["일반","건기식","확인"];
+const W=[46,62,176,128,48,62,66,58,82,48,72,72,66,58,82,48,72,72,250]; // 열너비(px)
+let items=[],hideQ=false;
 const $=id=>document.getElementById(id);
+const num=v=>Number(String(v??"").replace(/[^0-9.\-]/g,""))||0;
 const fmt=n=>Math.round(Number(n)||0).toLocaleString("ko-KR");
-const roundPrice=n=>{let u=Number($("roundMode").value)||1;return Math.ceil((Number(n)||0)/u)*u};
+const roundPrice=n=>{const u=Number($("roundMode").value)||1;return Math.ceil((Number(n)||0)/u-1e-9)*u};
+const esc=s=>String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
+const rateStr=r=>(Math.round(r*10)/10)+"%";
+const needSpec=s=>!String(s||"").trim()||/x\s*$/i.test(String(s).trim());
+
+const effQ=x=>x.rQtyManual?num(x.rQty):num(x.wQty); // 소매수량: 직접 입력 전에는 도매수량을 따라감
 function calc(x){
- let wRate=Math.max(0,Math.min(99,Number(x.wRate)||0))/100;
- let rRate=Math.max(0,Math.min(99,Number(x.rRate)||0))/100;
- let basis=$("basis").value;
- let wProfit= basis==="vat" ? x.cost*wRate/(1-wRate) : x.cost*wRate/(1-wRate);
- let wPrice=x.wManual?Number(x.wPrice)||0:roundPrice(x.cost/(1-wRate));
- let wGain=wPrice-x.cost;
- let rPrice=x.rManual?Number(x.rPrice)||0:roundPrice(wPrice/(1-rRate));
- let rGain=rPrice-wPrice;
- return {wPrice,wGain,wRateActual:wPrice? wGain/wPrice*100:0,rPrice,rGain,rRateActual:rPrice?rGain/rPrice*100:0,
- wTotal:wPrice*(Number(x.wQty)||0),wProfitTotal:wGain*(Number(x.wQty)||0),
- rTotal:rPrice*(Number(x.rQty)||0),rProfitTotal:rGain*(Number(x.rQty)||0)};
+ const cost=num(x.cost),wr=Math.min(99,Math.max(0,num(x.wRate)))/100,rr=Math.min(99,Math.max(0,num(x.rRate)))/100;
+ const wPrice=x.wManual?num(x.wPrice):(cost?roundPrice(cost/(1-wr)):0);
+ const wGain=wPrice-cost;
+ const rPrice=x.rManual?num(x.rPrice):(wPrice?roundPrice(wPrice/(1-rr)):0);
+ const rGain=rPrice-wPrice;
+ const wq=num(x.wQty),rq=effQ(x);
+ return{wPrice,wGain,wRateA:wPrice?wGain/wPrice*100:0,rPrice,rGain,rRateA:rPrice?rGain/rPrice*100:0,
+  wTotal:wPrice*wq,wProfitTotal:wGain*wq,rTotal:rPrice*rq,rProfitTotal:rGain*rq};
 }
+const pv=f=>`<span class="pv" data-f="${f}"></span>`;
 function rowHTML(x,i){
- let c=calc(x);
- return `<tr data-id="${i}">
- <td class="deletecol">${i+1}<button class="tinybtn" title="삭제" onclick="removeRow(${i})">×</button></td>
- <td><select onchange="setVal(${i},'type',this.value)">${["일반","건기식","건기식","확인"].map(v=>`<option ${x.type===v?"selected":""}>${v}</option>`).join("")}</select></td>
- <td><input class="name" value="${esc(x.name)}" onchange="setVal(${i},'name',this.value)"></td>
- <td><input class="spec" value="${esc(x.spec)}" onchange="setVal(${i},'spec',this.value)"></td>
- <td><input class="num" type="number" min="0" value="${x.carton}" onchange="setVal(${i},'carton',this.value)"></td>
- <td><input class="num" type="number" min="0" value="${x.cost}" onchange="setVal(${i},'cost',this.value)"></td>
- <td class="blue"><input class="num" type="number" min="0" value="${c.wPrice}" onchange="setManual(${i},'wPrice',this.value)"></td>
- <td class="blue profit">${fmt(c.wGain)}</td>
- <td class="blue"><button class="tinybtn" onclick="adjustRate(${i},'w',-1)">▼</button> ${x.wRate}% <button class="tinybtn" onclick="adjustRate(${i},'w',1)">▲</button></td>
- <td class="blue"><input type="number" min="0" class="num" value="${x.wQty}" onchange="setVal(${i},'wQty',this.value)"></td>
- <td class="blue">${fmt(c.wTotal)}</td><td class="blue profit">${fmt(c.wProfitTotal)}</td>
- <td class="green"><input class="num" type="number" min="0" value="${c.rPrice}" onchange="setManual(${i},'rPrice',this.value)"></td>
- <td class="green profit">${fmt(c.rGain)}</td>
- <td class="green"><button class="tinybtn" onclick="adjustRate(${i},'r',-1)">▼</button> ${x.rRate}% <button class="tinybtn" onclick="adjustRate(${i},'r',1)">▲</button></td>
- <td class="green"><input type="number" min="0" class="num" value="${x.rQty}" onchange="setVal(${i},'rQty',this.value)"></td>
- <td class="green">${fmt(c.rTotal)}</td><td class="green profit">${fmt(c.rProfitTotal)}</td></tr>`;
+ return `<tr data-i="${i}">
+ <td class="nocol"><span class="no">${i+1}</span><button class="rm noprint" title="이 행 삭제" onclick="removeRow(${i})">×</button></td>
+ <td><select data-f="type" onchange="setVal(${i},'type',this.value)">${TYPES.map(v=>`<option ${x.type===v?"selected":""}>${v}</option>`).join("")}</select>${pv("type")}</td>
+ <td class="l name"><input class="name" data-f="name" title="" onchange="setVal(${i},'name',this.value)">${pv("name")}</td>
+ <td class="l"><input class="spec" data-f="spec" placeholder="규격 입력" onchange="setVal(${i},'spec',this.value)">${pv("spec")}</td>
+ <td class="n"><input class="num" data-f="carton" onchange="setVal(${i},'carton',this.value)">${pv("carton")}</td>
+ <td class="n"><input class="num" data-f="cost" onchange="setVal(${i},'cost',this.value)">${pv("cost")}</td>
+ <td class="blue n"><input class="num" data-f="wPrice" onchange="setManual(${i},'wPrice',this.value)">${pv("wPrice")}</td>
+ <td class="blue n profit" data-f="wGain"></td>
+ <td class="blue rate"><button class="tinybtn noprint" onclick="adjustRate(${i},'w',-1)">▼</button> <b data-f="wRate"></b> <button class="tinybtn noprint" onclick="adjustRate(${i},'w',1)">▲</button></td>
+ <td class="blue n q"><input class="num" data-f="wQty" onchange="setVal(${i},'wQty',this.value)">${pv("wQty")}</td>
+ <td class="blue n q" data-f="wTotal"></td><td class="blue n profit" data-f="wProfitTotal"></td>
+ <td class="green n r"><input class="num" data-f="rPrice" onchange="setManual(${i},'rPrice',this.value)">${pv("rPrice")}</td>
+ <td class="green n r profit" data-f="rGain"></td>
+ <td class="green r rate"><button class="tinybtn noprint" onclick="adjustRate(${i},'r',-1)">▼</button> <b data-f="rRate"></b> <button class="tinybtn noprint" onclick="adjustRate(${i},'r',1)">▲</button></td>
+ <td class="green n r q"><input class="num" data-f="rQty" onchange="setVal(${i},'rQty',this.value)">${pv("rQty")}</td>
+ <td class="green n r q" data-f="rTotal"></td><td class="green n r profit" data-f="rProfitTotal"></td>
+ <td class="l d dcell"><input class="desc" data-f="desc" placeholder="제품설명 입력" onchange="setVal(${i},'desc',this.value)">${pv("desc")}</td></tr>`;
 }
-function esc(s){return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));}
-function render(){
- $("body").innerHTML=items.map(rowHTML).join("");
- updateTotals();
+function refreshRow(tr){
+ const i=+tr.dataset.i,x=items[i],c=calc(x);
+ const v={type:x.type,name:x.name,spec:x.spec,desc:x.desc||"",carton:fmt(x.carton),cost:fmt(x.cost),wQty:fmt(x.wQty),rQty:fmt(effQ(x)),
+  wPrice:fmt(c.wPrice),wGain:fmt(c.wGain),wRate:rateStr(c.wRateA),wTotal:fmt(c.wTotal),wProfitTotal:fmt(c.wProfitTotal),
+  rPrice:fmt(c.rPrice),rGain:fmt(c.rGain),rRate:rateStr(c.rRateA),rTotal:fmt(c.rTotal),rProfitTotal:fmt(c.rProfitTotal)};
+ tr.querySelectorAll("[data-f]").forEach(el=>{
+  const val=v[el.dataset.f];
+  if(el.tagName==="INPUT"||el.tagName==="SELECT"){ if(el!==document.activeElement){el.value=val;} }
+  else el.textContent=val;
+ });
+ const sp=tr.querySelector("input.spec");sp.classList.toggle("edit",needSpec(x.spec));
+ tr.querySelector("input.name").title=x.name;tr.querySelector("input.desc").title=x.desc||"";
 }
+function refresh(){document.querySelectorAll("#body tr").forEach(refreshRow);updateTotals();}
+function render(){$("body").innerHTML=items.map(rowHTML).join("");refresh();}
 function updateTotals(){
- let sums={wQty:0,wTotal:0,wProfit:0,rQty:0,rTotal:0,rProfit:0};
- items.forEach(x=>{let c=calc(x);sums.wQty+=+x.wQty||0;sums.wTotal+=c.wTotal;sums.wProfit+=c.wProfitTotal;sums.rQty+=+x.rQty||0;sums.rTotal+=c.rTotal;sums.rProfit+=c.rProfitTotal});
- $("kCount").textContent=items.length+"개";$("kWholesale").textContent=fmt(sums.wTotal)+"원";$("kWProfit").textContent=fmt(sums.wProfit)+"원";$("kRetail").textContent=fmt(sums.rTotal)+"원";$("kRProfit").textContent=fmt(sums.rProfit)+"원";
- $("footCount").textContent=items.length;$("sumWQty").textContent=fmt(sums.wQty);$("sumWTotal").textContent=fmt(sums.wTotal);$("sumWProfit").textContent=fmt(sums.wProfit);$("sumRQty").textContent=fmt(sums.rQty);$("sumRTotal").textContent=fmt(sums.rTotal);$("sumRProfit").textContent=fmt(sums.rProfit);
+ const s={wQty:0,wTotal:0,wProfit:0,rQty:0,rTotal:0,rProfit:0};
+ items.forEach(x=>{const c=calc(x);s.wQty+=num(x.wQty);s.wTotal+=c.wTotal;s.wProfit+=c.wProfitTotal;s.rQty+=effQ(x);s.rTotal+=c.rTotal;s.rProfit+=c.rProfitTotal});
+ $("kCount").textContent=items.length+"개";$("kWholesale").textContent=fmt(s.wTotal)+"원";$("kWProfit").textContent=fmt(s.wProfit)+"원";$("kRetail").textContent=fmt(s.rTotal)+"원";$("kRProfit").textContent=fmt(s.rProfit)+"원";
+ $("footCount").textContent=items.length;$("sumWQty").textContent=fmt(s.wQty);$("sumWTotal").textContent=fmt(s.wTotal);$("sumWProfit").textContent=fmt(s.wProfit);
+ $("sumRQty").textContent=fmt(s.rQty);$("sumRTotal").textContent=fmt(s.rTotal);$("sumRProfit").textContent=fmt(s.rProfit);
 }
-function setVal(i,k,v){items[i][k]=["carton","cost","wQty","rQty","wRate","rRate"].includes(k)?Number(v)||0:v;if(k==="cost"){items[i].wManual=false;items[i].rManual=false;}render();save();}
-function setManual(i,k,v){items[i][k]=Number(v)||0;items[i][k==="wPrice"?"wManual":"rManual"]=true;render();save();}
-function adjustRate(i,ch,d){let k=ch==="w"?"wRate":"rRate";items[i][k]=Math.max(0,Math.min(99,(Number(items[i][k])||0)+d));if(ch==="w")items[i].wManual=false;else items[i].rManual=false;render();save();}
-function addRow(){items.push({type:"일반",name:"신규 제품",spec:"",carton:1,cost:0,wRate:Number($("bulkW").value)||15,wQty:0,rRate:Number($("bulkR").value)||15,rQty:0,wManual:false,rManual:false});render();save();}
+function applyLayout(){
+ const t=$("products"),r=$("showR").checked,d=$("showD").checked;
+ t.classList.toggle("hide-r",!r);t.classList.toggle("hide-d",!d);t.classList.toggle("hide-q",hideQ);
+ $("wGroup").colSpan=hideQ?4:6;$("rGroup").colSpan=hideQ?4:6;
+ $("qBtn").textContent=hideQ?"수량·총금액 보이기":"수량·총금액 숨김";
+ const hid=i=>(i>=12&&i<=17&&!r)||(i===18&&!d)||(hideQ&&[9,10,15,16].includes(i));
+ t.style.width=W.reduce((a,w,i)=>a+(hid(i)?0:w),0)+"px";
+}
+function setVal(i,k,v){if(k==="rQty")items[i].rQtyManual=String(v).trim()!=="";
+ items[i][k]=["carton","cost","wQty","rQty","wRate","rRate"].includes(k)?num(v):v;
+ if(k==="cost"){items[i].wManual=false;items[i].rManual=false;}refresh();save();}
+function setManual(i,k,v){items[i][k]=num(v);items[i][k==="wPrice"?"wManual":"rManual"]=true;
+ if(k==="wPrice"&&!items[i].rManual){}refresh();save();}
+function adjustRate(i,ch,d){const c=calc(items[i]);const cur=Math.round(ch==="w"?c.wRateA:c.rRateA);
+ const k=ch==="w"?"wRate":"rRate";items[i][k]=Math.max(0,Math.min(99,cur+d));items[i][ch==="w"?"wManual":"rManual"]=false;refresh();save();}
+function mk(a){return{type:a[0],name:a[1],spec:a[2],carton:a[3],cost:a[4],desc:a[5]||"",wRate:15,wQty:0,rRate:15,rQty:0,rQtyManual:false,wManual:false,rManual:false};}
+function addRow(){items.push({type:"일반",name:"신규 제품",spec:"",carton:1,cost:0,desc:"",wRate:num($("bulkW").value)||15,wQty:0,rRate:num($("bulkR").value)||15,rQty:0,wManual:false,rManual:false});render();save();}
 function removeRow(i){items.splice(i,1);render();save();}
-function applyBulk(ch){let rate=Number($(ch==="w"?"bulkW":"bulkR").value)||0;items.forEach(x=>{if(ch==="w"){x.wRate=rate;x.wManual=false}else{x.rRate=rate;x.rManual=false}});render();save();}
+function applyBulk(ch){const rate=Math.min(99,Math.max(0,num($(ch==="w"?"bulkW":"bulkR").value)));
+ items.forEach(x=>{if(ch==="w"){x.wRate=rate;x.wManual=false}else{x.rRate=rate;x.rManual=false}});refresh();save();}
+function toggleQ(){hideQ=!hideQ;applyLayout();save();}
 function sortByTotal(){items.sort((a,b)=>calc(b).wTotal-calc(a).wTotal);render();save();}
-function loadSamples(){items=seed.map(a=>({type:a[0],name:a[1],spec:a[2],carton:a[3],cost:a[4],wRate:a[5],wQty:a[6],rRate:a[7],rQty:a[8],wManual:false,rManual:false}));render();save();}
-function newDoc(){if(!confirm("현재 입력 내용을 비우고 새 견적서를 시작할까요?"))return;items=[];$("docNo").value="DZK-"+new Date().toISOString().slice(2,10).replaceAll("-","")+"-01";$("client").value="";$("owner").value="";$("proposal").value="";render();addRow();}
-async function shareDoc(){
- const summary=`제품 판매 제안 견적서\n문서번호: ${$("docNo").value}\n기준일자: ${$("docDate").value}\n거래처: ${$("client").value}\n제안자: ${$("owner").value}\n제안명: ${$("proposal").value}\n제품 수: ${items.length}개\n\n이 HTML 대시보드 파일을 함께 전달하면 상대방도 같은 화면을 열 수 있습니다.`;
- try{if(navigator.share){await navigator.share({title:"제품 판매 제안 견적서",text:summary});}else if(navigator.clipboard){await navigator.clipboard.writeText(summary);alert("견적서 공유 정보가 복사되었습니다. HTML 파일도 함께 전달해 주세요.");}else{prompt("아래 공유 정보를 복사하세요. HTML 파일도 함께 전달해 주세요.",summary);}}catch(e){if(e.name!=="AbortError")alert("공유 기능을 사용할 수 없습니다. HTML 파일을 메일이나 메신저로 전달해 주세요.");}
+function addMissing(){const have=new Set(items.map(x=>String(x.name).trim()));const add=seed.map(mk).filter(x=>!have.has(x.name.trim()));
+ if(!add.length){uiAlert("추가할 제품이 없습니다. 모든 제품이 이미 표에 있습니다.");return;}
+ items.push(...add);render();save();$("saveStatus").textContent=add.length+"개 제품을 추가했습니다";}
+function loadSamples(){items=seed.map(mk);render();save();}
+const today=()=>{const d=new Date(),p=n=>String(n).padStart(2,"0");return d.getFullYear()+"-"+p(d.getMonth()+1)+"-"+p(d.getDate());};
+async function newDoc(){if(!await uiConfirm("처음 상태로 되돌릴까요?\n제품 목록이 처음 상태로 돌아가고, 지금 입력한 수량·이익률·거래처·제안명 등은 모두 사라집니다."))return;
+ items=seed.map(mk);hideQ=false;$("showR").checked=true;$("showD").checked=true;$("roundMode").value="10";$("bulkW").value=15;$("bulkR").value=15;
+ $("docDate").value=today();$("docNo").value="DZK-"+today().slice(2).replaceAll("-","")+"-01";$("client").value="";$("owner").value="";$("proposal").value="";
+ render();applyLayout();save();$("saveStatus").textContent="처음 상태로 되돌렸습니다";}
+function saveFile(name,data){
+ try{const type=/\.json$/i.test(name)?"application/json":"text/csv";
+  const url=URL.createObjectURL(new Blob([data],{type:type+";charset=utf-8"})),el=document.createElement("a");
+  el.href=url;el.download=name;document.body.appendChild(el);el.click();el.remove();setTimeout(()=>URL.revokeObjectURL(url),1500);
+  $("saveStatus").textContent="파일 저장: "+name;}
+ catch(e){uiAlert("파일 저장에 실패했습니다. 다른 브라우저(크롬·엣지)로 열어 주세요.");}
 }
 function exportCSV(){
- const heads=["문서번호","기준일자","거래처","제안자","제안명","유형","제품명","규격","카톤입수","원가(VAT포함)","도매공급가","도매이익금","도매이익률","도매수량","도매총금액","도매이익합계","소매공급가","소매이익금","소매이익률","소매수량","소매총금액","소매이익합계"];
- let rows=[heads];items.forEach(x=>{let c=calc(x);rows.push([$("docNo").value,$("docDate").value,$("client").value,$("owner").value,$("proposal").value,x.type,x.name,x.spec,x.carton,x.cost,c.wPrice,c.wGain,c.wRateActual.toFixed(2)+"%",x.wQty,c.wTotal,c.wProfitTotal,c.rPrice,c.rGain,c.rRateActual.toFixed(2)+"%",x.rQty,c.rTotal,c.rProfitTotal])});
- let csv="\ufeff"+rows.map(r=>r.map(v=>'"'+String(v??"").replaceAll('"','""')+'"').join(",")).join("\r\n");
- let blob=new Blob([csv],{type:"text/csv;charset=utf-8;"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download=($("docNo").value||"제품견적서")+".csv";a.click();URL.revokeObjectURL(url);
+ const heads=["문서번호","기준일자","거래처","제안자","제안명","No","유형","제품명","규격","카톤입수","원가(VAT포함)","도매공급가","도매이익금","도매이익률(%)","도매수량","도매총금액","도매이익합계","소매공급가","소매이익금","소매이익률(%)","소매수량","소매총금액","소매이익합계","제품설명"];
+ const rows=[heads];let s={wq:0,wt:0,wp:0,rq:0,rt:0,rp:0};
+ items.forEach((x,i)=>{const c=calc(x);s.wq+=num(x.wQty);s.wt+=c.wTotal;s.wp+=c.wProfitTotal;s.rq+=effQ(x);s.rt+=c.rTotal;s.rp+=c.rProfitTotal;
+  rows.push([$("docNo").value,$("docDate").value,$("client").value,$("owner").value,$("proposal").value,i+1,x.type,x.name,x.spec,x.carton,x.cost,c.wPrice,c.wGain,c.wRateA.toFixed(1),x.wQty,c.wTotal,c.wProfitTotal,c.rPrice,c.rGain,c.rRateA.toFixed(1),effQ(x),c.rTotal,c.rProfitTotal,x.desc||""]);});
+ rows.push(["","","","","","","","합계","","","","","","",s.wq,s.wt,s.wp,"","","",s.rq,s.rt,s.rp,""]);
+ const csv="\ufeff"+rows.map(r=>r.map(v=>'"'+String(v??"").replaceAll('"','""')+'"').join(",")).join("\r\n");
+ saveFile(($("docNo").value||"제품견적서")+".csv",csv);
 }
-function save(){try{localStorage.setItem("dzk-proposal-state",JSON.stringify({items,meta:{docNo:$("docNo").value,docDate:$("docDate").value,client:$("client").value,owner:$("owner").value,proposal:$("proposal").value}}));$("saveStatus").textContent="이 브라우저에 자동 저장됨";}catch(e){$("saveStatus").textContent="자동 저장 제한됨";}}
-function restore(){try{let s=JSON.parse(localStorage.getItem("dzk-proposal-state"));if(s){items=s.items||[];Object.entries(s.meta||{}).forEach(([k,v])=>{if($(k))$(k).value=v;});return true;}}catch(e){}return false;}
-["docNo","docDate","client","owner","proposal","roundMode","basis"].forEach(id=>$(id).addEventListener("change",()=>{render();save()}));
-$("showCost").addEventListener("change",()=>{document.querySelectorAll("th,td").forEach(()=>{});});
-$("showSpec").addEventListener("change",()=>{document.querySelectorAll("#products th:nth-child(4),#products td:nth-child(4)").forEach(el=>el.style.display=$("showSpec").checked?"":"none");});
-$("docDate").value=new Date().toISOString().slice(0,10);
-if(!restore()){loadSamples()}else{render()}
+const KEY="dzk-proposal-state-v2";
+function state(){return{v:2,items,hideQ,showR:$("showR").checked,showD:$("showD").checked,roundMode:$("roundMode").value,
+ meta:{docNo:$("docNo").value,docDate:$("docDate").value,client:$("client").value,owner:$("owner").value,proposal:$("proposal").value}};}
+function applyState(s){items=s.items;hideQ=!!s.hideQ;$("showR").checked=s.showR!==false;$("showD").checked=s.showD!==false;
+ if(s.roundMode)$("roundMode").value=s.roundMode;
+ Object.entries(s.meta||{}).forEach(([k,v])=>{if($(k)&&v!==undefined)$(k).value=v;});render();applyLayout();save();}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(state()));$("saveStatus").textContent="이 브라우저에 자동 저장됨";}catch(e){$("saveStatus").textContent="자동 저장 제한됨";}}
+function restore(){try{const s=JSON.parse(localStorage.getItem(KEY));if(s&&s.items&&s.items.length){items=s.items;hideQ=!!s.hideQ;$("showR").checked=s.showR!==false;$("showD").checked=s.showD!==false;
+ if(s.roundMode)$("roundMode").value=s.roundMode;
+ Object.entries(s.meta||{}).forEach(([k,v])=>{if($(k)&&v!==undefined&&v!=="")$(k).value=v;});return true;}}catch(e){}return false;}
+function exportJSON(){saveFile(($("docNo").value||"견적작업")+".json",JSON.stringify(state(),null,1));}
+$("jsonFile").addEventListener("change",async e=>{const f=e.target.files[0];e.target.value="";if(!f)return;
+ try{const s=JSON.parse(await f.text());if(!Array.isArray(s.items))throw 0;if(!await uiConfirm("현재 화면을 불러온 파일 내용으로 바꿀까요?"))return;applyState(s);}
+ catch(err){uiAlert("견적 작업 파일(JSON)이 아닙니다.");}});
+["docNo","docDate","client","owner","proposal"].forEach(id=>$(id).addEventListener("change",save));
+$("roundMode").addEventListener("change",()=>{items.forEach(x=>{x.wManual=false;x.rManual=false});refresh();save();});
+["showR","showD"].forEach(id=>$(id).addEventListener("change",()=>{applyLayout();save();}));
+$("docDate").value=today();
+if(!restore())items=seed.map(mk);
+render();applyLayout();
 </script>
 </body>
 </html>
