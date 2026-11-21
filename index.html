@@ -290,7 +290,7 @@ $('#rst').onclick=async function(){if(await cf('새 문서를 시작합니다. �
 var hf=function(p){return p.ha?p.ha+(p.hu||'mg')+'*'+(p.hn==null?1:p.hn)+'회*'+(p.hd==null?1:p.hd)+'일':'';};
 var mo=function(p){var d={'1일 1회':1,'1일 2회':2,'1일 3회':3,'주 1회':1/7}[p.cy];if(!d||!p.q)return'';var m=p.q/(d*30);return' ('+(Number.isInteger(m)?m:Math.round(m*10)/10)+'개월)';};
 var esc=function(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});};
-var FOPTS=[5,10,15,20,25,30];
+var FOPTS=Array.from({length:30},function(_,k){return k+1;});
 function isMobile(){return window.innerWidth<=700;}
 function feeCell(p,i){
   var v=Number(p.f),custom=FOPTS.indexOf(v)<0,dis=p.b?'':'disabled';
@@ -568,7 +568,7 @@ document.addEventListener('click',function(e){
   if(t.dataset.m){mode=t.dataset.m;document.querySelectorAll('#mode button').forEach(function(b){b.classList.toggle('on',b===t);});return upd();}
   var i=+t.dataset.i,a=t.dataset.a;
   if(a==='st'){var k=t.dataset.k;P[i][k]=Math.max(0,(+P[i][k]||0)+ +t.dataset.d);if(k==='m')P[i][k]=Math.max(100,P[i][k]);build();}
-  if(a==='br'){P[i].b=+t.dataset.v;build();}
+  if(a==='br'){P[i].b=+t.dataset.v;if(P[i].b&&!(+P[i].f>0))P[i].f=15;build();}
   if(a==='del'){if(P.length>1){P.splice(i,1);cur=0;build();}else toast('제품이 1개 이상 있어야 합니다');}
 });
 $('#add').onclick=function(){if(P.length>=4)return toast('비교는 최대 4개 제품까지 가능합니다');P.push(mk({n:'신규 제품 '+(P.length+1),q:30,c:0,b:0,f:15,m:1000,d:0,e:0}));build();};
