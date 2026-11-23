@@ -1612,7 +1612,7 @@
   function strip0(s){ return s.replace(/(\.\d*?)0+$/, "$1").replace(/\.$/, ""); }
 
   function panel(s){
-    var W=252, H=178, padL=36, padR=14, padT=28, padB=34;
+    var W=252, H=178, padL=46, padR=14, padT=28, padB=34;
     var iw=W-padL-padR, ih=H-padT-padB, n=WK.length;
     function X(k){ return padL + iw*k/(n-1); }
     function Y(v){ return padT + ih*(1 - v/s.ymax); }
