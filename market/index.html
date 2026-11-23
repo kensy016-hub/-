@@ -385,6 +385,28 @@
   .trend-src b{color:var(--ink-2)}
   .trend-src .src2{display:block;margin-top:5px}
 
+  /* 아이템스카우트 실측 소표 (2026-11-22 조회) */
+  .iscout{margin-top:16px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px 12px}
+  .iscout-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:9px}
+  .iscout-head h3{margin:0;font-size:14px;font-weight:800;letter-spacing:-.01em;color:var(--navy)}
+  .iscout-head .stamp{font-size:10.5px;font-weight:800;color:var(--teal);background:var(--teal-soft);border:1px solid #bfe0da;padding:3px 9px;border-radius:999px;white-space:nowrap}
+  .iscout .tablewrap{border:0;background:transparent}
+  .iscout table{min-width:680px;font-size:12.4px}
+  .iscout thead th{padding:9px 11px;font-size:11px;border-bottom:2px solid var(--line-2)}
+  .iscout thead th.r{text-align:right}
+  .iscout tbody td{padding:10px 11px;font-variant-numeric:tabular-nums;border-bottom:1px solid var(--line)}
+  .iscout .isc-name{font-weight:800;font-size:13px;color:var(--ink)}
+  .iscout .isc-name small{display:block;font-weight:600;font-size:10.8px;color:var(--ink-3);margin-top:2px}
+  .iscout .isc-num{text-align:right;font-weight:800;font-size:13px;color:var(--ink)}
+  .iscout .isc-sub{text-align:right;color:var(--ink-2)}
+  .iscout .isc-insight{margin:11px 0 0;padding-top:9px;border-top:1px dashed var(--line-2);font-size:11.4px;color:var(--ink-2);line-height:1.62}
+  .iscout .isc-insight strong{color:var(--teal)}
+  .iscout .isc-insight b{color:var(--ink)}
+  .q{display:inline-block;font-size:10.5px;font-weight:800;padding:3px 8px;border-radius:999px;white-space:nowrap}
+  .q.g1{background:#e7f6ee;color:#0b7a45}
+  .q.g2{background:#fff4e0;color:#b45309}
+  .q.g3{background:#f1f2f4;color:#55606e}
+
   .arch-bar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:var(--teal-soft);border:1px solid #bfe0da;border-radius:12px;padding:13px 16px;margin-top:18px}
   .arch-bar h2{margin:0;font-size:15.5px;font-weight:800;color:var(--teal);white-space:nowrap}
   .arch-bar p{margin:0;font-size:12px;color:#134e4a;line-height:1.55;flex:1 1 320px}
@@ -395,11 +417,16 @@
     .trend-grid{grid-template-columns:1fr}
     .wktag{display:block;font-size:13px;margin-top:5px;white-space:normal}
   }
+  @media (max-width:720px){
+    .iscout .isc-num,.iscout .isc-sub{text-align:left}
+  }
   @media print{
     .weektabs{display:none !important}
     .trend-grid{grid-template-columns:repeat(4,1fr);gap:3mm}
     .tpanel{break-inside:avoid;padding:2mm}
     .trend-src{font-size:8.4px;padding:2mm}
+    .iscout{break-inside:avoid;padding:2mm 3mm}
+    .iscout table{font-size:8.6px;min-width:0}
     .arch-bar{padding:2mm 3mm}
   }
 </style>
@@ -665,10 +692,78 @@
     </div>
     <p class="trend-src">
       <strong>기준·출처</strong> — 네이버 데이터랩 검색어트렌드(통합검색 · PC+모바일 · 주간 2026-08-03~11-22 조회, 2026-11-23). 값은 조회 기간 내 최다 주(마그네슘 10월 4주차)를 <b>100</b>으로 둔 <b>상대지수</b>이며 실제 검색 횟수가 아닙니다. 주차 구분은 데이터랩 주간 구간(월~일)이고, 검색어는 삼백초+삼백초추출물 / 여주효소 / 마그네슘 / 상어간유입니다.
-      <span class="src2"><strong>미확인</strong> — 11월 4주차(11/23~)는 주간 집계 전이라 수치가 없고 다음 주 갱신 시 채워집니다. 쿠팡 검색량은 공개 조회 경로가 없으며, 아이템스카우트·네이버 검색광고 키워드도구는 로그인이 필요해 이번 조사에서 월간 검색수(절댓값)는 확보하지 못했습니다.</span>
+      <span class="src2"><strong>보완</strong> — 11월 4주차(11/23~)는 주간 집계 전이라 수치가 없고 다음 주 갱신 시 채워집니다. 아이템스카우트는 로그인 연결 후 월간 검색수·경쟁강도를 반영 완료했고(아래 실측표), 단 아이템스카우트 종합 차트·쿠팡 지표는 크롬 확장프로그램이 필요해 미제공입니다.</span>
     </p>
     <div class="note">
       <strong>읽는 점</strong> — ① 마그네슘은 99.1 → 90.5로 네 주 연속 완만한 하락이지만 4소재 중 압도적 1위(삼백초의 약 1.3배)입니다. 11월 홈쇼핑 매진·액상 신제품 러시는 검색량 증가가 아니라 <b>제형 전환</b>이었습니다. ② 삼백초는 11월 2주차 78.3으로 11월 최고를 찍고 3주차 68.7로 12% 낮아졌습니다 — 코엔삼백초 GS샵 편성(11/18·22)이 새 수요를 만들기보다 기존 수요를 태우는 국면으로 읽힙니다. ③ 여주 효소는 1.85~3.54로 마그네슘의 약 1/40 — 실제 판매는 브랜드명(혈당컷 여주·여주S52)으로 검색되지 ‘여주 효소’ 카테고리어로는 거의 검색되지 않습니다. ④ 상어간유는 0.017~0.079로 마그네슘의 약 1/1,700 — 온라인 검색 유입으로 매출이 서는 카테고리가 아니라는 판단(방판·B2B)을 수치로 뒷받침합니다(모수가 작아 주간 변동은 잡음으로 볼 것).
+    </div>
+
+    <!-- 아이템스카우트 실측 (2026-11-22 조회) -->
+    <div class="iscout">
+      <div class="iscout-head">
+        <h3>아이템스카우트 월간 검색수 · 경쟁강도</h3>
+        <span class="stamp">11/22 기준 실측</span>
+      </div>
+      <div class="tablewrap">
+        <table>
+          <thead>
+            <tr>
+              <th style="width:170px">핵심 소재</th>
+              <th class="r">한 달 검색수</th>
+              <th class="r">상품수</th>
+              <th class="r">경쟁강도</th>
+              <th style="width:96px">판정</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="isc-name" data-label="소재">젖산마그네슘<small>액상·분말 제형</small></td>
+              <td class="isc-num" data-label="한 달 검색수">187,300회</td>
+              <td class="isc-sub" data-label="상품수">15,385개</td>
+              <td class="isc-num" data-label="경쟁강도">0.08</td>
+              <td data-label="판정"><span class="q g1">아주좋음</span></td>
+            </tr>
+            <tr>
+              <td class="isc-name" data-label="소재">마그네슘<small>카테고리 대표어</small></td>
+              <td class="isc-num" data-label="한 달 검색수">127,200회</td>
+              <td class="isc-sub" data-label="상품수">389,626개</td>
+              <td class="isc-num" data-label="경쟁강도">3.06</td>
+              <td data-label="판정"><span class="q g2">좋음</span></td>
+            </tr>
+            <tr>
+              <td class="isc-name" data-label="소재">삼백초<small>단일 소재어</small></td>
+              <td class="isc-num" data-label="한 달 검색수">36,720회</td>
+              <td class="isc-sub" data-label="상품수">22,050개</td>
+              <td class="isc-num" data-label="경쟁강도">0.60</td>
+              <td data-label="판정"><span class="q g1">아주좋음</span></td>
+            </tr>
+            <tr>
+              <td class="isc-name" data-label="소재">코엔삼백초<small>삼백초 LHF618</small></td>
+              <td class="isc-num" data-label="한 달 검색수">9,920회</td>
+              <td class="isc-sub" data-label="상품수">1,801개</td>
+              <td class="isc-num" data-label="경쟁강도">0.18</td>
+              <td data-label="판정"><span class="q g1">아주좋음</span></td>
+            </tr>
+            <tr>
+              <td class="isc-name" data-label="소재">여주 효소<small>일반식품(효소식품)</small></td>
+              <td class="isc-num" data-label="한 달 검색수">3,350회</td>
+              <td class="isc-sub" data-label="상품수">12,534개</td>
+              <td class="isc-num" data-label="경쟁강도">3.74</td>
+              <td data-label="판정"><span class="q g2">좋음</span></td>
+            </tr>
+            <tr>
+              <td class="isc-name" data-label="소재">상어간유<small>알콕시글리세롤</small></td>
+              <td class="isc-num" data-label="한 달 검색수">130회</td>
+              <td class="isc-sub" data-label="상품수">1,175개</td>
+              <td class="isc-num" data-label="경쟁강도">9.04</td>
+              <td data-label="판정"><span class="q g3">보통</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="isc-insight">
+        <strong>읽는 점</strong> — 경쟁강도는 <b>상품수 ÷ 한 달 검색수</b>(낮을수록 진입 여지가 큼)입니다. ① 젖산마그네슘은 월 <b>18.7만 회</b> 검색에 상품이 <b>1.5만 개</b>뿐이라 경쟁강도 0.08 — 마그네슘(12.7만 회·상품 38.9만 개·3.06)과 같은 카테고리인데 상품 수가 <b>25분의 1</b>입니다. ‘마그네슘’이 아니라 ‘젖산마그네슘’으로 잡으면 아직 비어 있는 자리입니다. ② 코엔삼백초(9,920회·1,801개·0.18)도 삼백초(36,720회·22,050개·0.60)보다 좁고 깨끗해, 브랜드명 수요가 카테고리어 수요를 따로 만들고 있습니다. ③ 반대로 여주 효소(3,350회·상품 1.25만 개·3.74)와 상어간유(130회·1,175개·9.04)는 검색 대비 상품이 많아 온라인 검색 유입만으로 서기 어렵다는 위 판단을 그대로 뒷받침합니다. 검색어 범위가 데이터랩 지수(삼백초+삼백초추출물 등 묶음)와 달라 두 표의 소재 간 비율은 직접 대응시키지 않습니다.
+      </p>
     </div>
   </section>
 
@@ -875,6 +970,7 @@
         <li>위바이옴 케어바이오틱스 GS홈쇼핑 론칭·가격 — <a href="https://www.e2news.com/news/articleView.html?idxno=336178" target="_blank" rel="noopener">이투뉴스 2026-11-17</a> / <a href="https://m.gsshop.com/section/broad/specialPgm/13437" target="_blank" rel="noopener">GS샵</a></li>
         <li>비오케이 모발 유산균 인포모셜 — <a href="http://www.newsroad.co.kr/news/articleView.html?idxno=67686" target="_blank" rel="noopener">뉴스로드 2026-11-13</a></li>
         <li>11월 2주 품목제조신고 129건(크레아틴 5건·테아닌·라임과피) — <a href="https://ffhub.kr/posts/weekly-notification-2026-w46/" target="_blank" rel="noopener">Functional Food Hub 2026-11-16</a></li>
+        <li>핵심 6소재 월간 검색수·상품수·경쟁강도(2026-11-22 조회, 카카오 계정 로그인 후 실측) — <a href="https://itemscout.io/" target="_blank" rel="noopener">아이템스카우트</a></li>
       </ol>
       <div class="note">
         <strong>읽는 법</strong> — 이 대시보드의 가격은 2026-11-23 검색 시점의 판매가(할인가 포함)이며, 묶음 구성·쿠폰·방송 특가에 따라 달라집니다. 홈쇼핑 가격은 편성표·상품페이지의 방송가이고 카드할인 적용가와 다를 수 있습니다. 제조 원가는 공개 자료로 확인되지 않아 수록하지 않았고, 대신 포당·일당 소비자가로 비교했습니다. 기능성 문구는 식약처 인정 문구를 그대로 옮겼으며, 인정 원료와 완제품 인증은 다릅니다.
