@@ -399,6 +399,7 @@
   .iscout .isc-name small{display:block;font-weight:600;font-size:10.8px;color:var(--ink-3);margin-top:2px}
   .iscout .isc-num{text-align:right;font-weight:800;font-size:13px;color:var(--ink)}
   .iscout .isc-sub{text-align:right;color:var(--ink-2)}
+  .iscout th.qcol,.iscout td.qcol{padding-left:26px}
   .iscout .isc-insight{margin:11px 0 0;padding-top:9px;border-top:1px dashed var(--line-2);font-size:11.4px;color:var(--ink-2);line-height:1.62}
   .iscout .isc-insight strong{color:var(--teal)}
   .iscout .isc-insight b{color:var(--ink)}
@@ -418,7 +419,9 @@
     .wktag{display:block;font-size:13px;margin-top:5px;white-space:normal}
   }
   @media (max-width:720px){
+    .iscout table{min-width:0;display:block}
     .iscout .isc-num,.iscout .isc-sub{text-align:left}
+    .iscout th.qcol,.iscout td.qcol{padding-left:12px}
   }
   @media print{
     .weektabs{display:none !important}
@@ -712,7 +715,7 @@
               <th class="r">한 달 검색수</th>
               <th class="r">상품수</th>
               <th class="r">경쟁강도</th>
-              <th style="width:96px">판정</th>
+              <th class="qcol" style="width:104px">판정</th>
             </tr>
           </thead>
           <tbody>
@@ -721,42 +724,42 @@
               <td class="isc-num" data-label="한 달 검색수">187,300회</td>
               <td class="isc-sub" data-label="상품수">15,385개</td>
               <td class="isc-num" data-label="경쟁강도">0.08</td>
-              <td data-label="판정"><span class="q g1">아주좋음</span></td>
+              <td class="qcol" data-label="판정"><span class="q g1">아주좋음</span></td>
             </tr>
             <tr>
               <td class="isc-name" data-label="소재">마그네슘<small>카테고리 대표어</small></td>
               <td class="isc-num" data-label="한 달 검색수">127,200회</td>
               <td class="isc-sub" data-label="상품수">389,626개</td>
               <td class="isc-num" data-label="경쟁강도">3.06</td>
-              <td data-label="판정"><span class="q g2">좋음</span></td>
+              <td class="qcol" data-label="판정"><span class="q g2">좋음</span></td>
             </tr>
             <tr>
               <td class="isc-name" data-label="소재">삼백초<small>단일 소재어</small></td>
               <td class="isc-num" data-label="한 달 검색수">36,720회</td>
               <td class="isc-sub" data-label="상품수">22,050개</td>
               <td class="isc-num" data-label="경쟁강도">0.60</td>
-              <td data-label="판정"><span class="q g1">아주좋음</span></td>
+              <td class="qcol" data-label="판정"><span class="q g1">아주좋음</span></td>
             </tr>
             <tr>
               <td class="isc-name" data-label="소재">코엔삼백초<small>삼백초 LHF618</small></td>
               <td class="isc-num" data-label="한 달 검색수">9,920회</td>
               <td class="isc-sub" data-label="상품수">1,801개</td>
               <td class="isc-num" data-label="경쟁강도">0.18</td>
-              <td data-label="판정"><span class="q g1">아주좋음</span></td>
+              <td class="qcol" data-label="판정"><span class="q g1">아주좋음</span></td>
             </tr>
             <tr>
               <td class="isc-name" data-label="소재">여주 효소<small>일반식품(효소식품)</small></td>
               <td class="isc-num" data-label="한 달 검색수">3,350회</td>
               <td class="isc-sub" data-label="상품수">12,534개</td>
               <td class="isc-num" data-label="경쟁강도">3.74</td>
-              <td data-label="판정"><span class="q g2">좋음</span></td>
+              <td class="qcol" data-label="판정"><span class="q g2">좋음</span></td>
             </tr>
             <tr>
               <td class="isc-name" data-label="소재">상어간유<small>알콕시글리세롤</small></td>
               <td class="isc-num" data-label="한 달 검색수">130회</td>
               <td class="isc-sub" data-label="상품수">1,175개</td>
               <td class="isc-num" data-label="경쟁강도">9.04</td>
-              <td data-label="판정"><span class="q g3">보통</span></td>
+              <td class="qcol" data-label="판정"><span class="q g3">보통</span></td>
             </tr>
           </tbody>
         </table>
