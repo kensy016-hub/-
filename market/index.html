@@ -1,0 +1,1678 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>라온젠 · 더존케이 주간 건기식 시장조사 대시보드 (2026년 11월 4주차)</title>
+<style>
+  :root{
+    --navy:#0e2a47;
+    --navy-soft:#16395e;
+    --teal:#0f766e;
+    --teal-soft:#e6f4f1;
+    --amber:#b45309;
+    --amber-soft:#fef3e2;
+    --red:#b91c1c;
+    --red-soft:#fdecec;
+    --ink:#111827;
+    --ink-2:#374151;
+    --ink-3:#6b7280;
+    --line:#e5e7eb;
+    --line-2:#d1d5db;
+    --bg:#f4f6f8;
+    --card:#ffffff;
+    --radius:14px;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","맑은 고딕","Apple SD Gothic Neo","Noto Sans KR",sans-serif;
+    background:var(--bg);
+    color:var(--ink);
+    -webkit-text-size-adjust:100%;
+    line-height:1.55;
+    font-size:15px;
+  }
+  .wrap{max-width:1280px;margin:0 auto;padding:0 16px 56px}
+
+  /* ---------- header ---------- */
+  .hero{
+    background:linear-gradient(160deg,var(--navy) 0%,var(--navy-soft) 60%,#1c4c6b 100%);
+    color:#fff;
+    border-radius:0 0 22px 22px;
+    padding:26px 26px 24px;
+    margin:0 -16px 0;
+    box-shadow:0 8px 28px rgba(14,42,71,.18);
+  }
+  .hero-inner{max-width:1248px;margin:0 auto}
+  .hero-top{display:flex;gap:18px;align-items:flex-start;justify-content:space-between;flex-wrap:wrap}
+  .eyebrow{
+    margin:0 0 8px;font-size:11px;letter-spacing:.16em;text-transform:uppercase;
+    color:#8fc4d8;font-weight:700;
+  }
+  h1{margin:0 0 8px;font-size:26px;line-height:1.28;font-weight:800;letter-spacing:-.02em}
+  .sub{margin:0;color:#c3d6e4;font-size:13px}
+  .actions{display:flex;gap:8px;flex-wrap:wrap}
+  .actions button{
+    font:inherit;font-size:13px;font-weight:700;cursor:pointer;
+    border:1px solid rgba(255,255,255,.28);
+    background:rgba(255,255,255,.10);
+    color:#fff;border-radius:999px;padding:9px 16px;
+    transition:background .15s ease,transform .1s ease;
+    white-space:nowrap;
+  }
+  .actions button:hover{background:rgba(255,255,255,.2)}
+  .actions button:active{transform:translateY(1px)}
+  .actions button.solid{background:#fff;color:var(--navy);border-color:#fff}
+  .actions button.solid:hover{background:#eaf2f8}
+
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:22px}
+  .kpi{
+    background:rgba(255,255,255,.07);
+    border:1px solid rgba(255,255,255,.14);
+    border-radius:12px;padding:14px 15px;
+  }
+  .kpi-label{font-size:11px;color:#9fc3d6;font-weight:700;letter-spacing:.04em;margin-bottom:6px}
+  .kpi-value{font-size:19px;font-weight:800;letter-spacing:-.02em;line-height:1.3}
+  .kpi-sub{font-size:11.5px;color:#b6cddb;margin-top:5px;line-height:1.45}
+  .kpi-value .u{font-size:12px;font-weight:700;color:#9fc3d6;margin-left:3px}
+
+  /* ---------- market strip ---------- */
+  .strip{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:10px;
+    margin:18px 0 0;
+  }
+  .stat{
+    background:var(--card);border:1px solid var(--line);border-radius:10px;
+    padding:11px 13px;display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;
+  }
+  .stat b{font-size:15px;letter-spacing:-.01em}
+  .stat span{font-size:11.5px;color:var(--ink-3);line-height:1.4}
+  .stat .up{color:var(--red);font-weight:700}
+  .stat .down{color:#1d4ed8;font-weight:700}
+
+  /* ---------- section ---------- */
+  section{margin-top:26px}
+  .sec-head{display:flex;align-items:baseline;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+  .sec-head h2{margin:0;font-size:17px;font-weight:800;letter-spacing:-.02em}
+  .sec-head .hint{font-size:12px;color:var(--ink-3)}
+  .sec-num{
+    display:inline-flex;align-items:center;justify-content:center;
+    width:22px;height:22px;border-radius:7px;background:var(--navy);color:#fff;
+    font-size:11.5px;font-weight:800;flex:0 0 auto;
+  }
+
+  /* ---------- priority ---------- */
+  .prio{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
+  .prio-row{
+    display:grid;grid-template-columns:44px 200px 1fr auto;gap:14px;align-items:center;
+    padding:13px 16px;border-bottom:1px solid var(--line);
+  }
+  .prio-row:last-child{border-bottom:0}
+  .prio-rank{
+    width:30px;height:30px;border-radius:9px;display:flex;align-items:center;justify-content:center;
+    font-weight:800;font-size:14px;background:#eef2f6;color:var(--navy);
+  }
+  .prio-row.p1 .prio-rank{background:var(--navy);color:#fff}
+  .prio-row.p2 .prio-rank{background:var(--teal);color:#fff}
+  .prio-row.p3 .prio-rank{background:#e8eef4;color:var(--navy)}
+  .prio-name{font-weight:800;font-size:14.5px;letter-spacing:-.01em}
+  .prio-name small{display:block;font-weight:600;font-size:11.5px;color:var(--ink-3);margin-top:2px}
+  .prio-why{font-size:12.5px;color:var(--ink-2);line-height:1.5}
+  .prio-why em{font-style:normal;color:var(--red);font-weight:700}
+  .diff{font-size:11px;font-weight:700;padding:4px 9px;border-radius:999px;white-space:nowrap}
+  .diff.low{background:var(--teal-soft);color:var(--teal)}
+  .diff.mid{background:var(--amber-soft);color:var(--amber)}
+  .diff.high{background:var(--red-soft);color:var(--red)}
+
+  /* ---------- filter ---------- */
+  .filterbar{
+    position:sticky;top:0;z-index:20;
+    background:rgba(244,246,248,.94);
+    backdrop-filter:blur(8px);
+    -webkit-backdrop-filter:blur(8px);
+    padding:12px 0;margin-top:24px;
+    border-bottom:1px solid var(--line-2);
+  }
+  .filter-inner{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+  .chips{display:flex;gap:6px;flex-wrap:wrap}
+  .chip{
+    font:inherit;font-size:12.5px;font-weight:700;cursor:pointer;
+    border:1px solid var(--line-2);background:#fff;color:var(--ink-2);
+    padding:7px 13px;border-radius:999px;white-space:nowrap;
+    transition:all .13s ease;
+  }
+  .chip:hover{border-color:var(--navy);color:var(--navy)}
+  .chip[aria-pressed="true"]{background:var(--navy);border-color:var(--navy);color:#fff}
+  .search{
+    flex:1 1 220px;min-width:180px;position:relative;
+  }
+  .search input{
+    width:100%;font:inherit;font-size:13px;padding:8px 12px 8px 32px;
+    border:1px solid var(--line-2);border-radius:999px;background:#fff;color:var(--ink);
+    outline:none;
+  }
+  .search input:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(15,118,110,.12)}
+  .search::before{
+    content:"⌕";position:absolute;left:11px;top:50%;transform:translateY(-52%);
+    font-size:15px;color:var(--ink-3);
+  }
+  .count{font-size:12px;color:var(--ink-3);font-weight:700;white-space:nowrap}
+
+  /* ---------- table ---------- */
+  .tablewrap{
+    background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    overflow-x:auto;-webkit-overflow-scrolling:touch;
+  }
+  table{border-collapse:collapse;width:100%;min-width:1080px;font-size:12.5px}
+  thead th{
+    background:#f0f4f8;color:var(--navy);text-align:left;
+    font-size:11.5px;font-weight:800;letter-spacing:.02em;
+    padding:11px 12px;border-bottom:2px solid var(--line-2);
+    position:sticky;top:0;
+  }
+  tbody td{padding:13px 12px;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.55}
+  tbody tr:last-child td{border-bottom:0}
+  tbody tr:hover{background:#fafcfe}
+  .c-name{font-weight:800;font-size:13.5px;color:var(--ink);letter-spacing:-.01em}
+  .c-name small{display:block;font-weight:600;font-size:11px;color:var(--ink-3);margin-top:3px}
+  .badge{display:inline-block;font-size:10.5px;font-weight:800;padding:2.5px 7px;border-radius:5px;margin-top:6px}
+  .badge.spec{background:#eaf0f6;color:var(--navy)}
+  .badge.new{background:#fff1e6;color:#c2410c}
+  .badge.rank{background:var(--navy);color:#fff;margin-left:4px}
+  .c-price{font-weight:700;color:var(--ink);font-variant-numeric:tabular-nums}
+  .c-caution{color:var(--ink-3);font-size:12px}
+  .c-caution strong{color:var(--red);font-weight:700}
+
+  /* ---------- cards ---------- */
+  .cards{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:16px}
+  .card{
+    background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    overflow:hidden;display:flex;flex-direction:column;
+  }
+  .card-head{
+    padding:15px 17px 13px;border-bottom:1px solid var(--line);
+    background:linear-gradient(180deg,#fbfcfd,#f6f9fb);
+  }
+  .card-title{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .card-title h3{margin:0;font-size:16px;font-weight:800;letter-spacing:-.02em}
+  .card-meta{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+  .tag{
+    font-size:10.5px;font-weight:800;padding:3px 8px;border-radius:999px;
+    background:#eef2f6;color:var(--navy);letter-spacing:.01em;
+  }
+  .tag.spec{background:#eaf0f6;color:var(--navy)}
+  .tag.new{background:#fff1e6;color:#c2410c}
+  .tag.ch{background:var(--teal-soft);color:var(--teal)}
+  .tag.rank1{background:var(--navy);color:#fff}
+  .card-body{padding:15px 17px 18px}
+  .block{margin-bottom:16px}
+  .block:last-child{margin-bottom:0}
+  .block h4{
+    margin:0 0 7px;font-size:11.5px;font-weight:800;color:var(--teal);
+    letter-spacing:.06em;text-transform:uppercase;display:flex;align-items:center;gap:6px;
+  }
+  .block h4 i{
+    font-style:normal;width:16px;height:16px;border-radius:5px;background:var(--teal-soft);
+    color:var(--teal);font-size:10px;display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;
+  }
+  .block p{margin:0;font-size:12.8px;color:var(--ink-2);line-height:1.62}
+  .block ul{margin:0;padding-left:16px}
+  .block li{font-size:12.6px;color:var(--ink-2);margin-bottom:5px;line-height:1.55}
+  .block li:last-child{margin-bottom:0}
+  .prod{
+    border:1px solid var(--line);border-radius:9px;padding:9px 11px;margin-bottom:7px;background:#fcfdfe;
+  }
+  .prod:last-child{margin-bottom:0}
+  .prod-top{display:flex;justify-content:space-between;gap:10px;align-items:baseline;flex-wrap:wrap}
+  .prod-name{font-weight:800;font-size:12.8px;color:var(--ink)}
+  .prod-price{font-weight:800;font-size:12.4px;color:var(--teal);font-variant-numeric:tabular-nums;white-space:nowrap}
+  .prod-feat{font-size:11.8px;color:var(--ink-3);margin-top:4px;line-height:1.5}
+  .plan-list li{position:relative}
+  .strategy{background:#f7fafc;border-left:3px solid var(--navy);border-radius:0 8px 8px 0;padding:10px 12px}
+  .strategy li{font-size:12.5px}
+
+  /* ---------- watch ---------- */
+  .watch{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+  .watch-item{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--amber);border-radius:10px;padding:13px 15px}
+  .watch-item h4{margin:0 0 5px;font-size:13.5px;font-weight:800}
+  .watch-item p{margin:0;font-size:12.3px;color:var(--ink-2);line-height:1.55}
+  .watch-item .src{display:block;margin-top:6px;font-size:11px;color:var(--ink-3)}
+
+  /* ---------- sources ---------- */
+  .sources{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px 18px}
+  .sources ol{margin:0;padding-left:18px;columns:2;column-gap:28px}
+  .sources li{font-size:11.6px;color:var(--ink-2);margin-bottom:6px;break-inside:avoid;line-height:1.5}
+  .sources a{color:var(--navy);text-decoration:none;border-bottom:1px dotted var(--line-2)}
+  .sources a:hover{border-bottom-color:var(--navy)}
+  .note{
+    margin-top:14px;padding:11px 14px;background:var(--amber-soft);
+    border-radius:9px;font-size:11.8px;color:#7c4a03;line-height:1.6;
+  }
+  .note strong{color:var(--amber)}
+  footer{margin-top:22px;text-align:center;font-size:11.5px;color:var(--ink-3);line-height:1.7}
+  .empty{padding:40px 16px;text-align:center;color:var(--ink-3);font-size:13px;background:var(--card);border-radius:var(--radius);border:1px dashed var(--line-2)}
+
+  /* ---------- responsive ---------- */
+  @media (max-width:1020px){
+    .kpis{grid-template-columns:repeat(2,1fr)}
+    .strip{grid-template-columns:repeat(2,1fr)}
+    .cards{grid-template-columns:1fr}
+    .prio-row{grid-template-columns:38px 1fr auto;row-gap:6px}
+    .prio-why{grid-column:1/-1}
+    .sources ol{columns:1}
+  }
+  @media (max-width:720px){
+    body{font-size:14px}
+    .wrap{padding:0 12px 44px}
+    .hero{margin:0 -12px;padding:20px 16px 18px;border-radius:0 0 16px 16px}
+    h1{font-size:20px}
+    .sub{font-size:12px}
+    .kpi-value{font-size:16px}
+    .watch{grid-template-columns:1fr}
+
+    /* table -> stacked records */
+    table{min-width:0;display:block}
+    thead{display:none}
+    tbody,tr,td{display:block;width:100%}
+    tbody tr{
+      border:1px solid var(--line);
+      border-radius:12px;
+      margin:0 0 12px;
+      padding:4px 2px;
+      background:#fff;
+    }
+    .tablewrap{background:transparent;border:0;border-radius:0;overflow:visible}
+    tbody td{
+      border-bottom:1px dashed #eef1f4;
+      padding:9px 12px;
+      display:grid;
+      grid-template-columns:84px 1fr;
+      gap:8px;
+      align-items:start;
+    }
+    tbody td:last-child{border-bottom:0}
+    tbody td::before{
+      content:attr(data-label);
+      font-size:10.5px;font-weight:800;color:var(--ink-3);
+      letter-spacing:.02em;padding-top:2px;
+    }
+    tbody td.cell-name{background:#f7fafc;border-radius:10px 10px 0 0;border-bottom:1px solid var(--line)}
+  }
+  @media (max-width:420px){
+    .kpis{grid-template-columns:1fr}
+    .filterbar{position:static}
+  }
+
+  /* ---------- print ---------- */
+  @media print{
+    @page{size:A4 landscape;margin:10mm}
+    body{background:#fff;font-size:10.5px;line-height:1.45}
+    .wrap{padding:0;max-width:none}
+    .hero{
+      background:#fff !important;color:#000;border-radius:0;margin:0 0 8mm;
+      padding:0 0 4mm;border-bottom:2px solid #000;box-shadow:none;
+    }
+    .eyebrow{color:#555}
+    .sub{color:#333}
+    .actions,.filterbar,.search{display:none !important}
+    .kpis{grid-template-columns:repeat(4,1fr);gap:3mm}
+    .kpi{background:#f4f6f8 !important;border:1px solid #bbb;color:#000;padding:3mm}
+    .kpi-label{color:#333}
+    .kpi-sub{color:#444}
+    .kpi-value .u{color:#333}
+    .strip{grid-template-columns:repeat(4,1fr);gap:3mm}
+    .stat{border:1px solid #bbb;padding:2mm 3mm}
+    section{margin-top:6mm;break-inside:auto}
+    .prio-row{break-inside:avoid;padding:2mm 3mm}
+    .tablewrap{overflow:visible;border:1px solid #999}
+    table{min-width:0;font-size:8.6px}
+    thead th{background:#eee !important;color:#000;position:static;padding:1.6mm 2mm}
+    tbody td{padding:1.8mm 2mm}
+    .c-name{font-size:9.6px}
+    .card{break-inside:avoid;border:1px solid #999}
+    .cards{grid-template-columns:1fr 1fr;gap:4mm}
+    .card-body{padding:2.5mm 3mm}
+    .block{margin-bottom:3mm}
+    .block p,.block li,.prod-feat{font-size:8.8px}
+    .sources ol{columns:2}
+    .note{background:#fff !important;border:1px solid #bbb;color:#000}
+    a{color:#000;text-decoration:none}
+    .watch-item{break-inside:avoid}
+  }
+</style>
+<style>
+  /* ---------- 2026-11-4주차 추가 ---------- */
+  .badge.watch{background:#eef6f0;color:#166534}
+  .tag.watch{background:#eef6f0;color:#166534}
+  .prod-price{white-space:normal}
+  .cmp table{min-width:900px}
+  .cmp tbody td{font-size:12.2px}
+  .cmp .v3{color:var(--ink-3)}
+  .cmp .up{color:var(--red);font-weight:700}
+  .cmp .down{color:#1d4ed8;font-weight:700}
+</style>
+<style>
+  /* ---------- 2026-11-23 추가: 주차 탭 · 검색량 추이 · 백업 아카이브 ---------- */
+  .wktag{font-size:17px;font-weight:800;color:#bfe3f2;white-space:nowrap}
+  .weektabs{display:flex;gap:8px;flex-wrap:wrap;align-items:center;padding:14px 0 2px}
+  .weektabs .lbl{font-size:11px;font-weight:800;color:var(--ink-3);letter-spacing:.08em}
+  .wktab{font:inherit;font-size:12.5px;font-weight:800;cursor:pointer;border:1px solid var(--line-2);background:#fff;color:var(--ink-2);padding:8px 14px;border-radius:999px;transition:all .13s ease}
+  .wktab:hover{border-color:var(--navy);color:var(--navy)}
+  .wktab[aria-pressed="true"]{background:var(--navy);border-color:var(--navy);color:#fff}
+  .wktab.arch[aria-pressed="true"]{background:var(--teal);border-color:var(--teal)}
+  .wktab .sub{font-weight:700;font-size:10.5px;opacity:.7;margin-left:5px}
+  .wktab[aria-pressed="true"] .sub{opacity:.85}
+
+  .trend-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  .tpanel{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 12px 10px}
+  .tp-head{display:flex;align-items:baseline;gap:6px;flex-wrap:wrap;margin-bottom:2px}
+  .tp-dot{width:8px;height:8px;border-radius:50%;display:inline-block;flex:0 0 auto;transform:translateY(-1px)}
+  .tp-head b{font-size:13px;font-weight:800;letter-spacing:-.01em}
+  .tp-terms{font-size:10.5px;color:var(--ink-3);font-weight:600}
+  .tpanel svg{display:block;width:100%;height:auto;margin-top:2px}
+  .tp-foot{font-size:10.5px;color:var(--ink-3);margin-top:2px;line-height:1.4}
+  .trend-tbl{margin-top:12px}
+  .trend-tbl table{min-width:720px}
+  .trend-tbl td,.trend-tbl th{font-variant-numeric:tabular-nums}
+  .trend-tbl .num{font-weight:800}
+  .trend-tbl .d-up{color:var(--red);font-size:10.5px;font-weight:700;margin-left:3px}
+  .trend-tbl .d-down{color:#1d4ed8;font-size:10.5px;font-weight:700;margin-left:3px}
+  .trend-tbl .pending{color:var(--ink-3);font-size:12px}
+  .trend-src{font-size:11.2px;color:var(--ink-3);line-height:1.65;margin:10px 0 0;background:#fff;border:1px solid var(--line);border-radius:10px;padding:11px 14px}
+  .trend-src strong{color:var(--ink-2)}
+  .trend-src b{color:var(--ink-2)}
+  .trend-src .src2{display:block;margin-top:5px}
+
+  .arch-bar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:var(--teal-soft);border:1px solid #bfe0da;border-radius:12px;padding:13px 16px;margin-top:18px}
+  .arch-bar h2{margin:0;font-size:15.5px;font-weight:800;color:var(--teal);white-space:nowrap}
+  .arch-bar p{margin:0;font-size:12px;color:#134e4a;line-height:1.55;flex:1 1 320px}
+  .sec-num.alpha{background:var(--teal)}
+
+  @media (max-width:1020px){ .trend-grid{grid-template-columns:repeat(2,1fr)} }
+  @media (max-width:640px){
+    .trend-grid{grid-template-columns:1fr}
+    .wktag{display:block;font-size:13px;margin-top:5px;white-space:normal}
+  }
+  @media print{
+    .weektabs{display:none !important}
+    .trend-grid{grid-template-columns:repeat(4,1fr);gap:3mm}
+    .tpanel{break-inside:avoid;padding:2mm}
+    .trend-src{font-size:8.4px;padding:2mm}
+    .arch-bar{padding:2mm 3mm}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <!-- ================= HEADER ================= -->
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="hero-top">
+        <div>
+          <p class="eyebrow">Raonzen · DouzoneK — Weekly Market Brief</p>
+          <h1>라온젠 · 더존케이 주간 건기식 시장조사 대시보드 <span class="wktag" id="heroWeek">(2026년 11월 4주차)</span></h1>
+          <p class="sub" id="heroSub">2026년 11월 4주차 (11.23 ~ 11.29) · 조사 기준일 2026-11-23 · 실제 웹 검색으로 확인된 자료만 수록</p>
+        </div>
+        <div class="actions">
+          <button type="button" class="solid" id="btnPrint">인쇄 / PDF</button>
+          <button type="button" id="btnCsv">엑셀(CSV) 내보내기</button>
+        </div>
+      </div>
+
+      <div class="kpis">
+        <div class="kpi">
+          <div class="kpi-label">조사 소재 수</div>
+          <div class="kpi-value">10<span class="u">종</span></div>
+          <div class="kpi-sub">지정 4종 + 신규 발굴 3종 + 추적 3종</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">최우선 추천 1순위</div>
+          <div class="kpi-value">삼백초·코유산균<br>복합 코케어</div>
+          <div class="kpi-sub">코·호흡기 등록 제품 4개 · 복합 제품은 여전히 없음</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">이번 주 핫 키워드</div>
+          <div class="kpi-value">액상 젖산마그네슘</div>
+          <div class="kpi-sub">수면 구미·아커만시아 근력이 뒤를 이음</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">추천 타깃 채널</div>
+          <div class="kpi-value">홈쇼핑 + 약국</div>
+          <div class="kpi-sub">마그네슘 액상은 홈쇼핑, 코케어는 약국부터</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= 주차 전환 탭 ================= -->
+  <nav class="weektabs" aria-label="주차 선택">
+    <span class="lbl">주차 선택</span>
+    <button type="button" class="wktab" data-week="w4" aria-pressed="true">11월 4주차<span class="sub">현재</span></button>
+    <button type="button" class="wktab arch" data-week="w3" aria-pressed="false">11월 3주차<span class="sub">백업</span></button>
+  </nav>
+
+  <!-- ================= 11월 3주차 백업 아카이브 ================= -->
+  <div class="weekview" id="view-w3" hidden>
+
+    <div class="arch-bar">
+      <h2>11월 3주차 백업 · 2026-11-21 조사</h2>
+      <p>이번 주 판본으로 교체되기 전의 11월 3주차 내용을 그대로 보관한 아카이브입니다. 지정 4소재 + 신규 핫 3종의 당시 가격·채널과 판단만 요약했습니다. 3주차 → 4주차 변화는 <b>11월 4주차</b> 탭의 ‘지난주 대비 변화’ 표에 있습니다.</p>
+    </div>
+
+    <div class="strip">
+      <div class="stat"><b>6조 1,280억원</b><span>2026년 국내 건기식 시장 전망 <span class="down">▼0.7%</span><br>한국건강기능식품협회</span></div>
+      <div class="stat"><b>82.7%</b><span>건기식 구매경험률<br>소비자 실태조사</span></div>
+      <div class="stat"><b>+58.3%</b><span>마그네슘 생산액 증가율(2025) <span class="up">▲</span><br>구매액 순위 10위 → 8위</span></div>
+      <div class="stat"><b>31.4만원</b><span>TV홈쇼핑 구매가구 연평균<br>인터넷몰 24.5만원 대비 +7만원</span></div>
+    </div>
+
+    <section>
+      <div class="sec-head">
+        <span class="sec-num alpha">A</span>
+        <h2>지정 4소재 — 11월 3주차 기록</h2>
+        <span class="hint">2026-11-21 검색 시점 판매가</span>
+      </div>
+      <div class="tablewrap">
+        <table>
+          <thead>
+            <tr>
+              <th style="width:160px">소재</th>
+              <th style="width:340px">11월 3주차 확인 내용</th>
+              <th style="width:130px">주 채널</th>
+              <th>그 주의 판단</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="cell-name" data-label="소재"><div class="c-name">삼백초 · 코유산균<small>지정 · 코·호흡기</small></div></td>
+              <td data-label="확인 내용">코엔삼백초 쿠팡 단품 39,010원 · 공식몰 44,730원 중심(홈쇼핑 미편성) / 바이크롬 코 유산균 70,680~74,900원(1일 2,356~2,496원)</td>
+              <td data-label="주 채널">온라인 · 약국</td>
+              <td data-label="판단">코·호흡기 기능성 원료 등록 제품이 4개뿐이고 두 원료를 함께 담은 복합 제품은 아직 없음 — 복합 구성이 유일한 빈 자리.</td>
+            </tr>
+            <tr>
+              <td class="cell-name" data-label="소재"><div class="c-name">여주 효소<small>지정 · 혈당</small></div></td>
+              <td data-label="확인 내용">애터미 혈당컷 여주 52,800원 / 최근 7일 7,573건 · 유한 여주S52 30포 18,000원 · 90포 56,000원</td>
+              <td data-label="주 채널">온라인 · 공구</td>
+              <td data-label="판단">‘여주 효소’로 팔면 일반식품, ‘미숙여주주정추출분말’로 팔면 건기식 — 규제 트랙이 갈리는 이름부터 정해야 함.</td>
+            </tr>
+            <tr>
+              <td class="cell-name" data-label="소재"><div class="c-name">마그네슘 분말 · 액상<small>지정 · 활력·신경</small></div></td>
+              <td data-label="확인 내용">바이오하임 분말 스틱 14,900원(역대 최저) · 암웨이 37,000원 · 내츄럴플러스 30,510원 — 정제·분말 중심</td>
+              <td data-label="주 채널">온라인 · 홈쇼핑</td>
+              <td data-label="판단">테아닌 복합으로 수면 각도를 붙이는 방안 검토. 액상 전환은 아직 시작 전.</td>
+            </tr>
+            <tr>
+              <td class="cell-name" data-label="소재"><div class="c-name">상어간유<small>지정 · 면역·시니어</small></div></td>
+              <td data-label="확인 내용">세모 2g×50캡슐 · 5g×20캡슐 각 160,000원 · 신고 제품 23개 · 신고 업소 7곳</td>
+              <td data-label="주 채널">방판 · 공구</td>
+              <td data-label="판단">1일 5캡슐을 짜 먹는 구조·고가가 그대로 — 방판·시니어 B2B 트랙으로 분리.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section>
+      <div class="sec-head">
+        <span class="sec-num alpha">B</span>
+        <h2>신규 발굴 3종 — 11월 3주차 기록</h2>
+        <span class="hint">그 주에 새로 잡은 핫 소재</span>
+      </div>
+      <div class="tablewrap">
+        <table>
+          <thead>
+            <tr>
+              <th style="width:160px">소재</th>
+              <th style="width:340px">11월 3주차 확인 내용</th>
+              <th style="width:130px">주 채널</th>
+              <th>그 주의 판단</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="cell-name" data-label="소재"><div class="c-name">파로 · 카무트 효소<small>신규 · 소화</small></div></td>
+              <td data-label="확인 내용">그레인온 골드 카무트효소 11,410원(역대 최저)~23,490원 · 리뷰 80,109건 · 포장 단가 1포 250원대까지 하락</td>
+              <td data-label="주 채널">온라인 · 홈쇼핑</td>
+              <td data-label="판단">역가수치 경쟁이 포화. 효소식품(일반식품)이라 기능성 표기가 불가능해 표시광고 검토가 먼저.</td>
+            </tr>
+            <tr>
+              <td class="cell-name" data-label="소재"><div class="c-name">리포좀 글루타치온<small>신규 · 이너뷰티</small></div></td>
+              <td data-label="확인 내용">1매 657~1,163원 (하루틴 필름 30매 34,900원 · 내츄럴플러스 30매 19,710원 · 벤비티 30매×4 83,900원)</td>
+              <td data-label="주 채널">온라인 · 공구</td>
+              <td data-label="판단">미백 기능성은 인정되지 않음. 필름·스틱 제형을 유입용으로 쓰는 구조.</td>
+            </tr>
+            <tr>
+              <td class="cell-name" data-label="소재"><div class="c-name">PDRN 콜라겐<small>신규 · 이너뷰티</small></div></td>
+              <td data-label="확인 내용">PDRN 앰플 1병 1,855원 · 바이탈뷰티 슈퍼콜라겐 PDRN 7입 39,000원(당시)</td>
+              <td data-label="주 채널">온라인 · 공구</td>
+              <td data-label="판단">PDRN은 건기식 기능성 원료가 아님 — 저분자 콜라겐 펩타이드 인정 문구로만 표기.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <div class="note">
+      <strong>보관 방식</strong> — 11월 3주차 판본은 같은 파일이 4주차 내용으로 교체되어, 이 아카이브와 주간 조사 노트(<code>scheduled-actions/📊-주간-건기식-시장조사-대시보드/notes.md</code>)에 기록으로 남아 있습니다. 다음 주(11월 5주차)부터는 새 판본이 기본으로 열리고 이전 주차가 이 자리에 계속 쌓입니다.
+    </div>
+
+  </div>
+
+  <!-- ================= 11월 4주차 (현재) ================= -->
+  <div class="weekview" id="view-w4">
+
+  <!-- ================= MARKET STRIP ================= -->
+  <div class="strip">
+    <div class="stat"><b>6조 1,280억원</b><span>2026년 국내 건기식 시장 전망 <span class="down">▼0.7%</span><br>한국건강기능식품협회 (2026-11-12)</span></div>
+    <div class="stat"><b>+110%</b><span>올리브영 이너뷰티 매출 연평균(3년) <span class="up">▲</span><br>건기식 전체 성장률은 0.2% (2026-11-18)</span></div>
+    <div class="stat"><b>+58.3%</b><span>마그네슘 생산액 증가율(2025) <span class="up">▲</span><br>구매액 순위 10위 → 8위</span></div>
+    <div class="stat"><b>31.4만원</b><span>TV홈쇼핑 구매가구 연평균<br>인터넷몰 24.5만원 대비 +7만원</span></div>
+  </div>
+
+  <!-- ================= PRIORITY ================= -->
+  <section>
+    <div class="sec-head">
+      <span class="sec-num">1</span>
+      <h2>실행 우선순위</h2>
+      <span class="hint">경쟁 공백 · 성장률 · 기존 거래망 활용도 · 규제 리스크를 함께 본 판단</span>
+    </div>
+    <div class="prio">
+      <div class="prio-row p1">
+        <div class="prio-rank">1</div>
+        <div class="prio-name">삼백초 · 코유산균 복합 코케어<small>코·호흡기 / 개별인정 2종</small></div>
+        <div class="prio-why">코엔삼백초가 홈쇼핑 누적 <em>185억원</em>·2주 7회 편성으로 카테고리 인지도를 끌어올렸지만, 원료 1종짜리 제품만 있고 두 원료를 함께 담은 복합 제품은 아직 없습니다. 1일 단가가 1,300~3,267원으로 마진 여력이 크고 11월 환절기가 판매 시즌입니다. 코 유산균 NVP-1703은 거래처 <em>메디오젠</em> 명의 신고 제품이라 원료·제조 접근이 가장 빠릅니다. 단, 삼백초 LHF618은 위랩 개발 원료로 공급 가능 여부 확인이 선행돼야 합니다.</div>
+        <div class="diff low">실행 난이도 중</div>
+      </div>
+      <div class="prio-row p2">
+        <div class="prio-rank">2</div>
+        <div class="prio-name">마그네슘 액상 · 분말 복합<small>활력·신경 / 젖산마그네슘</small></div>
+        <div class="prio-why">이번 주 가장 뜨거운 축입니다. 닥터슈퍼칸 MAX가 GS샵 1시간에 <em>22만 샷</em>을 팔아 매진됐고, 론칭 한 달에 180만 샷을 넘었습니다. 기준은 '한 샷 250mg + B군 400% + 아연·셀렌 9중 복합, 당 0g'. 발주가 끝난 일동 액상 마그네슘을 <em>200mg 단품</em>으로 내면 스펙 비교에서 바로 밀립니다. 원료·채널이 이미 확보돼 실행이 가장 빠릅니다.</div>
+        <div class="diff low">실행 난이도 낮음</div>
+      </div>
+      <div class="prio-row p3">
+        <div class="prio-rank">3</div>
+        <div class="prio-name">수면 · 긴장완화 복합<small>수면 / 라임과피·테아닌</small></div>
+        <div class="prio-why">올리브영 1~9월 멜라토닌 매출이 <em>+810%</em>, 테아닌 +368%로 가장 빠른 카테고리입니다. 다만 멜라토닌은 국내 건기식 원료가 아니라 일반식품이고 소비자원이 부당광고 58%를 적발해 리스크가 큽니다. '<em>수면의 질 개선</em>'을 인정받은 라임과피추출물(제2025-26호)이나 테아닌+마그네슘 복합이 안전한 진입선입니다.</div>
+        <div class="diff mid">실행 난이도 중</div>
+      </div>
+      <div class="prio-row p3">
+        <div class="prio-rank">4</div>
+        <div class="prio-name">파로 · 카무트 효소<small>소화 / 지난주 발굴</small></div>
+        <div class="prio-why">그레인온이 쿠팡 효소 카테고리 급상승 상위를 계속 차지하고(리뷰 80,109건), 묶음 단가가 1포 250원까지 내려갔습니다. 다만 제품은 <em>일반식품(효소식품)</em>이라 기능성 표기가 불가능하고, '역가수치' 수치 경쟁이 포화 상태입니다.</div>
+        <div class="diff mid">실행 난이도 중</div>
+      </div>
+      <div class="prio-row p3">
+        <div class="prio-rank">5</div>
+        <div class="prio-name">여주 혈당 케어<small>혈당 / 지정 소재</small></div>
+        <div class="prio-why">애터미·유한양행이 시장을 만든 확실한 카테고리지만, 애터미가 1개월분 <em>52,800원</em>으로 가격을 사실상 지배하고, 유한이 '여주 리버플러스'로 간 건강까지 붙였습니다. '여주 효소'로 팔면 일반식품, '미숙여주 추출분말'로 팔면 건기식으로 규제 트랙이 갈립니다. 기존 유통처 요청이 있을 때 대응하는 편이 낫습니다.</div>
+        <div class="diff high">실행 난이도 높음</div>
+      </div>
+      <div class="prio-row p3">
+        <div class="prio-rank">6</div>
+        <div class="prio-name">상어간유 알콕시글리세롤<small>면역·시니어 / 지정 소재</small></div>
+        <div class="prio-why">한미양행이 11/10 하루에 2건을 신고하는 등 공급은 늘지만, 2g×50캡슐이 16만원·1일 5캡슐이라는 구조는 그대로입니다. 대신 고시형 원료로 진입장벽이 낮고 공급 업소가 7곳뿐이라, <em>방판·시니어 B2B</em> 트랙으로만 접근할 가치가 있습니다.</div>
+        <div class="diff mid">B2B 트랙 분리</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SEARCH TREND ================= -->
+  <section>
+    <div class="sec-head">
+      <span class="sec-num">2</span>
+      <h2>주차별 검색량 추이 — 핵심 4소재</h2>
+      <span class="hint">네이버 데이터랩 주간 지수 · 10월 4주차 ~ 11월 4주차 · 점 위에 수치 표기</span>
+    </div>
+    <div class="trend-grid" id="trendGrid"></div>
+    <div class="tablewrap trend-tbl">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:180px">주차</th>
+            <th>삼백초</th>
+            <th>여주 효소</th>
+            <th>마그네슘</th>
+            <th>상어간유</th>
+          </tr>
+        </thead>
+        <tbody id="trendTbody"></tbody>
+      </table>
+    </div>
+    <p class="trend-src">
+      <strong>기준·출처</strong> — 네이버 데이터랩 검색어트렌드(통합검색 · PC+모바일 · 주간 2026-08-03~11-22 조회, 2026-11-23). 값은 조회 기간 내 최다 주(마그네슘 10월 4주차)를 <b>100</b>으로 둔 <b>상대지수</b>이며 실제 검색 횟수가 아닙니다. 주차 구분은 데이터랩 주간 구간(월~일)이고, 검색어는 삼백초+삼백초추출물 / 여주효소 / 마그네슘 / 상어간유입니다.
+      <span class="src2"><strong>미확인</strong> — 11월 4주차(11/23~)는 주간 집계 전이라 수치가 없고 다음 주 갱신 시 채워집니다. 쿠팡 검색량은 공개 조회 경로가 없으며, 아이템스카우트·네이버 검색광고 키워드도구는 로그인이 필요해 이번 조사에서 월간 검색수(절댓값)는 확보하지 못했습니다.</span>
+    </p>
+    <div class="note">
+      <strong>읽는 점</strong> — ① 마그네슘은 99.1 → 90.5로 네 주 연속 완만한 하락이지만 4소재 중 압도적 1위(삼백초의 약 1.3배)입니다. 11월 홈쇼핑 매진·액상 신제품 러시는 검색량 증가가 아니라 <b>제형 전환</b>이었습니다. ② 삼백초는 11월 2주차 78.3으로 11월 최고를 찍고 3주차 68.7로 12% 낮아졌습니다 — 코엔삼백초 GS샵 편성(11/18·22)이 새 수요를 만들기보다 기존 수요를 태우는 국면으로 읽힙니다. ③ 여주 효소는 1.85~3.54로 마그네슘의 약 1/40 — 실제 판매는 브랜드명(혈당컷 여주·여주S52)으로 검색되지 ‘여주 효소’ 카테고리어로는 거의 검색되지 않습니다. ④ 상어간유는 0.017~0.079로 마그네슘의 약 1/1,700 — 온라인 검색 유입으로 매출이 서는 카테고리가 아니라는 판단(방판·B2B)을 수치로 뒷받침합니다(모수가 작아 주간 변동은 잡음으로 볼 것).
+    </div>
+  </section>
+
+  <!-- ================= WEEK-OVER-WEEK ================= -->
+  <section>
+    <div class="sec-head">
+      <span class="sec-num">3</span>
+      <h2>지난주 대비 변화</h2>
+      <span class="hint">11월 3주차(11.21 조사) → 11월 4주차(11.23 조사) · 같은 상품·같은 채널 기준</span>
+    </div>
+    <div class="tablewrap cmp">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:150px">품목</th>
+            <th style="width:240px">11월 3주차 (11.21)</th>
+            <th style="width:300px">11월 4주차 (11.23)</th>
+            <th style="width:260px">변화 읽기</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="cell-name" data-label="품목"><div class="c-name">코엔삼백초<small>삼백초 LHF618</small></div></td>
+            <td data-label="3주차" class="v3">쿠팡 단품 39,010원 · 공식몰 44,730원 중심 (홈쇼핑 미편성)</td>
+            <td data-label="4주차">GS샵 2주 7회 편성(11/18·22·25) · 6개월 정가 309,000원(카드 278,100원) · 12개월 509,000원(카드 459,000원)</td>
+            <td data-label="변화"><span class="up">▲ 홈쇼핑 상시 편성</span> 편성표에 정가·할인가가 번갈아 표시돼(458,100→509,000) 오른 것처럼 보이지만 같은 정가의 할인 적용 차이. 온라인 최저가와 1개월 환산 24% 격차.</td>
+          </tr>
+          <tr>
+            <td class="cell-name" data-label="품목"><div class="c-name">바이크롬 코 유산균<small>NVP-1703</small></div></td>
+            <td data-label="3주차" class="v3">70,680~74,900원 (1일 2,356~2,496원)</td>
+            <td data-label="4주차">공식몰 98,000원(정가 120,000원) · 쿠팡 74,900원 (1일 2,496~3,267원)</td>
+            <td data-label="변화">쿠팡 가격은 유지, 공식몰 표시가와 23,100원 격차. 채널별 가격차가 벌어져 복합 제품의 가격 여지는 유지.</td>
+          </tr>
+          <tr>
+            <td class="cell-name" data-label="품목"><div class="c-name">애터미 혈당컷 여주<small>미숙여주 2.4g</small></div></td>
+            <td data-label="3주차" class="v3">52,800원 / 최근 7일 7,573건</td>
+            <td data-label="4주차">52,800원 / 최근 7일 7,544건(–29) · 유한 리버플러스 90포 58,690원(11/19 공구)</td>
+            <td data-label="변화">가격·물량 횡보. 유한이 미숙여주+밀크씨슬 결합 라인으로 확장 — 단일 원료 경쟁이 복합으로 이동.</td>
+          </tr>
+          <tr>
+            <td class="cell-name" data-label="품목"><div class="c-name">마그네슘 (온라인)<small>바이오하임 분말 스틱</small></div></td>
+            <td data-label="3주차" class="v3">14,900원 (역대 최저, 3주 평균 17,190원)</td>
+            <td data-label="4주차">14,900원 유지 (11/20 –2,830원 인하) · 2박스 26,900 · 6박스 65,900</td>
+            <td data-label="변화"><span class="down">▼ 하한선 고정</span> 1개월 기준 온라인 14,900원, 홈쇼핑 장기구성 8,900~26,556원 — 같은 카테고리 안에서 3배 차이.</td>
+          </tr>
+          <tr>
+            <td class="cell-name" data-label="품목"><div class="c-name">마그네슘 (홈쇼핑)<small>액상 젖산마그네슘</small></div></td>
+            <td data-label="3주차" class="v3">하루 3종 편성(닥터슈퍼칸·바이오렉트라·인생 마그네슘) · 정제·분말 중심</td>
+            <td data-label="4주차">닥터슈퍼칸 MAX 11/17 1시간 22만 샷 매진(누적 180만) · 액상 6+3박스 239,000원 · 여에스더 10박스 89,000원</td>
+            <td data-label="변화"><span class="up">▲ 축이 액상으로</span> 250mg·B군 400%·9중 복합이 기준. 10월 말~11월 중순 사이 액상 신제품 4건(닥터슈퍼칸·내츄럴플러스·플러스엑스팜·조아제약)이 겹침.</td>
+          </tr>
+          <tr>
+            <td class="cell-name" data-label="품목"><div class="c-name">상어간유<small>알콕시글리세롤</small></div></td>
+            <td data-label="3주차" class="v3">2g×50캡슐 160,000원 · 신고 제품 23개</td>
+            <td data-label="4주차">가격 동일 · 5g 8+2박스 1,180,000원 프로모션(11/3~2027-01-01) · 한미양행 11/10 2건 신고</td>
+            <td data-label="변화">공급은 늘고 판매 구조·가격은 그대로. 100만원대 묶음이 성립하는 채널은 여전히 방판·공구.</td>
+          </tr>
+          <tr>
+            <td class="cell-name" data-label="품목"><div class="c-name">카무트 효소<small>그레인온</small></div></td>
+            <td data-label="3주차" class="v3">11,410원(역대 최저)~23,490원</td>
+            <td data-label="4주차">단품 14,440원(58%↓) · 2개 27,260 · 3개 40,180 · 효소G 3개 22,530원(포당 250원)</td>
+            <td data-label="변화">지난주 11,410원은 이번 주 확인되지 않음. 단품 14,440원, 묶음 단가는 1포 250~416원 경쟁 지속.</td>
+          </tr>
+          <tr>
+            <td class="cell-name" data-label="품목"><div class="c-name">이너뷰티<small>글루타치온 · PDRN</small></div></td>
+            <td data-label="3주차" class="v3">글루타치온 1매 657~1,163원 · PDRN 앰플 1병 1,855원</td>
+            <td data-label="4주차">바이탈뷰티 PDRN 7입 35,100원(2주 전 39,000원 → –10%) · 슈퍼레티놀 젤리 18,040원 · 올리브영 이너뷰티 3년 연평균 +110%</td>
+            <td data-label="변화"><span class="up">▲ 제형 경쟁</span> 성분(PDRN)에서 젤리·필름 제형으로 무게중심 이동. 가격은 1회 657~3,771원으로 넓어짐.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ================= FILTER ================= -->
+  <div class="filterbar" id="filterbar">
+    <div class="filter-inner">
+      <div class="chips" id="chips" role="group" aria-label="채널 필터">
+        <button type="button" class="chip" data-ch="all" aria-pressed="true">전체</button>
+        <button type="button" class="chip" data-ch="online" aria-pressed="false">온라인(쿠팡·네이버)</button>
+        <button type="button" class="chip" data-ch="group" aria-pressed="false">공동구매·SNS</button>
+        <button type="button" class="chip" data-ch="homeshop" aria-pressed="false">홈쇼핑</button>
+        <button type="button" class="chip" data-ch="offline" aria-pressed="false">방문판매·오프라인</button>
+      </div>
+      <div class="search">
+        <input type="search" id="q" placeholder="소재·제품·키워드 검색 (예: 액상, 라임과피, 개별인정)" aria-label="검색">
+      </div>
+      <div class="count" id="count">10 / 10</div>
+    </div>
+  </div>
+
+  <!-- ================= TABLE ================= -->
+  <section>
+    <div class="sec-head">
+      <span class="sec-num">4</span>
+      <h2>핵심 비교 표</h2>
+      <span class="hint">가격은 2026-11-23 검색 시점 · 프로모션에 따라 변동</span>
+    </div>
+    <div class="tablewrap">
+      <table id="tbl">
+        <thead>
+          <tr>
+            <th style="width:150px">소재명</th>
+            <th style="width:78px">구분</th>
+            <th style="width:168px">핵심 소구</th>
+            <th style="width:104px">최적 채널</th>
+            <th style="width:178px">시중 대표가 / 규격</th>
+            <th style="width:250px">권장 기획 포인트</th>
+            <th style="width:200px">유의사항</th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+      <div class="empty" id="empty" hidden>조건에 맞는 소재가 없습니다. 필터를 초기화하거나 다른 검색어를 입력해 주세요.</div>
+    </div>
+  </section>
+
+  <!-- ================= DETAIL CARDS ================= -->
+  <section>
+    <div class="sec-head">
+      <span class="sec-num">5</span>
+      <h2>소재별 상세 카드</h2>
+      <span class="hint">① 시장·트렌드 배경 ② 실제 경쟁제품 ③ 소비자 니즈·불만 ④ B2B·온라인 제안 전략</span>
+    </div>
+    <div class="cards" id="cards"></div>
+  </section>
+
+  <!-- ================= WATCH ================= -->
+  <section>
+    <div class="sec-head">
+      <span class="sec-num">6</span>
+      <h2>차주 관찰 키워드</h2>
+      <span class="hint">이번 주 포착했으나 규격·가격·시판 여부 검증이 끝나지 않은 건</span>
+    </div>
+    <div class="watch">
+      <div class="watch-item">
+        <h4>모발 유산균 LB-P9 (비오케이 실크 텐션)</h4>
+        <p>에이프로바이오의 모발 전문 브랜드 비오케이가 '<strong>복덩이 실크 텐션 모발 유산균</strong>'을 11월 13일부터 인포모셜 홈쇼핑으로 판매하기 시작했습니다. 식약처가 '모발상태(윤기·탄력) 개선'을 인정한 LB-P9 프로바이오틱스에 비오틴·B1·B6·셀렌을 더한 37캡슐 구성이고, 온라인 판매가는 30+7일분 69,990원입니다. 쿠팡 '맥주효모 비오틴' 카테고리에는 리뷰 3만 건이 넘는 제품이 버티고 있어 모발 수요 자체는 이미 큽니다.</p>
+        <span class="src">출처: 뉴스로드 2026-11-13, 쿠팡 베스트(맥주효모·비오틴)</span>
+      </div>
+      <div class="watch-item">
+        <h4>프리미엄 유산균 (위바이옴 케어바이오틱스)</h4>
+        <p>위바이옴이 5균주(KBL384 등)·4,000억 CFU 투입·100억 CFU 보장 구성으로 GS홈쇼핑 '지금, 백지연'에 11월 19일 론칭했습니다. 1개월분 109,000원(방송가 98,100원), 6개월분 329,000원(방송가 296,100원)으로 유산균 카테고리 최고가 대역입니다. 스타터 자·리필 용기를 쓰는 제형이 차별점이나, 가격 저항이 리뷰에서 먼저 나올 가능성이 큽니다.</p>
+        <span class="src">출처: 이투뉴스 2026-11-17, GS샵 편성·가격</span>
+      </div>
+      <div class="watch-item">
+        <h4>크레아틴 (근력 운동 수요)</h4>
+        <p>11월 2주 품목제조신고 129건 중 크레아틴이 5건으로 상위에 올랐습니다. 씹어 먹는 형태 등 제형이 다양해지고 있고, 이번 주 홈쇼핑을 흔든 아커만시아(근력 유지)와 같은 수요를 공유합니다. 근력 카테고리에 인접 원료로 붙을 수 있는지 다음 주에 확인합니다.</p>
+        <span class="src">출처: Functional Food Hub 2026-11-16</span>
+      </div>
+      <div class="watch-item">
+        <h4>침향 (기다림 침향 · 침향환)</h4>
+        <p>정관장 '기다림 침향'이 출시 1년 8개월 만에 누적 매출 200억원을 넘고 2026년 상반기 매출이 전년 대비 60% 늘었습니다. 다만 침향환은 대부분 기타가공품이라 기능성을 표방할 수 없고, 비식용 침향 유통 우려도 제기돼 원료 이력 관리가 관건입니다.</p>
+        <span class="src">출처: 히트뉴스 2026-08-01, 한국경제 2026-01-19, 바이오타임즈 2026-08-14</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SOURCES ================= -->
+  <section>
+    <div class="sec-head">
+      <span class="sec-num">7</span>
+      <h2>출처</h2>
+      <span class="hint">본문의 가격·규격·기능성 문구는 아래 자료에서 확인한 값</span>
+    </div>
+    <div class="sources">
+      <ol>
+        <li>한국건강기능식품협회 '2026 건강기능식품 시장 현황 및 소비자 실태조사'(6조 1,280억원·구매경험률) — <a href="https://economist.co.kr/article/view/ecn202611120037" target="_blank" rel="noopener">이코노미스트 2026-11-12</a></li>
+        <li>2025년 식품등 생산실적(마그네슘 +58.3%) — <a href="https://www.pointdaily.co.kr/news/articleView.html?idxno=323611" target="_blank" rel="noopener">포인트데일리 2026-10-27</a></li>
+        <li>TV홈쇼핑 구매가구 평균 구매액 31.4만원 — <a href="http://www.4th.kr/news/articleView.html?idxno=2122345" target="_blank" rel="noopener">포쓰저널 2026-11-20</a></li>
+        <li>닥터파이토 코엔삼백초 홈쇼핑 누적 185억·원빈 모델 — <a href="https://www.geconomy.co.kr/news/article.html?no=324666" target="_blank" rel="noopener">지이코노미 2026-10-21</a></li>
+        <li>코엔삼백초 GS샵 구성·가격·리뷰 — <a href="https://m.gsshop.com/section/brandSect/255933?lCate=1671769" target="_blank" rel="noopener">GS샵 브랜드관</a> / <a href="https://datahub.hsmoa.com/product/gsshop_1137192714" target="_blank" rel="noopener">홈쇼핑모아 DataHub</a></li>
+        <li>코엔삼백초 편성표 판매가 추이(278,100→309,000 / 458,100→509,000, 카드할인 적용 차이) — <a href="https://juya82.tistory.com/311" target="_blank" rel="noopener">Juya! 2026-11-16</a></li>
+        <li>코엔삼백초 쿠팡 39,010원·리뷰 3,338 — <a href="https://pick.infottic.co.kr/dr-phyto-phytoblock-nose-60/" target="_blank" rel="noopener">인포팁</a></li>
+        <li>삼백초추출물(LHF618) 개별인정 제2023-31호 — <a href="https://yyghealth.com/b/%EC%82%BC%EB%B0%B1%EC%B4%88%EC%B6%94%EC%B6%9C%EB%AC%BC(LHF618)(%EC%A0%9C2023-31%ED%98%B8)" target="_blank" rel="noopener">영양갱</a></li>
+        <li>코·호흡기 기능성 원료 제품 목록(전체 4개) — <a href="https://yyghealth.com/e/%EC%BD%94%C2%B7%ED%98%B8%ED%9D%A1%EA%B8%B0" target="_blank" rel="noopener">영양갱 코·호흡기</a></li>
+        <li>바이크롬 코 유산균 공식몰 가격 — <a href="https://bicrome.co.kr/product/%EA%B3%B5%EC%8B%9D%EB%B0%94%EC%9D%B4%ED%81%AC%EB%A1%AC-%EC%BD%94-%EC%9C%A0%EC%82%B0%EA%B7%A030%EC%BA%A1%EC%8A%901%EA%B0%9C%EC%9B%94%EB%B6%84/17/" target="_blank" rel="noopener">바이크롬</a></li>
+        <li>애터미 혈당컷 여주 가격·최근 7일 주문·성분 — <a href="https://kr.atomy.com/product/004079" target="_blank" rel="noopener">애터미 공식몰</a></li>
+        <li>유한 여주S52 90포 67,520원 — <a href="https://catalog.11st.co.kr/pc/274802331" target="_blank" rel="noopener">11번가 가격비교</a> / 유한 리버플러스 90포 58,690원 — <a href="https://timing.im/product/anwnBpS5im4Ctl-x6vwQHrA1UIKSVKFZVJItcxFDz3g" target="_blank" rel="noopener">타이밍</a></li>
+        <li>유한양행 공구 일정(11/19 여주 리버플러스) — <a href="https://09star.com/page/%EC%9C%A0%ED%95%9C%EC%96%91%ED%96%89" target="_blank" rel="noopener">09star</a></li>
+        <li>제주산 당찬여주 발효효소 가격·역가(90만 unit·1포 607~656원) — <a href="https://prod.danawa.com/info/?pcode=107983376" target="_blank" rel="noopener">다나와 2026-11-23</a> / <a href="https://www.lowchart.com/9304618388-27565539876" target="_blank" rel="noopener">로우차트(쿠팡) 2026-11-23</a></li>
+        <li>닥터슈퍼칸 활력파워 마그네슘 MAX GS샵 22만 샷 매진·180만 샷 — <a href="https://www.nextdaily.co.kr/news/articleView.html?idxno=255011" target="_blank" rel="noopener">넥스트데일리 2026-11-17</a> / <a href="https://www.biotimes.co.kr/news/articleView.html?idxno=36291" target="_blank" rel="noopener">바이오타임즈 2026-11-19</a></li>
+        <li>닥터슈퍼칸 NS홈쇼핑 3연속 매진·43만 샷 — <a href="http://www.sisunnews.co.kr/news/articleView.html?idxno=248963" target="_blank" rel="noopener">시선뉴스 2026-11-03</a></li>
+        <li>내츄럴플러스 마시는 영양제 젖산마그네슘 활력(200mg·5중) — <a href="https://www.fntoday.co.kr/news/articleView.html?idxno=398178" target="_blank" rel="noopener">파이낸스투데이 2026-11-16</a></li>
+        <li>플러스엑스팜 하이퀵 젖산마그네슘(210mg·15포) — <a href="https://www.kpanews.co.kr/news/articleView.html?idxno=547794" target="_blank" rel="noopener">약사공론 2026-11-02</a></li>
+        <li>바이오하임 젖산 마그네슘 분말 스틱 가격 추이(11/20 인하) — <a href="https://www.lowchart.com/9767984853-29236913687" target="_blank" rel="noopener">로우차트 2026-11-23</a></li>
+        <li>액상 젖산마그네슘 스피드샷 6+3박스 239,000원(SK스토아 11/21) — <a href="https://live.ecomm-data.com/report/hsshow/6430fe2680f048269c15abc492154e9a" target="_blank" rel="noopener">이커머스데이터</a> / 여에스더 마그네슘 10박스 89,000원(GS샵 11/18) — <a href="https://live.ecomm-data.com/report/hsshow/dc1a985ab9ade5c2dc871bac71faf631" target="_blank" rel="noopener">이커머스데이터</a></li>
+        <li>올리브영 멜라토닌 +810%·테아닌 +368%·수면 카테고리 500개·9월 +64% — <a href="https://www.mk.co.kr/news/business/12187634" target="_blank" rel="noopener">매일경제 2026-10-27</a></li>
+        <li>식물성 멜라토닌 일반식품 실태(30개 중 27개 처방량 초과·부당광고 58%) — <a href="https://www.foodtoday.or.kr/news/article.html?no=206980" target="_blank" rel="noopener">푸드투데이 2026-08-06</a></li>
+        <li>멜라메이트 구미 가격·스펙 — <a href="https://m.cjthemarket.com/the/product/product-main?prdCd=40210155" target="_blank" rel="noopener">CJ더마켓</a> / <a href="https://www.oliveyoung.co.kr/store/goods/getGoodsDetail.do?goodsNo=A000000223554" target="_blank" rel="noopener">올리브영</a> / 글로우픽 4.4점(36건)</li>
+        <li>대원제약 꿀잠샷 가격·리뷰 — <a href="https://www.lowchart.com/9537567789-28725106185" target="_blank" rel="noopener">로우차트 2026-11-22</a></li>
+        <li>이세비 에어리 페이스 드링크 올리브영 푸드 1위 — <a href="https://www.fnnews.com/news/202611160940075075" target="_blank" rel="noopener">파이낸셜뉴스 2026-11-16</a></li>
+        <li>에어리 페이스 드링크 성분·식품유형 — <a href="https://eseve.kr/product/%EC%9D%B4%EC%84%B8%EB%B9%84-%EC%97%90%EC%96%B4%EB%A6%AC-%ED%8E%98%EC%9D%B4%EC%8A%A4-%EB%93%9C%EB%A7%81%ED%81%AC/15/" target="_blank" rel="noopener">이세비 공식몰</a> / <a href="https://glowpick.com/products/192290/reviews" target="_blank" rel="noopener">글로우픽 4.2점(42건)</a></li>
+        <li>스핀들 근력엔 아커만시아 6+1개월 339,000원(CJ온스타일 11/22) — <a href="https://juya82.tistory.com/350" target="_blank" rel="noopener">Juya! 2026-11-21</a></li>
+        <li>스핀들 소지섭 모델·GS샵 첫 방송(10/17)·홈쇼핑 확대 — <a href="http://www.4th.kr/news/articleView.html?idxno=2122345" target="_blank" rel="noopener">포쓰저널 2026-11-20</a> / <a href="https://www.mdtoday.co.kr/news/articleView.html?idxno=626609" target="_blank" rel="noopener">메디컬투데이 2026-11-20</a></li>
+        <li>아커만시아 1개월 80,000→65,600원·200mg×30캡슐·300억 셀 — <a href="https://item.gmarket.co.kr/Item?goodsCode=4895661065" target="_blank" rel="noopener">G마켓</a></li>
+        <li>HB05P 임상(60~80세 80명·12주·하지 근력 8.6~12.4% 개선) — <a href="https://bd.healthbiome.co.kr/hb05p_ko.html" target="_blank" rel="noopener">헬스바이옴</a></li>
+        <li>세모 알콕시글리세롤 가격·8+2박스 프로모션 — <a href="https://semocare.com/category/%EC%95%8C%EC%BD%95%EC%8B%9C/47/" target="_blank" rel="noopener">세모케어</a></li>
+        <li>한미양행 남진의 알콕시 상어간유 신고(2026-11-10) — <a href="https://healthbus.co.kr/p/200400150832623/" target="_blank" rel="noopener">헬스버스</a> / <a href="https://proteinfact.com/ingredients/shark-liver-oil" target="_blank" rel="noopener">프로틴팩트</a></li>
+        <li>그레인온 가격·역가·포당 단가 — <a href="https://www.coupang.com/np/best100/bestseller/306657" target="_blank" rel="noopener">쿠팡 베스트</a> / <a href="https://price.enuri.com/catalog/138000237" target="_blank" rel="noopener">에누리 2026-11-23</a></li>
+        <li>올리브영 이너뷰티 연평균 110%·건기식 0.2% — <a href="https://www.kmjournal.net/news/articleView.html?idxno=14270" target="_blank" rel="noopener">KMJ 2026-11-18</a></li>
+        <li>PDRN 성분 경쟁·슈퍼레티놀 젤리 — <a href="https://www.kmjournal.net/news/articleView.html?idxno=14254" target="_blank" rel="noopener">KMJ 2026-11-17</a></li>
+        <li>바이탈뷰티 슈퍼콜라겐 PDRN 7입 35,100원·재고 — <a href="https://itemgrow.com/products/A000000260531/%EB%B0%94%EC%9D%B4%ED%83%88%EB%B7%B0%ED%8B%B0-%EC%8A%88%ED%8D%BC%EC%BD%9C%EB%9D%BC%EA%B2%90-pdrn-7%EA%B0%9C%EC%9E%85" target="_blank" rel="noopener">아이템그로우</a> / 28입 — <a href="https://brand.amoremall.com/kr/ko/vitalbeautie" target="_blank" rel="noopener">아모레몰</a></li>
+        <li>위바이옴 케어바이오틱스 GS홈쇼핑 론칭·가격 — <a href="https://www.e2news.com/news/articleView.html?idxno=336178" target="_blank" rel="noopener">이투뉴스 2026-11-17</a> / <a href="https://m.gsshop.com/section/broad/specialPgm/13437" target="_blank" rel="noopener">GS샵</a></li>
+        <li>비오케이 모발 유산균 인포모셜 — <a href="http://www.newsroad.co.kr/news/articleView.html?idxno=67686" target="_blank" rel="noopener">뉴스로드 2026-11-13</a></li>
+        <li>11월 2주 품목제조신고 129건(크레아틴 5건·테아닌·라임과피) — <a href="https://ffhub.kr/posts/weekly-notification-2026-w46/" target="_blank" rel="noopener">Functional Food Hub 2026-11-16</a></li>
+      </ol>
+      <div class="note">
+        <strong>읽는 법</strong> — 이 대시보드의 가격은 2026-11-23 검색 시점의 판매가(할인가 포함)이며, 묶음 구성·쿠폰·방송 특가에 따라 달라집니다. 홈쇼핑 가격은 편성표·상품페이지의 방송가이고 카드할인 적용가와 다를 수 있습니다. 제조 원가는 공개 자료로 확인되지 않아 수록하지 않았고, 대신 포당·일당 소비자가로 비교했습니다. 기능성 문구는 식약처 인정 문구를 그대로 옮겼으며, 인정 원료와 완제품 인증은 다릅니다.
+      </div>
+    </div>
+  </section>
+
+  </div><!-- /view-w4 -->
+
+  <footer>
+    주식회사 라온젠 · 주간 건기식 시장조사 대시보드 · 2026년 11월 4주차 (11월 3주차 백업 포함)<br>
+    조사·작성 2026-11-23 · 사내 공유용 · kensy016-hub.github.io/-/market/
+  </footer>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var CH_LABEL = {
+    online: "온라인(쿠팡·네이버)",
+    group: "공동구매·SNS",
+    homeshop: "홈쇼핑",
+    offline: "방문판매·오프라인"
+  };
+
+  var DATA = [
+  {
+    "id": "sambaek",
+    "name": "삼백초 · 코유산균 복합",
+    "tag": "지정",
+    "cat": "코·호흡기",
+    "channels": [
+      "online",
+      "offline",
+      "homeshop"
+    ],
+    "channelLabel": "약국 + 온라인 (홈쇼핑은 경쟁 심화)",
+    "rank": 1,
+    "appeal": "환절기 코막힘·콧물, '약 대신 매일' 챙기는 코 면역 루틴",
+    "price": "닥터파이토 코엔삼백초 1개월 69,000원 / 6개월 309,000원 / 12개월 509,000원(GS샵 방송가) · 쿠팡 단품 39,010원 / 바이크롬 코 유산균 74,900~98,000원",
+    "plan": "삼백초(LHF618) 한 원료만으로는 이미 홈쇼핑 대형 브랜드(누적 185억)와 정면 충돌합니다. 코 유산균(NVP-1703)을 한 제품에 묶은 복합 구성이 유일한 빈 자리이고, 1일 2정 루틴·상온 제형으로 기존 제품의 약점(냉장, 3~4만원대 단가)을 피해야 합니다.",
+    "caution": "LHF618은 <strong>개별인정 원료(제2023-31호)</strong>이고 완제품 인증이 아님. 일반식품 '삼백초 진액·환'에는 코 기능성 표기 불가. LHF618 450mg/일·미퀠리아닌 3.96mg 확인. 영·유아·어린이·임산부·수유부 섭취 금지.",
+    "bg": "이번 주 가장 큰 변화는 코엔삼백초가 홈쇼핑 상시 편성으로 들어온 것입니다. 2025년 1월 출시 이후 홈쇼핑 누적 매출 185억원을 넘겼고(2026-10-21), 10월 8일 배우 원빈을 전속 모델로 세운 뒤 GS샵에서 2주에 7회 편성되며 11/18·11/22·11/25 방송이 이어집니다. 가격은 정가 기준 6개월 309,000원·12개월 509,000원이고, 카드 10% 할인을 적용하면 278,100원·459,000원입니다. 편성표에는 회차에 따라 정가와 할인가가 번갈아 표시돼(11/13 458,100원 → 11/17 509,000원) 마치 오른 것처럼 보이지만, 같은 정가에 할인 적용 여부만 달라진 것입니다. 반대로 쿠팡 단품은 83,000원 정가에 53% 할인한 39,010원(리뷰 3,338건)이라 홈쇼핑 6개월 환산(월 51,500원)보다 24% 쌉니다. 코·호흡기 기능성 원료는 여전히 세 갈래·등록 제품 4개뿐이고, 두 원료를 함께 담은 복합 제품은 아직 없습니다. 카테고리 인지도는 대형 브랜드가 끌어올렸지만, 가격 기준은 온라인이 잡고 있습니다.",
+    "products": [
+      [
+        "닥터파이토 파이토블락 코엔삼백초 6개월분",
+        "309,000원 (카드할인 278,100원) / 500mg×60정×6",
+        "GS샵 최근 2주 7회 편성, 리뷰 1,413건 4.5점. 홈쇼핑 누적 185억원(2025-01~2026-10)."
+      ],
+      [
+        "닥터파이토 코엔삼백초 12개월 최다구성",
+        "509,000원 (카드할인 459,000원) / 12개월",
+        "리뷰 71건 4.6점. 1개월 환산 42,417원으로 홈쇼핑 구성 중 가장 낮은 편."
+      ],
+      [
+        "닥터파이토 코엔삼백초 60정 (쿠팡)",
+        "39,010원 (정가 83,000원 53%) / 1개월 · 1일 약 1,300원",
+        "리뷰 3,338건 4.5점, 3개 124,000원(1정 689원). 홈쇼핑 1개월 단품 69,000원의 57% 수준 — 가격 기준선은 온라인."
+      ],
+      [
+        "바이크롬 코 유산균 NVP-1703 30캡슐",
+        "공식몰 98,000원(정가 120,000원 18%↓) / 쿠팡 74,900원",
+        "1일 2,496~3,267원으로 카테고리 최고 단가. 공식몰과 쿠팡 가격차 23,100원. 0~10℃ 냉장보관 표기가 진입 장벽."
+      ]
+    ],
+    "needs": [
+      "홈쇼핑 방송을 보고 '코 건강'을 처음 인지한 50~60대가 늘었지만, 6·12개월 30만~50만원 일시 결제는 부담 — 1개월 단품(69,000원)과 쿠팡 39,010원 사이에서 망설임.",
+      "먹자마자 증상이 사라지지 않는다는 걸 알면서도 '약 대신 매일' 루틴을 원함. 꾸준함을 얼마나 쉽게 만드느냐가 관건.",
+      "코 유산균의 냉장보관(0~10℃) 표기에 대한 부담 — 택배 받은 뒤 보관할 곳이 없다는 불만이 제품 선택을 막음.",
+      "알약을 잘 못 삼키는 사람에게 2정씩 삼키는 구성이 부담. 정제 크기·코팅, 또는 스틱형 대안 요구."
+    ],
+    "strategy": [
+      "약국 채널: 30일·90일 두 구성으로만 가고, '항히스타민제와 병용' 상담 스크립트를 함께 제공. 홈쇼핑 대형 브랜드와 정면 충돌을 피하는 첫 채널.",
+      "온라인: 1개월분 단품을 먼저 팔아 제형 적합성을 확인시키고 후속으로 3개월 구독. 쿠팡 39,010원이 가격 기준으로 굳어졌으므로 1일 단가를 1,300원 아래로 맞춰야 비교표에서 밀리지 않음.",
+      "홈쇼핑: 코엔삼백초가 2주 7회 편성·원빈 모델로 자리를 잡아 신규 진입은 비효율. 대신 복합 제품을 들고 6개월 이하 구성+약국 동시 론칭으로 접근.",
+      "B2B: 코 유산균은 거래처 메디오젠 명의 신고 제품이라 원료·제조 협의가 가장 빠름. 삼백초 LHF618은 위랩 공급 여부를 먼저 확인하고, 불가하면 코 유산균 단독 + 아연·비타민D 구성으로 선회."
+    ]
+  },
+  {
+    "id": "magnesium",
+    "name": "마그네슘 (액상·분말)",
+    "tag": "지정",
+    "cat": "수면·신경",
+    "channels": [
+      "homeshop",
+      "online",
+      "offline"
+    ],
+    "channelLabel": "홈쇼핑 + 온라인",
+    "rank": 2,
+    "appeal": "한 샷에 마그네슘 250mg, 물 없이 끝내는 활력·신경 루틴",
+    "price": "닥터슈퍼칸 MAX 방송 구성 / 액상 젖산마그네슘 6+3박스 239,000원(9개월) / 여에스더 마그네슘 10박스 89,000원 / 바이오하임 분말 30회분 14,900원(1포 497원)",
+    "plan": "이번 주 기준은 '액상 250mg + B군 400% + 아연·셀렌 등 9중 복합, 당 0g 스틱'입니다. 발주가 끝난 일동 액상 마그네슘을 200mg 단품으로 내면 스펙 비교에서 바로 밀립니다. 250mg·복합기능성·당 ZERO로 맞추고, 온라인용은 1포 497원 저가군과 분리한 제품으로 내야 합니다.",
+    "caution": "마그네슘 과량 섭취 시 설사·복통, 신장질환자는 상담 필요. 제품 표기의 1일 함량(250mg)은 식약처 기준 범위 안에서 확인할 것. L-테아닌은 <strong>200~250mg/일</strong> 고시, 표기 가능 문구는 '스트레스로 인한 긴장완화'.",
+    "bg": "마그네슘은 2025년 생산액이 전년 대비 58.3% 늘고 구매액 순위가 10위에서 8위로 올라선 단일 품목 최대 성장 축입니다. 이번 주는 제형 싸움이 액상으로 굳었습니다. 에이치엘사이언스 '닥터슈퍼칸 활력파워 마그네슘 MAX'가 11/17 GS샵 '소유진쇼' 1시간에 22만 샷을 팔아 전량 매진했고, 론칭 한 달 만에 누적 180만 샷을 넘었습니다(NS홈쇼핑은 3회 연속 매진, 43만 샷). 같은 주에 내츄럴플러스가 '마시는 영양제 젖산마그네슘 활력'(200mg·5중 복합)을 11/16 출시했고, 약국 전용 플러스엑스팜 '하이퀵 젖산마그네슘'(210mg·15포)도 11/2 나왔습니다. 홈쇼핑 편성표에는 이시형박사 인생 젖산마그네슘 9박스(11/20), 액상 젖산마그네슘 스피드샷 6+3박스 239,000원(SK스토아 11/21·신세계 11/22), 여에스더 마그네슘 10박스 89,000원(GS샵 11/18)이 겹칩니다. 온라인은 반대로 가격이 내려가, 바이오하임 분말 스틱이 11/20 2,830원 인하된 14,900원(역대 최저, 3주 평균 17,190원)입니다. 홈쇼핑은 월 8,900~26,556원으로 양극화됐고, 그 사이 중간 가격대는 근거를 요구받습니다.",
+    "products": [
+      [
+        "닥터슈퍼칸 활력파워 마그네슘 MAX (에이치엘사이언스)",
+        "방송 구성 기준 / 액상 스틱 1샷",
+        "마그네슘 250mg + B1·B2·B6 각 400% + 아연·셀렌·비오틴·나이아신·망간 9중 복합, 당 0g. GS샵 11/17 1시간 22만 샷 매진, 론칭 1개월 180만 샷."
+      ],
+      [
+        "내츄럴플러스 마시는 영양제 젖산마그네슘 활력",
+        "30포 / 11/16~22 네이버 3+1박스 증정",
+        "국내산 젖산마그네슘 200mg + B군 3종·아연 5중, 당류 0g 망고맛. 11/16 출시 — 액상 라인이 대형사까지 확산."
+      ],
+      [
+        "바이오하임 젖산 마그네슘 듀얼마그네슘 밸런스",
+        "14,900원 / 30회분 (1포 497원) · 2박스 26,900 · 4박스 47,900 · 6박스 65,900",
+        "11/20 2,830원 인하로 역대 최저. 리뷰 1,338건. 6박스 1개월 환산 10,983원 — 온라인 가격 하한선."
+      ],
+      [
+        "액상 젖산마그네슘 스피드샷 6+3박스",
+        "239,000원 (정가 249,000원) / 9박스 · 1개월 26,556원",
+        "SK스토아 11/21, 신세계쇼핑 11/22 편성. 닥터린 액상 젖산마그네슘 스피드 샷도 같은 6+3·239,000원으로 11/22 방송."
+      ],
+      [
+        "여에스더 국민영양프로젝트 마그네슘 10박스",
+        "89,000원 / 10개월 + 푸룬샷 · 1개월 8,900원",
+        "GS샵 11/18. 10개월 8만원대 구성이 홈쇼핑 마그네슘의 최저 월 단가 기준."
+      ]
+    ],
+    "needs": [
+      "물 없이 짜 먹는 액상 선호가 뚜렷 — 정제 여러 알을 삼키는 부담을 '한 샷'으로 해결하려는 수요.",
+      "함량을 직접 비교하는 소비자가 늘어 200mg과 250mg 차이를 확인함. 250mg 미만이면 가격이 싸도 선택받기 어려움.",
+      "당·칼로리 부담(당 ZERO·0kcal)과 맛(망고·자몽)이 재구매를 좌우. 단맛이 강하면 '밤에 먹기 부담'이라는 후기가 붙음.",
+      "홈쇼핑 9개월·10개월 묶음(23만~27만원)과 온라인 1포 497원 사이에서 가격 기준을 잃음 — 중간 가격대는 근거를 요구받음."
+    ],
+    "strategy": [
+      "일동 액상 마그네슘: 200mg 단품이 아니라 250mg + B군 400% + 아연·셀렌 복합, 당 0g 스틱으로 스펙을 정렬. 홈쇼핑에 이미 4개사가 올라와 있어 '함량·복합기능성' 숫자로만 차별화 가능.",
+      "온라인: 1포 497원 저가군과 비교당하지 않도록 1샷당 마그네슘 mg·B군 함량 표를 상세 첫 화면에 배치. 1개월 단품과 3개월 리필로 가격 계단을 만든다.",
+      "B2B: 대현에벤에셀 등 발주처에는 액상 6+3·9개월 구성으로 견적. 약국은 하이퀵(210mg)과 경쟁하므로 가격이 아니라 복합기능성·맛으로 제안.",
+      "수면 각도(테아닌·라임과피)는 별도 카드로 분리 — 마그네슘 단독 라인과 채널·카피가 섞이면 홈쇼핑 편성에서 '또 마그네슘'으로 읽힘."
+    ]
+  },
+  {
+    "id": "sleep",
+    "name": "수면 · 멜라토닌 구미/샷",
+    "tag": "신규발굴",
+    "cat": "수면",
+    "channels": [
+      "online",
+      "group"
+    ],
+    "channelLabel": "올리브영 + 온라인·공구",
+    "rank": 3,
+    "appeal": "잠들기 한 시간 전 한 알, 젤리·샷으로 끊는 밤 루틴",
+    "price": "멜라메이트 구미 20개 10,945~19,900원(1구미 495~995원) / 올리브영 20~50구미 16,900원~ / 꿀잠샷 12포 20,400원(1포 1,700원)",
+    "plan": "멜라토닌은 국내에서 건기식 원료가 아니라 전문의약품 성분이라 일반식품(캔디류·음료)으로만 팔립니다. 라온젠이 들어갈 자리는 '수면의 질 개선'을 인정받은 라임과피추출물(제2025-26호)이나 테아닌+마그네슘 복합입니다. 제형은 구미·액상 샷, 가격은 1회 500~1,700원대로 맞춰야 올리브영 매대에서 비교됩니다.",
+    "caution": "식물성 멜라토닌 제품은 <strong>일반식품</strong> — 건기식으로 광고하면 부당광고(소비자원 2026-08 조사 100건 중 58건 적발). 조사 제품 30개 중 27개가 전문의약품 처방량 2mg을 넘었고 최대 12mg 검출. 섭취 후 운전·기계 조작 금지, 아동·청소년·임산부 상담.",
+    "bg": "수면은 올리브영에서 가장 빠르게 커지는 카테고리입니다. 올해 1~9월 멜라토닌 관련 상품 매출이 전년 동기 대비 810%, 테아닌 368% 늘었고, 8월 신설한 '수면·긴장 완화' 카테고리에 약 500개 상품이 들어와 9월 매출이 전월보다 64% 증가했습니다. 같은 기간 '숙면팩' 검색량은 825%, '수면 젤리'는 222% 늘었고, 패션 플랫폼 지그재그의 숙면 관련 거래액도 전년 대비 최대 233% 증가했습니다. CJ웰케어 멜라메이트 구미는 9월 매출이 전년 대비 502% 늘었습니다. 다만 규제 리스크가 이번 주 다시 확인됩니다. 소비자원이 8월 식물성 멜라토닌 일반식품 30개를 조사한 결과 27개가 처방량(2mg)을 초과했고, 100건 중 58건이 건기식·의약품 오인 광고였습니다. 반면 라임과피추출물(제2025-26호)은 '수면의 질 개선'을 인정받은 개별인정 원료로, 대원제약 꿀잠샷이 이 원료로 액상 시장을 열었습니다.",
+    "products": [
+      [
+        "CJ웰케어 멜라메이트 구미",
+        "CJ더마켓 20개 10,945원(45%↓) / 올리브영 20~50구미 16,900원~ (1일 423원~)",
+        "피스타치오 유래 식물성 멜라토닌 1~2mg + 캐모마일·레몬밤·시계꽃, 타트체리. 식품유형 캔디류. 글로우픽 4.4점(36건)."
+      ],
+      [
+        "대원제약 꿀잠샷 (라임과피추출물)",
+        "20,400원 / 12포 · 1포 1,700원 (정가 24,000원)",
+        "개별인정 라임과피추출물 '수면의 질 개선'. 액상 1포. G마켓 평점 5.0·리뷰 85건. 3박스 56,020원."
+      ],
+      [
+        "멜라메이트 2mg 골라담기 구미",
+        "9,900원~ / 1일 495원 (정가 13,000원)",
+        "올리브영 골라담기 3종(타트체리·리치백도·애플민트). 2mg 제형 — 고함량 논란의 중심에 있는 규격."
+      ],
+      [
+        "여에스더 멜라나인 플러스 (일반식품)",
+        "2mg 표기 제품 / 소비자원 검사 2.1mg 검출",
+        "식물성 멜라토닌 일반식품의 표기 리스크를 보여주는 사례. 같은 조사에서 30개 중 27개가 처방량 2mg 초과."
+      ]
+    ],
+    "needs": [
+      "2030이 시차·교대·패턴 교정용으로 소액 구매. '먹고 30분이면 잠이 온다'는 입소문이 구매를 만들지만, 효과 없다는 후기도 함께 나옴.",
+      "부작용 불만이 구체적: 다음날 오후까지 남는 졸림, 악몽·생생한 꿈, 자다 깨는 증상, 교감신경 항진형 불면에는 무효.",
+      "구미는 달아서 양치를 다시 해야 하는 번거로움과 당류 부담 — 로우슈가·알약 대체 수요가 생김.",
+      "꿀잠샷 같은 액상은 '수면제 느낌'보다 완만한 이완을 기대하며, 1포 1,700원 가격은 12포 단위로만 수용."
+    ],
+    "strategy": [
+      "라임과피추출물 액상 샷은 건기식으로 '수면의 질 개선'을 표시할 수 있어 규제상 가장 안전한 진입점. 대원제약이 먼저 열었으므로 마그네슘·테아닌을 결합한 '긴장완화 + 수면' 2기능으로 차별화.",
+      "멜라토닌 일반식품은 표기 리스크가 커 취급하지 않는 판단이 안전. 굳이 다루면 '멜라토닌 함유' 사실만 쓰고 수면 효능 카피는 금지.",
+      "채널: 올리브영·편의점은 1~7회분 소액 단품, 온라인은 30일 구성. 구미 라인은 저당(알룰로스) 버전을 함께 내야 '너무 달다' 불만을 피함.",
+      "B2B: 홈쇼핑은 수면 카테고리 편성이 아직 얇아, 6개월 구성+상담 스크립트로 틈새 진입 여지. 약국은 수면제 대체가 아닌 '습관 보조' 포지션으로 상담."
+    ]
+  },
+  {
+    "id": "paro",
+    "name": "파로 · 카무트 효소",
+    "tag": "추적관찰",
+    "cat": "소화",
+    "channels": [
+      "online",
+      "homeshop"
+    ],
+    "channelLabel": "온라인 + 홈쇼핑",
+    "rank": 4,
+    "appeal": "식후 더부룩함, 고대곡물 발효 효소 한 포",
+    "price": "그레인온 골드 카무트효소 90g 단품 14,440원(58%↓) · 2개 27,260원 · 3개 40,180원 / 효소G 30포 3개 22,530원(포당 250원)",
+    "plan": "'역가수치 100만' 경쟁에서 벗어나 1포당 보증역가(아밀라아제 35만 unit, 프로테아제 1,500 unit)를 명시. 파로의 저GI 특성으로 혈당 관리 각도를 붙이고, 카무트(호라산밀)와 파로(에머·스펠트)를 혼동 없이 표기.",
+    "caution": "효소식품은 <strong>일반식품</strong> — '다이어트·장 건강' 표현 불가. 정제효소(식품첨가물) 혼입으로 역가를 부풀린 사례 있음. 위산에 활성 상실. 소비자원이 11개 중 9개 제품의 과대광고를 적발(2025-12).",
+    "bg": "지난주에 이어 쿠팡 '효소' 카테고리 실시간 급상승 상위를 그레인온이 계속 차지하고 있습니다. 90g 단품 14,440원(58% 할인), 2개 27,260원, 4개 53,100원, 6개 74,950원으로 묶음 단가가 1포 250~400원까지 내려가고, 리뷰는 80,109건입니다. 에누리 기준 효소G 30포 3개는 22,530원(포당 250원), 2개는 15,930원입니다. 홈쇼핑 카무트효소 3g×30포도 11,900원까지 내려와 저가 경쟁이 심해졌습니다. 그레인온은 2022년 59억원에서 2025년 1,752억원으로 30배 성장했지만 영업이익률은 10.2%에서 6.3%로 떨어졌습니다 — 물량은 늘고 단가는 낮아지는 구조입니다. 지난주 관측한 로켓프레시 11,410원(역대 최저)은 이번 주 검색에서 확인되지 않았고, 단품 관측가는 14,440원입니다.",
+    "products": [
+      [
+        "그레인온 골드 카무트 브랜드밀 효소 90g",
+        "14,440원(58%↓) / 1개 · 2개 27,260원 · 3개 40,180원",
+        "리뷰 80,109건. 6개 74,950원까지 묶으면 1포 약 416원. 쿠팡 효소 카테고리 급상승 상위 유지."
+      ],
+      [
+        "그레인온 골드카무트효소G 30포",
+        "15,930원(2개)~22,530원(3개) / 포당 250~266원",
+        "에누리 최저가 기준(2026-11-23 갱신). 아밀라아제 35만 unit·프로테아제 1,500 unit 표기."
+      ],
+      [
+        "그레인온 골드카무트효소G 3+10포(총 100포)",
+        "23,900원 / 1포 239원",
+        "네이버 최저가(11/23 01:22 확인). 최근 59일 평균 22,218원보다 7.6% 높은 수준."
+      ],
+      [
+        "홈쇼핑 카무트효소 3g×30포",
+        "11,900원 / 30포",
+        "홈쇼핑·쿠팡 재판매 구성이 1만원대로 내려옴. 브랜드 구분 없이 '카무트효소'로 검색되는 저가 물량."
+      ]
+    ],
+    "needs": [
+      "50~60대가 '소화가 안 되고 식후 더부룩함'을 직접 동기로 언급. 특별히 좋지도 나쁘지도 않다는 무난한 후기가 많아 재구매는 가격·맛이 결정.",
+      "군고구마·인절미 등 맛 언급이 잦음 — 효소 제품에서 맛이 재구매 요인.",
+      "포장 절단면이 뜯기 편한지, 1포 양이 적당한지 같은 사용감 불만이 구체적으로 나옴.",
+      "역가수치가 높다는 광고를 믿어도 되는지에 대한 의심 — 1포당인지 g당인지 확인하려는 소비자가 늘고 있음."
+    ],
+    "strategy": [
+      "온라인: 총수치가 아니라 1포당 보증역가와 시험성적서를 전면에. g당·포당 단가 표를 함께 제공해 대량 묶음과 단품을 비교 가능하게.",
+      "홈쇼핑: 물량 매진이 반복되는 카테고리지만 그레인온·허브이오가 자리를 잡음. 신규 진입은 '파로 저GI + 혈당' 각도나 '효소 + 유산균' 복합으로 틈새를 만들어야 함.",
+      "B2B: 제조 전량 외주 구조가 검증된 카테고리 — 거래처 제조사 견적으로 진입 장벽이 낮은 대신 원가율 관리가 수익을 좌우. 표시광고 문구 검토를 먼저 받을 것."
+    ]
+  },
+  {
+    "id": "yeoju",
+    "name": "여주 (미숙여주) 혈당",
+    "tag": "지정",
+    "cat": "혈당·대사",
+    "channels": [
+      "online",
+      "homeshop",
+      "group"
+    ],
+    "channelLabel": "온라인 + 홈쇼핑·공구",
+    "rank": 5,
+    "appeal": "식후 혈당 스파이크·식곤증, 밥 먹을 때 한 포",
+    "price": "애터미 1.65g×60포 52,800원(1일 2포) / 유한 여주S52 90포 56,000~67,520원 / 유한 리버플러스 90포 58,690원 / 당찬여주 발효효소 2g×30포 18,200~19,690원",
+    "plan": "'여주 효소'가 아니라 '미숙여주주정추출분말 2.4g'으로 포지셔닝해야 건기식. 하루 3회 불편을 1일 1~2포로 줄이고, 과립 잔여감을 없앤 초소형 정제·구강용해로. 마그네슘·아연·B6·B12 복합화.",
+    "caution": "개별인정 제2020-14호, <strong>2.4g/일</strong>, GABA 2.592mg. 효소식품은 일반식품이라 역가만 표시되고 기능성 표기 불가. 당뇨약 복용자는 저혈당 주의.",
+    "bg": "시장 구조는 애터미·유한양행 양강 그대로입니다. 애터미 혈당컷 여주는 52,800원에 최근 7일 주문 7,544건·리뷰 62건 4.9점으로 가격과 물량을 동시에 잡고 있고(지난주 7,573건에서 29건 감소, 사실상 횡보), 유한양행은 11/19 공동구매로 '여주 리버플러스'(미숙여주+밀크씨슬, 90포)를 49,900~250,000원에 열며 간 건강 결합 라인으로 확장했습니다. 가격대는 넓어졌습니다 — 여주S52 90포는 11번가 최저 67,520원, 리버플러스 90포는 58,690원, 30포 체험 구성은 18,000원입니다. YDY 혈당케어는 공구에서 139,000~258,000원으로 고가 묶음을 유지합니다. 이름의 규제 트랙은 그대로입니다 — '여주 효소'로 팔면 일반식품, '미숙여주주정추출분말'로 팔면 건기식. 반대편에는 '여주 효소'로 파는 효소식품이 있습니다. 제주산 당찬여주 발효효소 30포가 쿠팡 19,690원(1포 656원, 리뷰 2,493건), 다나와 최저 18,200원(1포 607원)으로 팔리는데, 식품유형이 효소식품이라 '혈당' 문구를 쓸 수 없습니다. 같은 여주로 2배 이상 가격 차이가 나는 이유가 여기에 있습니다.",
+    "products": [
+      [
+        "애터미 혈당컷 여주",
+        "52,800원 / 1.65g×60포 · 1일 2포",
+        "미숙여주 2.4g/일, 마그네슘 120mg·아연 8.5mg·B6 10mg·B12 2.4㎍ + 부원료 8종. 콜마비앤에이치 제조. 최근 7일 7,544건."
+      ],
+      [
+        "유한 혈당케어 여주 리버플러스 90포",
+        "58,690원 / 90포(45일분) · 공구 49,900~250,000원",
+        "미숙여주 + 밀크씨슬(간 건강) 결합 신제품. 11/19 공구 진행. 역대 최저 56,230원(10/24)."
+      ],
+      [
+        "유한 혈당케어 여주S52 90포",
+        "56,000~67,520원 / 90포(1개월분)",
+        "1일 3회 1포. 11번가 최저 67,520원(평점 4.3·리뷰 10), 쿠팡 90p 19,000원(9월 기준 역대 최저). 30포 18,000원 체험 구성."
+      ],
+      [
+        "유한 YDY 혈당케어 여주",
+        "공구 139,000~258,000원 / 묶음",
+        "비타민B1·B2·B6, 카테킨 300mg, 코로솔산, 크롬 배합 복합형. 공구가 6월 이후 고정 — 고가 묶음 채널."
+      ],
+      [
+        "지비엠에스 제주산 당찬여주 발효효소 30포",
+        "19,690원 (쿠팡, 11/20 +1,900원) / 2g×30포 · 1포 656원",
+        "아밀라아제 90만 unit·프로테아제 2,700 unit. 리뷰 2,493건. 다나와 최저 18,200원(1포 607원), 10개 132,980원(1포 443원). 효소식품(일반식품)."
+      ]
+    ],
+    "needs": [
+      "식곤증·점심 후 졸림을 직접 동기로 언급. '혈당 수치 개선' 체감을 80%가 꼽지만 큰 차이를 모르겠다는 후기도 공존.",
+      "하루 3회 복용이 가장 큰 이탈 요인. 휴대와 식사 타이밍을 맞추기 어렵다는 불만.",
+      "과립이 입에 남는 느낌, 알약이 작아 삼키기 어렵다는 상반된 불만이 동시에 존재 — 제형 선택이 곧 만족도.",
+      "가격 저항이 뚜렷함. '너무 비싸요'가 대표 부정 리뷰. 반대로 저렴한 제품은 함량 표기를 의심."
+    ],
+    "strategy": [
+      "온라인: '효소'가 아닌 '식후 혈당' 키워드로 검색을 잡고, 상세페이지 첫 화면에 2.4g/일·GABA 2.592mg을 숫자로 배치. 효소라는 단어는 보조 설명에만.",
+      "제형: 1일 1~2포 구강용해 또는 초소형 정제. '식사 직전 물 없이'를 카피로 만들면 하루 3회 제품과 정면으로 갈린다.",
+      "B2B: 홈쇼핑은 애터미 가격대(5만원 초중반)와 정면 충돌하므로, 30일 체험 구성 + 6개월 리필로 총액을 나누는 구조가 안전. 약국·병의원은 당뇨약 복용자 상담 수요로 접근."
+    ]
+  },
+  {
+    "id": "shark",
+    "name": "상어간유 (알콕시글리세롤)",
+    "tag": "지정",
+    "cat": "면역·시니어",
+    "channels": [
+      "group",
+      "offline"
+    ],
+    "channelLabel": "방문판매·오프라인 + 공구",
+    "rank": 6,
+    "appeal": "시니어 면역, 하루 10g 원액을 짜 먹는 프리미엄 케어",
+    "price": "세모 2g×50캡슐 160,000원 · 5g×20캡슐 160,000원 · 2g×5캡슐 17,000원 / 5g 8+2박스 1,180,000원(정가 1,600,000원)",
+    "plan": "캡슐을 잘라 짜 먹는 번거로움을 액상 스틱·젤리·소분으로 바꾸고, 1일 5캡슐을 1~2포로. 비린 맛은 유자·레몬 착향, 방판 상담용 30일 구성과 시니어 선물세트로 묶음.",
+    "caution": "고시형 원료(누구나 사용), 기능성은 <strong>'면역력 증진'</strong>만, 1일 0.6~2.7g. 누운 자세·코 투입 금지, 냉장 보관 시 캡슐 경화로 입 안 상처 주의.",
+    "bg": "알콕시글리세롤 함유 상어간유는 고시형 원료라 누구나 쓸 수 있고, 국내 제조 신고 제품은 23개·신고 업소 7곳뿐입니다. 2026년에만 5건이 새로 신고됐고, 한미양행이 11/10 '남진의 알콕시 상어간유'와 '남진의 면역엔 알콕시 상어간유'를 하루에 두 건 신고했습니다(1일 2캡슐, 알콕시글리세롤 600mg/2,400mg). 공급은 늘지만 판매 구조는 그대로입니다. 세모가 2g·5g 50/20캡슐 160,000원, 2g×5캡슐 17,000원으로 가격을 유지하고, 11/3~2027-01-01 5g 8+2박스 1,180,000원(420,000원 할인) 프로모션을 걸었습니다. 1일 5캡슐을 짜 먹는 번거로움과 100만원대 일시 결제가 온라인 확장을 계속 막고 있습니다.",
+    "products": [
+      [
+        "세모 알콕시글리세롤 2g×50캡슐",
+        "160,000원 / 50캡슐 · 1일 5캡슐(10일분)",
+        "알콕시글리세롤 22% 함유 상어간유 100%. 캡슐 끝을 잘라 내용물만 짜서 섭취. 후기 173건."
+      ],
+      [
+        "세모 알콕시글리세롤 5g×20캡슐",
+        "160,000원 / 20캡슐 · 1일 2캡슐",
+        "2g 제품과 가격·총량(100g)이 같지만 1일 2캡슐로 끝남. 총량이 아니라 1일 복용 캡슐 수로 비교해야 하는 사례. 후기 304건."
+      ],
+      [
+        "세모 5g×20캡슐 8+2박스",
+        "1,180,000원 (정가 1,600,000원, 420,000원 할인)",
+        "할인 기간 2026-11-03~2027-01-01. 1회 결제 100만원대가 성립하는 채널이 방판·공구라는 증거."
+      ],
+      [
+        "한미양행 남진의 알콕시 상어간유 (신고 2026-11-10)",
+        "미출시(신고 단계) / 1일 2캡슐",
+        "알콕시글리세롤 600mg/2,400mg 표시. 같은 날 면역엔 알콕시도 함께 신고 — 공급 확대 신호."
+      ]
+    ],
+    "needs": [
+      "캡슐을 하나씩 잘라 짜 먹어야 하는 번거로움 — 하루 5캡슐이면 하루에 다섯 번. 지속 복용의 최대 장벽.",
+      "비린 맛·냄새 거부. 냉장 보관하면 캡슐이 딱딱해져 입 안에 상처가 난다는 주의사항 자체가 불만 요인.",
+      "고가라 '정품인지'에 대한 불신이 큼 — 원산지(아랍에미리트·모로코·소말리아·인도)와 정제 기술 설명을 요구.",
+      "시니어 자녀가 대신 사드리는 구매 구조. 설명이 길고 상담이 필요한 채널에서 결제가 일어남."
+    ],
+    "strategy": [
+      "제형: 액상 스틱(1일 1~2포)으로 바꾸면 섭취 장벽이 가장 크게 낮아짐. 비린 맛은 유자·레몬 착향, 젤리형은 시니어 삼킴 부담까지 해결.",
+      "B2B·방판: 온라인 단독 판매는 단가상 성립하지 않음. 30일 구성 + 상담 스크립트 + 시니어 선물세트로 방판·공구에 집중하고, 온라인은 재구매용 리필만.",
+      "신뢰: 고시형 원료라 원료 차별화가 어려우므로 22% 함량·정제 공정·원산지 이력과 '1일 0.6~2.7g' 적합성을 표시해 저가 혼합품과 구분."
+    ]
+  },
+  {
+    "id": "akkermansia",
+    "name": "아커만시아 (근력 유지)",
+    "tag": "신규발굴",
+    "cat": "근력·시니어",
+    "channels": [
+      "homeshop",
+      "online"
+    ],
+    "channelLabel": "홈쇼핑 + 공식몰",
+    "rank": null,
+    "appeal": "'근력도 자산' — 하루 한 캡슐로 관리하는 노후 근력",
+    "price": "CJ온스타일 6+1개월 339,000원(1개월 48,429원) / G마켓 1개월 80,000원 → 65,600원(18%↓)",
+    "plan": "핵심 원료 HB05P는 헬스바이옴의 개별인정 원료(제2025-72호)로 공급이 사실상 독점입니다. 라온젠이 같은 제품을 만들 수는 없으니, ① 유통·B2B 제안 ② 인접 구성(근력운동 + 단백질·비타민D·류신)으로 접근하는 것이 현실적입니다. '기능성 1개 + 임상 숫자'로 고가를 정당화한 벤치마크로 기록해 둡니다.",
+    "caution": "인정 기능성은 <strong>'노화로 인해 감소될 수 있는 근력 유지'</strong> 하나. 임상은 60~80세 80명·12주, 악력은 군간 유의차 없음. 운동·단백질 대체가 아님. 영유아·어린이·임산부·수유부 섭취 금지.",
+    "bg": "근력이 이번 주 홈쇼핑의 새 축으로 올라왔습니다. 삼양식품의 헬스케어 브랜드 스핀들은 11/20 배우 소지섭을 첫 모델로 세우고 '근력잔고·저점매수·노후연근·포트폴리오' 4편의 광고를 공개했으며, 11/22 CJ온스타일에서 6+1개월(총 7개월) 339,000원 방송을 진행한 뒤 GS샵·현대홈쇼핑으로 확대합니다. 홈쇼핑 인기 상품 지수에서 이 방송이 2위(21,321)에 오를 만큼 반응이 컸습니다. 제품은 200mg 캡슐 1알에 아커만시아 뮤시니필라 HB05 열처리배양건조물 300억 셀을 담았고, 15mm 식물성 캡슐·0kcal·상온 보관이 강점입니다. GS샵에서는 이미 10/17 첫 방송을 했습니다. 시장은 '근감소'를 재테크 언어로 바꿔 시니어와 그 자녀 구매를 겨냥하고 있습니다.",
+    "products": [
+      [
+        "스핀들 근력엔 아커만시아 6+1개월",
+        "339,000원 / 총 7개월분 · 1개월 48,429원",
+        "CJ온스타일 11/22 [2026단한번] 방송. 무이자. 홈쇼핑 인기지수 2위."
+      ],
+      [
+        "스핀들 근력엔 아커만시아 1개월분",
+        "65,600원 (정가 80,000원, 18%↓) / 200mg×30캡슐",
+        "1일 2,187원. 서흥 제조·삼양식품 판매. G마켓·CJ온스타일LIVE 등록 상품."
+      ],
+      [
+        "스핀들 근력엔 아커만시아 (GS샵 첫 방송)",
+        "2026-10-17 첫 TV홈쇼핑 방송 / 200mg×30캡슐",
+        "공식몰 단독 판매에서 홈쇼핑으로 확장한 첫 사례. 1캡슐 300억 셀(HB05P 150mg)·0kcal·15mm 식물성 캡슐."
+      ]
+    ],
+    "needs": [
+      "60대 이상 본인 구매와 40~50대 자녀의 부모님 선물 구매가 함께 발생. '근력은 자산'이라는 메시지가 결제 명분을 만들어 줌.",
+      "하루 1캡슐·0kcal·작은 캡슐이라 복용 부담이 거의 없다는 평가 — 기존 근력 제품(단백질 쉐이크·여러 알)과 대비되는 지점.",
+      "체감이 늦어 12주 이상 꾸준히 먹어야 한다는 설명이 필요하고, 1개월 5~6만원 가격에 '효과를 모르겠다'는 후기가 붙을 수 있음.",
+      "악력 개선은 임상에서 유의차가 없었음 — '악력까지 좋아진다'는 기대는 관리해야 함."
+    ],
+    "strategy": [
+      "벤치마크: 기능성 1개를 임상 숫자(12주·80명·하지 근력 8.6~12.4% 개선)로 정당화하고, 재테크 언어로 카피를 만든 방식이 고가 홈쇼핑 구성의 성공 공식.",
+      "진입: HB05P는 원료사 독점이라 동일 제품 진입 불가. 유통·B2B 제안(홈쇼핑·약국 PB 공급) 또는 근력 인접 구성(단백질·비타민D·류신)으로 우회.",
+      "관찰: GS샵 10/17, CJ온스타일 11/22, GS·현대 확대 순서 — 3사 편성이 끝나는 12월 초에 실제 판매 지속성을 확인한 뒤 판단."
+    ]
+  },
+  {
+    "id": "eseve",
+    "name": "붓기 스파클링 (이너뷰티 음료)",
+    "tag": "신규발굴",
+    "cat": "이너뷰티·붓기",
+    "channels": [
+      "online",
+      "group"
+    ],
+    "channelLabel": "올리브영 + 공구·선물하기",
+    "rank": null,
+    "appeal": "자기 전 한 병, 제로 슈가 레몬 스파클링으로 끝내는 붓기 루틴",
+    "price": "1병 3,800원 → 2,890원(23%↓) / 10병 30,000원 → 28,500원 (1병 2,850원)",
+    "plan": "음료형 이너뷰티는 '맛 + 제로'가 구매 이유이고 기능성은 보조입니다. 라온젠이 음료 라인을 낼 경우 건기식 기능성(바나바잎 등)으로 승부하고 '붓기' 카피는 쓰지 않아야 합니다. 150mL·18kcal·당류 0g 스펙이 기준선입니다.",
+    "caution": "건기식이 아닌 <strong>일반식품(탄산음료·기능성표시식품)</strong> — '붓기 개선'은 인정 기능성이 아님. 바나바잎추출물 10.5mg은 '식후 혈당상승 억제'만 표시 가능. 임산부·수유부·어린이 섭취 권장하지 않음.",
+    "bg": "붓기 관리가 한방차·즙에서 저당 스파클링 음료로 옮겨갔습니다. 구다이글로벌의 이너뷰티 브랜드 이세비는 10월 올리브영·올리베러에 단독 론칭했고, '에어리 페이스 드링크'가 11월 9일 올리브영 푸드 카테고리 실시간 판매 1위를 기록했습니다(론칭 약 6주). 출시 2주 만에 물류 기준 3만병 출고, 카카오 선물하기 입점, 올리브영 오프라인 전국 확대를 추진 중입니다. 제품은 효소처리 헤스페리딘 435mg과 바나바잎추출물 10.5mg을 담은 150mL 탄산음료로, 설탕 대신 알룰로스를 써 18kcal·당류 0g입니다. 글로우픽 평점은 4.2점(42건)으로, 맛 호평과 '효과를 모르겠다'는 평가가 갈립니다.",
+    "products": [
+      [
+        "이세비 에어리 페이스 드링크 150mL 1병",
+        "2,890원 (정가 3,800원, 23%↓) / 150mL",
+        "효소처리 헤스페리딘 435mg + 바나바잎추출물 10.5mg. 18kcal·당류 0g·알룰로스. 식품유형 탄산음료."
+      ],
+      [
+        "이세비 에어리 페이스 드링크 10병",
+        "28,500원 (정가 30,000원) / 1병 2,850원",
+        "올리브영(100mL당 1,900원). 무료배송, 평균 3일 도착. 11/9 올리브영 푸드 카테고리 실시간 1위."
+      ],
+      [
+        "이세비 공식몰 10병",
+        "30,000원 / 150mL×10 (5만원 이상 무료배송)",
+        "공식몰 판매가. 식품유형 탄산음료, 소비기한 12개월, 실온 보관."
+      ]
+    ],
+    "needs": [
+      "붓기를 '약'이 아니라 '마시는 음료'로 관리하려는 20~30대 여성. 맛이 좋아야 매일 마시고, 그래서 제로 슈가가 필수 조건.",
+      "무쿠미 등 일본 직구 제품의 대체 수요 — '한국판 무쿠미'라는 기대가 구매를 만들지만, 기대가 크면 실망도 큼.",
+      "탄산 강도 호불호가 뚜렷. 밤에 마시라는 안내와 '탄산이라 자기 전에 부담'이라는 반응이 충돌.",
+      "식품유형이 탄산음료라는 사실을 알고 나면 '영양제를 사는 게 낫다'는 이탈 — 가격(1병 약 2,900원)에 대한 저항도 있음."
+    ],
+    "strategy": [
+      "음료형은 '맛·제로·휴대'가 구매 이유이므로, 기능성은 바나바잎(식후 혈당)처럼 인정 문구가 있는 원료로만 표기. '붓기'는 금지.",
+      "채널: 올리브영·편의점 소액 단품 + 카카오 선물하기. 10병 묶음은 3만원 아래로 유지해야 '매일 한 병' 루틴이 성립.",
+      "B2B: 음료 OEM은 단가·물류가 관건. 라온젠이 기존 분말·정제 라인과 함께 음료를 검토한다면 150mL·18kcal·당 0g 스펙과 435mg 헤스페리딘 같은 숫자를 전면에 세워야 비교표에서 살아남음."
+    ]
+  },
+  {
+    "id": "glutathione",
+    "name": "리포좀 글루타치온",
+    "tag": "추적관찰",
+    "cat": "이너뷰티",
+    "channels": [
+      "online",
+      "group"
+    ],
+    "channelLabel": "온라인 + 공구",
+    "rank": null,
+    "appeal": "먹는 광채, 필름 한 장으로 끝내는 이너뷰티",
+    "price": "하루틴 리포좀 글루타치온C 필름 30매 34,900원 / 내츄럴플러스 메가 필름 30매 19,710원 / 벤비티 코어 375mg 30매×4 83,900원",
+    "plan": "필름·스틱 등 휴대 제형으로 편의점·드럭스토어까지 채널 확장. 1매 300~1,200원대 가격대를 나눠 저가 필름과 프리미엄 정제를 병행. 비타민C·저분자 콜라겐과 묶어 '한 장 복합'으로.",
+    "caution": "글루타치온은 <strong>미백 기능성이 인정되지 않음</strong>. 실제 유통 제품 중 식품유형이 '고형차'로 신고된 사례가 있어 건기식 오인이 잦음. '리포좀'은 흡수 기술 표현일 뿐 기능성이 아님.",
+    "bg": "이너뷰티 카테고리 자체가 시장을 끌고 있습니다. 건기식 전체 성장률은 0.2%로 멈췄지만 CJ올리브영 이너뷰티 매출은 최근 3년 연평균 110% 늘었고, 단백질 셰이크는 두 해 연속 두 자릿수 후반~세 자릿수 성장을 이어갔습니다(KMJ 2026-11-18). 올리브영은 '올리브베러'와 '프로틴 라이브러리' 매대를 따로 만들었고, 올더베러 구미는 8월 매출이 출시 초기 대비 280% 늘었습니다. 글루타치온은 이 흐름의 초기 축으로, 가격대가 1매 300원대(슈어메디 28매 9,920원)부터 1매 700원대(벤비티 375mg 30매×4 83,900원)까지 8배 차이입니다. 표기 리스크는 그대로 — 미백 기능성은 인정되지 않았고, 고형차로 신고된 제품도 있습니다.",
+    "products": [
+      [
+        "하루틴 리포좀 글루타치온C 필름 30매",
+        "34,900원 (정가 40,000원)",
+        "필름형 1매 1,163원. 같은 브랜드 스틱 29,900원, 리포좀 콜라겐 18,900원 — 제형별 가격 계단이 명확."
+      ],
+      [
+        "내츄럴플러스 메가 리포좀 글루타치온 필름 30매",
+        "19,710원 (정가 21,900원)",
+        "1매 657원. 필름 카테고리의 저가 기준선. 롯데ON 리뷰 7건."
+      ],
+      [
+        "종근당 벤비티 리포좀 글루타치온 코어 375mg 30매×4",
+        "83,900원 (정가 155,600원)",
+        "1매 699원. 브랜드 프리미엄을 얹은 4박스 묶음. 코어 375mg 함량 표기."
+      ],
+      [
+        "여에스더 리포좀 글루타치온 다이렉트 울트라X 30매",
+        "29,000원",
+        "리뷰 999건 이상, 카테고리 24위. 재고 931개로 대량 유통되는 스테디셀러."
+      ]
+    ],
+    "needs": [
+      "피부 개선을 '먹는 것'으로 관리하려는 20~40대 여성. 앰플·세럼 대비 간편함을 가격이 아니라 시간으로 비교.",
+      "정제를 여러 알 먹는 것에 피로. 필름·스틱처럼 '한 장' 제형 선호가 뚜렷.",
+      "미백 효과를 기대하고 산 뒤 체감이 약하다는 후기가 반복 — 기대치 관리가 반품을 좌우.",
+      "편의점·올리브영에서 즉시 사는 소액 구매와, 3~6개월 묶음 구매가 동시에 존재."
+    ],
+    "strategy": [
+      "채널: 편의점·드럭스토어용 소액 단품(1~7매)과 온라인 묶음 상품을 분리. 편의점은 GS25 선례처럼 인플루언서 협업 샷·필름이 유효.",
+      "제형: 필름은 휴대·복용 편의가 강점이지만 1매 단가가 낮아 마진이 얇음. 정제·스틱은 함량(375mg 등)으로 프리미엄을 만들고 필름은 유입용으로.",
+      "B2B·표시: '미백' 카피는 반드시 제거하고, 식품유형(건기식/일반식품/고형차)을 계약 단계에서 확정. 인정 기능성은 저분자 콜라겐 펩타이드(피부 보습) 등 별도 원료로 확보."
+    ]
+  },
+  {
+    "id": "pdrn",
+    "name": "PDRN 콜라겐",
+    "tag": "추적관찰",
+    "cat": "이너뷰티",
+    "channels": [
+      "online",
+      "group"
+    ],
+    "channelLabel": "온라인 + 공구",
+    "rank": null,
+    "appeal": "재생·탄력, 앰플 한 병으로 채우는 피부 컨디션",
+    "price": "바이탈뷰티 슈퍼콜라겐 PDRN 7입 35,100원 · 28입 105,600원 / 동국제약 마시는 PDRN 콜라겐 4000 25ml×14앰플 4박스 103,900원 / 벤비티 PDRN 부스터 14포 15,900원",
+    "plan": "앰플(25ml) 고가 포맷은 선물·공구, 20g 젤리·스틱은 편의점·구독으로 이원화. PDRN 함량·순도와 저분자 콜라겐 펩타이드 함량을 함께 표기해 근거를 만들 것.",
+    "caution": "PDRN은 <strong>건기식 기능성 원료가 아님</strong> — '재생·피부 개선' 표기 불가. 기능성은 저분자 콜라겐 펩타이드 등 인정 원료로 확보해야 하며, 일부 제품은 일반식품이라 기능성 인정 여부를 따져야 함.",
+    "bg": "'콜라겐 다음은 PDRN'이라는 성분 경쟁이 이번 주에도 이어졌습니다. 아모레퍼시픽 바이탈뷰티는 8월 PDRN 100mg + 저분자 콜라겐 6,000mg 이중 제형 '슈퍼콜라겐 PDRN'을 내놓은 데 이어 이달 '슈퍼레티놀 젤리'(10포 18,040~19,600원)로 제형을 넓혔고, 명동 약국에도 입점해 외국인 수요를 겨냥합니다. 올리브영에서는 7입 35,100원(평점 4.9·리뷰 55)이 2주 전 39,000원에서 10% 내렸고(직전 할인가 34,500원), 28입은 105,600~109,500원입니다. 동국제약 센텔리안24는 25ml 앰플 4박스 103,900원으로 앰플 포맷을 유지하고, 종근당 벤비티는 14포 15,900원으로 진입 가격을 낮췄습니다. 다만 먹는 PDRN은 시술·화장품과 같은 효과를 기대하기 어렵고, 일부 제품은 일반식품이어서 기능성 표기 검토가 필요합니다.",
+    "products": [
+      [
+        "바이탈뷰티 슈퍼콜라겐 PDRN 7입",
+        "35,100원 / 7회분 (2주 전 39,000원 → 10%↓)",
+        "PDRN 100mg + 저분자 콜라겐 6,000mg 이중 제형. 올리브영 평점 4.9·리뷰 55. 재고 40개(일 0.6개 소진)."
+      ],
+      [
+        "바이탈뷰티 슈퍼콜라겐 PDRN 28입",
+        "105,600~109,500원 / 28입 (정가 132,000원)",
+        "아모레몰 20~25% 할인. 1회 약 3,770원."
+      ],
+      [
+        "동국제약 센텔리안24 마시는 PDRN 콜라겐 4000",
+        "4박스 103,900원 / 25ml×14앰플",
+        "1병 약 1,855원. 8박스 189,000원 구성. 평점 4.6(리뷰 238). 앰플 대용량 포맷의 대표."
+      ],
+      [
+        "바이탈뷰티 슈퍼레티놀 젤리 10포",
+        "18,040~19,600원 / 10포",
+        "이달 출시한 젤리형. 앰플·정제에서 젤리로 제형을 넓히는 흐름."
+      ],
+      [
+        "종근당 벤비티 PDRN 부스터 14포",
+        "15,900원 (정가 24,900원) / 14포",
+        "1포 1,136원. 이 카테고리 최저 진입 가격대로 신규 고객 유입용."
+      ]
+    ],
+    "needs": [
+      "피부과 시술을 대체하려는 기대. '재생'이라는 단어에 반응하지만 실제 체감 차이를 의심하는 후기가 많음.",
+      "앰플은 마시는 양이 많고 휴대가 무거움 — 20g 젤리·스틱으로 옮겨가는 수요.",
+      "1병 1,800원대 가격에 대한 저항과, 그럼에도 선물·공구로 대량 구매하는 행태가 공존.",
+      "성분 표기(PDRN 함량·순도, 콜라겐 펩타이드 분자량)를 직접 비교하는 소비자가 늘어남."
+    ],
+    "strategy": [
+      "채널: 앰플은 공구·선물세트, 젤리·스틱은 편의점·구독. 같은 브랜드로 두 라인을 운영하되 용량·가격 계단을 명확히.",
+      "표시: PDRN은 기능성이 아니므로 'PDRN 함유'로만 쓰고, 기능성 문구는 저분자 콜라겐 펩타이드의 인정 내용으로 받을 것.",
+      "B2B: 제약사·뷰티 브랜드가 이미 선점한 시장이라 단독 신규 브랜드는 열위. 거래처(약국·홈쇼핑) 자체 PB로 공급하거나 글루타치온·비오틴 복합으로 차별화."
+    ]
+  }
+];
+
+  var cardEl = document.getElementById("cards");
+  var tbodyEl = document.getElementById("tbody");
+  var emptyEl = document.getElementById("empty");
+  var countEl = document.getElementById("count");
+  var qEl = document.getElementById("q");
+  var chipsEl = document.getElementById("chips");
+
+  var state = { ch: "all", q: "" };
+
+  function esc(s){
+    return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  }
+  // caution contains intentional <strong> markup; keep it but escape nothing else
+  function escLoose(s){
+    return String(s);
+  }
+  function tagClass(tag){
+    if (tag === "지정") return "spec";
+    if (tag === "추적관찰") return "watch";
+    return "new";
+  }
+
+  function matches(item){
+    if (state.ch !== "all" && item.channels.indexOf(state.ch) === -1) return false;
+    if (!state.q) return true;
+    var q = state.q.toLowerCase();
+    var hay = [
+      item.name, item.tag, item.cat, item.channelLabel, item.appeal,
+      item.price, item.plan, item.caution, item.bg,
+      item.products.map(function(p){ return p.join(" "); }).join(" "),
+      item.needs.join(" "), item.strategy.join(" "),
+      item.channels.map(function(c){ return CH_LABEL[c] || c; }).join(" ")
+    ].join(" ").toLowerCase();
+    return hay.indexOf(q) !== -1;
+  }
+
+  function renderTable(list){
+    var html = "";
+    list.forEach(function(item){
+      html += '<tr data-id="' + item.id + '">' +
+        '<td class="cell-name" data-label="소재명"><div class="c-name">' + esc(item.name) +
+          '<small>' + esc(item.cat) + '</small>' +
+          '<span class="badge ' + tagClass(item.tag) + '">' + esc(item.tag) + '</span>' +
+          (item.rank === 1 ? '<span class="badge rank">1순위 추천</span>' : '') +
+        '</div></td>' +
+        '<td data-label="구분">' + esc(item.tag) + '</td>' +
+        '<td data-label="핵심 소구">' + esc(item.appeal) + '</td>' +
+        '<td data-label="최적 채널">' + esc(item.channelLabel) + '</td>' +
+        '<td data-label="대표가 / 규격" class="c-price">' + esc(item.price) + '</td>' +
+        '<td data-label="권장 기획 포인트">' + esc(item.plan) + '</td>' +
+        '<td data-label="유의사항" class="c-caution">' + escLoose(item.caution) + '</td>' +
+      '</tr>';
+    });
+    tbodyEl.innerHTML = html;
+  }
+
+  function renderCards(list){
+    var html = "";
+    list.forEach(function(item){
+      html += '<article class="card" data-id="' + item.id + '">' +
+        '<div class="card-head">' +
+          '<div class="card-title"><h3>' + esc(item.name) + '</h3>' +
+            (item.rank ? '<span class="tag rank1">' + (item.rank === 1 ? '1순위 추천' : '우선순위 ' + item.rank) + '</span>' : '') +
+          '</div>' +
+          '<div class="card-meta">' +
+            '<span class="tag ' + tagClass(item.tag) + '">' + esc(item.tag) + '</span>' +
+            '<span class="tag">' + esc(item.cat) + '</span>' +
+            '<span class="tag ch">' + esc(item.channelLabel) + '</span>' +
+          '</div>' +
+        '</div>' +
+        '<div class="card-body">' +
+          '<div class="block"><h4><i>1</i>시장 · 트렌드 배경</h4><p>' + esc(item.bg) + '</p></div>' +
+          '<div class="block"><h4><i>2</i>실제 경쟁제품</h4>' +
+            item.products.map(function(p){
+              return '<div class="prod"><div class="prod-top"><span class="prod-name">' + esc(p[0]) +
+                '</span><span class="prod-price">' + esc(p[1]) + '</span></div>' +
+                '<div class="prod-feat">' + esc(p[2]) + '</div></div>';
+            }).join("") +
+          '</div>' +
+          '<div class="block"><h4><i>3</i>소비자 니즈 · 불만</h4><ul>' +
+            item.needs.map(function(n){ return '<li>' + esc(n) + '</li>'; }).join("") +
+          '</ul></div>' +
+          '<div class="block"><h4><i>4</i>B2B · 온라인 제안 전략</h4><div class="strategy"><ul class="plan-list">' +
+            item.strategy.map(function(s){ return '<li>' + esc(s) + '</li>'; }).join("") +
+          '</ul></div></div>' +
+        '</div>' +
+      '</article>';
+    });
+    cardEl.innerHTML = html;
+  }
+
+  function applyFilters(){
+    var list = DATA.filter(matches);
+    renderTable(list);
+    renderCards(list);
+    countEl.textContent = list.length + " / " + DATA.length;
+    emptyEl.hidden = list.length !== 0;
+    return list;
+  }
+
+  function buildCSV(list){
+    var rows = [["소재명","구분","카테고리","핵심 소구","최적 채널","시중 대표가/규격","권장 기획 포인트","유의사항"]];
+    DATA.forEach(function(item){
+      if (list && list.indexOf(item) === -1) return;
+      rows.push([
+        item.name, item.tag, item.cat, item.appeal, item.channelLabel,
+        item.price,
+        item.plan,
+        item.caution.replace(/<[^>]+>/g, "")
+      ]);
+    });
+    return rows.map(function(r){
+      return r.map(function(c){
+        var s = String(c).replace(/"/g, '""');
+        return '"' + s + '"';
+      }).join(",");
+    }).join("\r\n");
+  }
+
+  function downloadCSV(){
+    var list = DATA.filter(matches);
+    var csv = "\uFEFF" + buildCSV(list);
+    var a = document.createElement("a");
+    a.href = "data:text/csv;charset=utf-8," + encodeURIComponent(csv);
+    a.download = "라온젠_건기식_시장조사_2026-11-4주차.csv";
+    a.style.display = "none";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  }
+
+  /* events */
+  chipsEl.addEventListener("click", function(e){
+    var btn = e.target.closest ? e.target.closest(".chip") : null;
+    if (!btn) return;
+    state.ch = btn.getAttribute("data-ch");
+    Array.prototype.forEach.call(chipsEl.querySelectorAll(".chip"), function(c){
+      c.setAttribute("aria-pressed", c === btn ? "true" : "false");
+    });
+    applyFilters();
+  });
+
+  var timer = null;
+  qEl.addEventListener("input", function(){
+    var v = qEl.value;
+    if (timer) clearTimeout(timer);
+    timer = setTimeout(function(){
+      state.q = v.trim();
+      applyFilters();
+    }, 120);
+  });
+
+  document.getElementById("btnPrint").addEventListener("click", function(){ window.print(); });
+  document.getElementById("btnCsv").addEventListener("click", downloadCSV);
+
+  /* expose for verification */
+  window.__dash = {
+    DATA: DATA,
+    state: state,
+    applyFilters: applyFilters,
+    buildCSV: buildCSV,
+    matches: matches
+  };
+
+  applyFilters();
+})();
+</script>
+<script>
+(function(){
+  "use strict";
+
+  /* ================= 주차 전환 ================= */
+  var META = {
+    w4: {week:"(2026년 11월 4주차)",
+         sub:"2026년 11월 4주차 (11.23 ~ 11.29) · 조사 기준일 2026-11-23 · 실제 웹 검색으로 확인된 자료만 수록",
+         title:"라온젠 · 더존케이 주간 건기식 시장조사 대시보드 (2026년 11월 4주차)"},
+    w3: {week:"(2026년 11월 3주차 · 백업)",
+         sub:"2026년 11월 3주차 (11.16 ~ 11.22) 백업 아카이브 · 조사 기준일 2026-11-21 · 당시 판본 요약 보관",
+         title:"라온젠 · 더존케이 주간 건기식 시장조사 대시보드 (2026년 11월 3주차 · 백업)"}
+  };
+
+  function setWeek(key, scroll){
+    Array.prototype.forEach.call(document.querySelectorAll(".wktab"), function(b){
+      b.setAttribute("aria-pressed", b.getAttribute("data-week") === key ? "true" : "false");
+    });
+    ["w3","w4"].forEach(function(k){
+      var v = document.getElementById("view-" + k);
+      if (v) v.hidden = (k !== key);
+    });
+    var m = META[key] || META.w4;
+    var hw = document.getElementById("heroWeek"); if (hw) hw.textContent = m.week;
+    var hs = document.getElementById("heroSub");  if (hs) hs.textContent = m.sub;
+    document.title = m.title;
+    var act = document.querySelector(".hero .actions");
+    if (act) act.style.display = (key === "w4") ? "" : "none";
+    if (scroll) window.scrollTo(0, 0);
+  }
+  Array.prototype.forEach.call(document.querySelectorAll(".wktab"), function(b){
+    b.addEventListener("click", function(){ setWeek(b.getAttribute("data-week"), true); });
+  });
+
+  /* ================= 주차별 검색량 추이 =================
+     값: 네이버 데이터랩 검색어트렌드(통합검색·PC+모바일·주간, 2026-08-03~11-22 조회, 2026-11-23)
+     상대지수(조회 기간 내 최다 주 = 100). 실제 검색 횟수 아님. */
+  var WK = [
+    {short:"10월 4주차", range:"10.26~11.1",  x:"10/26"},
+    {short:"11월 1주차", range:"11.2~11.8",   x:"11/2"},
+    {short:"11월 2주차", range:"11.9~11.15",  x:"11/9"},
+    {short:"11월 3주차", range:"11.16~11.22", x:"11/16"},
+    {short:"11월 4주차", range:"11.23~",       x:"11/23", pending:true}
+  ];
+  var SERIES = [
+    {name:"삼백초",    terms:"삼백초+삼백초추출물", color:"#0f766e", ymax:90,  d:1, vals:[76.42, 68.59, 78.27, 68.74, null]},
+    {name:"여주 효소", terms:"여주효소",            color:"#b45309", ymax:4,   d:2, vals:[2.57, 3.54, 2.30, 1.85, null]},
+    {name:"마그네슘",  terms:"마그네슘",            color:"#1d4ed8", ymax:105, d:1, vals:[99.09, 95.02, 94.03, 90.50, null]},
+    {name:"상어간유",  terms:"상어간유",            color:"#b91c1c", ymax:0.1, d:3, vals:[0.056, 0.017, 0.040, 0.079, null]}
+  ];
+
+  function strip0(s){ return s.replace(/(\.\d*?)0+$/, "$1").replace(/\.$/, ""); }
+
+  function panel(s){
+    var W=252, H=178, padL=36, padR=14, padT=28, padB=34;
+    var iw=W-padL-padR, ih=H-padT-padB, n=WK.length;
+    function X(k){ return padL + iw*k/(n-1); }
+    function Y(v){ return padT + ih*(1 - v/s.ymax); }
+    var g = "";
+    [0, 0.5, 1].forEach(function(t){
+      var y = Y(s.ymax*t);
+      g += '<line x1="'+padL+'" y1="'+y.toFixed(1)+'" x2="'+(W-padR)+'" y2="'+y.toFixed(1)+'" stroke="#eef1f4" stroke-width="1"/>';
+      g += '<text x="'+(padL-6)+'" y="'+(y+3.4).toFixed(1)+'" text-anchor="end" font-size="9.5" fill="#9aa4b2">'+strip0((s.ymax*t).toFixed(3))+'</text>';
+    });
+    g += '<line x1="'+X(n-1).toFixed(1)+'" y1="'+padT+'" x2="'+X(n-1).toFixed(1)+'" y2="'+(padT+ih)+'" stroke="#d1d5db" stroke-width="1" stroke-dasharray="3 3"/>';
+    var pts = [];
+    s.vals.forEach(function(v,k){ if (v != null) pts.push(X(k).toFixed(1)+","+Y(v).toFixed(1)); });
+    g += '<polyline fill="none" stroke="'+s.color+'" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" points="'+pts.join(" ")+'"/>';
+    s.vals.forEach(function(v,k){
+      if (v == null) return;
+      var x=X(k), y=Y(v);
+      g += '<circle cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="3.2" fill="#fff" stroke="'+s.color+'" stroke-width="2"/>';
+      g += '<text x="'+x.toFixed(1)+'" y="'+(y-9).toFixed(1)+'" text-anchor="middle" font-size="10.6" font-weight="700" fill="'+s.color+'">'+v.toFixed(s.d)+'</text>';
+    });
+    WK.forEach(function(w,k){
+      g += '<text x="'+X(k).toFixed(1)+'" y="'+(H-14)+'" text-anchor="middle" font-size="9.5" fill="'+(w.pending?"#b0b7c3":"#6b7280")+'">'+w.x+'</text>';
+    });
+    g += '<text x="'+X(n-1).toFixed(1)+'" y="'+(H-3)+'" text-anchor="middle" font-size="8.8" fill="#b0b7c3">집계 전</text>';
+    return '<div class="tpanel">'+
+      '<div class="tp-head"><span class="tp-dot" style="background:'+s.color+'"></span><b>'+s.name+'</b><span class="tp-terms">'+s.terms+'</span></div>'+
+      '<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="'+s.name+' 주차별 검색 지수">'+g+'</svg>'+
+      '<div class="tp-foot">주간 지수 · 세로축 0~'+strip0(String(s.ymax))+'</div>'+
+    '</div>';
+  }
+
+  function diffCell(v, prev, d){
+    if (prev == null) return "";
+    var diff = v - prev;
+    if (Math.abs(diff) < Math.pow(10, -d)/2) return '';
+    var cls = diff > 0 ? "d-up" : "d-down";
+    var mark = diff > 0 ? "▲" : "▼";
+    return '<span class="'+cls+'">'+mark+Math.abs(diff).toFixed(d)+'</span>';
+  }
+
+  function renderTrend(){
+    var grid = document.getElementById("trendGrid");
+    var tb = document.getElementById("trendTbody");
+    if (!grid || !tb) return;
+    grid.innerHTML = SERIES.map(panel).join("");
+    tb.innerHTML = WK.map(function(w,k){
+      var cells = SERIES.map(function(s){
+        var v = s.vals[k];
+        if (v == null) return '<td class="pending" data-label="'+s.name+'">집계 전</td>';
+        return '<td data-label="'+s.name+'"><span class="num">'+v.toFixed(s.d)+'</span>'+
+               diffCell(v, k > 0 ? s.vals[k-1] : null, s.d)+'</td>';
+      }).join("");
+      return '<tr><td class="cell-name" data-label="주차"><div class="c-name">'+w.short+'<small>'+w.range+'</small></div></td>'+cells+'</tr>';
+    }).join("");
+  }
+
+  renderTrend();
+  setWeek("w4", false);
+
+  window.__week = { setWeek:setWeek, SERIES:SERIES, WK:WK, render:renderTrend };
+})();
+</script>
+</body>
+</html>
