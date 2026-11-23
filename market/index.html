@@ -420,7 +420,7 @@
         </div>
       </div>
 
-      <div class="kpis">
+      <div class="kpis" id="kpisW4">
         <div class="kpi">
           <div class="kpi-label">조사 소재 수</div>
           <div class="kpi-value">10<span class="u">종</span></div>
@@ -440,6 +440,29 @@
           <div class="kpi-label">추천 타깃 채널</div>
           <div class="kpi-value">홈쇼핑 + 약국</div>
           <div class="kpi-sub">마그네슘 액상은 홈쇼핑, 코케어는 약국부터</div>
+        </div>
+      </div>
+
+      <div class="kpis" id="kpisW3" hidden>
+        <div class="kpi">
+          <div class="kpi-label">3주차 조사 소재</div>
+          <div class="kpi-value">7<span class="u">종</span></div>
+          <div class="kpi-sub">지정 4종 + 신규 발굴 3종</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">마그네슘 최저가</div>
+          <div class="kpi-value">14,900원<span class="u">/30회분</span></div>
+          <div class="kpi-sub">바이오하임 분말 스틱 · 1포 497원</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">그 주 핫 소재</div>
+          <div class="kpi-value">파로·카무트 효소</div>
+          <div class="kpi-sub">그레인온 11,410원(역대 최저)~23,490원</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">규제 갈림길</div>
+          <div class="kpi-value">여주 효소 vs 미숙여주</div>
+          <div class="kpi-sub">표기 이름에 따라 일반식품·건기식</div>
         </div>
       </div>
     </div>
@@ -1586,6 +1609,9 @@
     document.title = m.title;
     var act = document.querySelector(".hero .actions");
     if (act) act.style.display = (key === "w4") ? "" : "none";
+    var k4 = document.getElementById("kpisW4"), k3 = document.getElementById("kpisW3");
+    if (k4) k4.hidden = (key !== "w4");
+    if (k3) k3.hidden = (key !== "w3");
     if (scroll) window.scrollTo(0, 0);
   }
   Array.prototype.forEach.call(document.querySelectorAll(".wktab"), function(b){
@@ -1632,7 +1658,8 @@
       g += '<circle cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="3.2" fill="#fff" stroke="'+s.color+'" stroke-width="2"/>';
       var anchor = (k === 0) ? "start" : "middle";
       var lx = (k === 0) ? x + 1 : x;
-      g += '<text x="'+lx.toFixed(1)+'" y="'+(y-9).toFixed(1)+'" text-anchor="'+anchor+'" font-size="10.6" font-weight="700" fill="'+s.color+'">'+v.toFixed(s.d)+'</text>';
+      var ly = (k === 0 && v / s.ymax >= 0.8) ? y + 14 : y - 9;
+      g += '<text x="'+lx.toFixed(1)+'" y="'+ly.toFixed(1)+'" text-anchor="'+anchor+'" font-size="10.6" font-weight="700" fill="'+s.color+'">'+v.toFixed(s.d)+'</text>';
     });
     WK.forEach(function(w,k){
       g += '<text x="'+X(k).toFixed(1)+'" y="'+(H-14)+'" text-anchor="middle" font-size="9.5" fill="'+(w.pending?"#b0b7c3":"#6b7280")+'">'+w.x+'</text>';
