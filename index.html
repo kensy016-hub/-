@@ -334,10 +334,62 @@ if(!STORE_OK)$('#lsWarn').hidden=false;
 $('#dt').value=D.dt;$('#rnd').value=rnd;
 $('#dt').onchange=function(e){D.dt=e.target.value||D.dt;upd();};
 $('#rst').onclick=async function(){if(await cf('새 문서를 시작합니다. 저장하지 않은 입력값은 사라집니다. 계속할까요?')){try{localStorage.removeItem('csim');}catch(e){}location.hash='';location.reload();}};
-var hf=function(p){return p.ha?p.ha+(p.hu||'mg')+'*'+(p.hn==null?1:p.hn)+'회*'+(p.hd==null?1:p.hd)+'일':'';};
 // 1회 섭취 수량 (몇 정·포): 기본 1, 0 이하는 1로 본다
 var dnOf=function(p){var v=Number(p.dn);return (isFinite(v)&&v>0)?v:1;};
-var mo=function(p){var d={'1일 1회':1,'1일 2회':2,'1일 3회':3,'주 1회':1/7}[p.cy];if(!d||!p.q)return'';var m=p.q/(d*dnOf(p)*30);return' ('+(Number.isInteger(m)?m:Math.round(m*10)/10)+'개월)';};
+// 숫자 표기: 소수 1자리까지, 정수는 그대로 (예: 30 → 30, 22.5 → 22.5, 1000 → 1,000)
+var num1=function(v){var n=Math.round(Number(v)*10)/10;return isFinite(n)?n.toLocaleString('ko-KR'):'0';};
+// 규격(1일 N회 · 1회 M정 · 총 Q정) → 하루 섭취량·복용 일수·개월수 (한 달 = 30일)
+// 우측 칸(복용 기간·함량 계산)이 좌측 규격을 그대로 따라가도록 계산을 이 한 곳에 모은다.
+var specOf=function(p){
+  var dn=dnOf(p), q=Number(p.q)||0;
+  var per={'1일 1회':1,'1일 2회':2,'1일 3회':3}[p.cy];
+  var o={ok:false,per:per||null,hy:null,days:null,months:null,hn:1,hd:1,unit:'일',weeks:false};
+  if(p.cy==='주 1회'){
+    o.weeks=true;o.unit='주';
+    if(q>0){o.hd=q/dn;o.days=o.hd*7;o.months=o.days/30;o.ok=true;}
+    return o;
+  }
+  if(!per){o.unit='회';return o;}                        // 1회 용
+  if(!(q>0))return o;
+  o.hy=per*dn; o.hn=per; o.days=q/o.hy; o.months=o.days/30; o.hd=o.days; o.ok=true;
+  return o;
+};
+// 복용 기간 문구: '30일분 · 1개월', '15일분 · 보름(0.5개월)', '60일분 · 2개월'
+var periodOf=function(p){
+  var s=specOf(p);
+  if(p.cy==='1회 용')return '1회분';
+  if(!s.ok)return '';
+  var m=Math.round(s.months*10)/10;
+  var lab=Math.abs(m-0.5)<0.0001?'보름(0.5개월)':(m>=0.1?num1(m)+'개월':'');
+  return num1(s.days)+'일분'+(lab?' · '+lab:'');
+};
+// 규격 요약 문구: '1일 2회 × 2정 · 하루 4정 / 총 60정'
+var specMain=function(p){
+  var s=specOf(p), dn=dnOf(p), u=p.u||'정';
+  var t=(p.cy==='1회 용')?('1회 용 · '+dn+u):(p.cy+' × '+dn+u);
+  if(s.hy!=null)t+=' · 하루 '+num1(s.hy)+u;
+  return t+' / 총 '+(Number(p.q)||0)+u;
+};
+// 1일(1주) 함량·총 함량: '1일 1,000mg · 총 15,000mg'
+var hfSum=function(p){
+  var s=specOf(p); if(!p.ha||!s.ok)return '';
+  var u=p.hu||'mg', per=Number(p.ha)*s.hn, tot=per*s.hd;
+  return (s.weeks?'1주 ':'1일 ')+num1(per)+u+' · 총 '+num1(tot)+u;
+};
+// 함량 규격 문구 (견적서·CSV): 함량 mg × N회 × 복용 D일(주 1회는 W주)
+var hf=function(p){
+  if(!p.ha)return '';
+  var s=specOf(p), u=p.hu||'mg';
+  if(p.cy==='1회 용')return p.ha+u+' × 1회';
+  if(!s.ok)return '';
+  return p.ha+u+' × '+s.hn+'회 × '+num1(s.hd)+(s.weeks?'주':'일');
+};
+// 우측 칸에 표시할 회/일·단위 (규격이 미완성이면 '–')
+var hnTxt=function(p){var s=specOf(p);return s.ok?String(s.hn):'–';};
+var hdTxt=function(p){var s=specOf(p);return s.ok?num1(s.hd):'–';};
+var hduTxt=function(p){var s=specOf(p);return s.ok?(s.weeks?'주':'일'):'';};
+// 예전 호출부 호환용 (규격·개월수 문구)
+var mo=function(p){var t=periodOf(p);return t?' ('+t+')':'';};
 var esc=function(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});};
 // 브랜드 수수료율 빠른선택: 10%~20% 1% 단위 (기본 15%). 범위 밖 값은 '직접'으로 표시하고 옆 칸에 그대로 유지
 var FOPTS=Array.from({length:11},function(_,k){return k+10;});
@@ -374,7 +426,7 @@ function build(){
     return '<td><div style="display:flex;flex-direction:column;gap:4px"><select data-i="'+i+'" data-k="cy" style="width:100%">'+['1일 1회','1일 2회','1일 3회','주 1회','1회 용'].map(function(o){return '<option '+(o===p.cy?'selected':'')+'>'+o+'</option>';}).join('')+'</select>'+
     '<div class="row" style="flex-wrap:wrap;gap:8px"><span style="display:inline-flex;align-items:center;gap:2px;white-space:nowrap;flex:none"><span class="mut" style="font-size:12px;line-height:1">×</span><input type="number" data-i="'+i+'" data-k="dn" value="'+dnOf(p)+'" min="1" step="1" title="1회 섭취 수량 (몇 정·몇 포)" style="width:38px;flex:none;min-width:0"><span id="dnu'+i+'" style="font-size:11px">'+esc(p.u||'정')+'</span></span>'+
     '<span style="display:inline-flex;align-items:center;gap:2px;white-space:nowrap;flex:none"><span class="mut" style="font-size:11px">총</span><input type="number" data-i="'+i+'" data-k="q" value="'+(p.q===0?'':p.q)+'" min="1" style="width:44px;flex:none;min-width:0"><select data-i="'+i+'" data-k="u" style="width:48px;flex:none;min-width:0">'+['포','정','캡슐','병','개','박스'].map(function(o){return '<option '+(o===p.u?'selected':'')+'>'+o+'</option>';}).join('')+'</select></span></div></div></td>'+
-    '<td class="mut"><div id="sp'+i+'"></div><div class="row hf" style="flex-wrap:wrap;justify-content:center;margin-top:6px"><input type="number" data-i="'+i+'" data-k="ha" value="'+(p.ha==null?'':p.ha)+'" placeholder="함량" style="width:52px"><select data-i="'+i+'" data-k="hu" style="width:52px">'+['mg','g','mcg','IU','ml'].map(function(o){return '<option '+(o===(p.hu||'mg')?'selected':'')+'>'+o+'</option>';}).join('')+'</select>×<input type="number" data-i="'+i+'" data-k="hn" value="'+(p.hn==null?1:p.hn)+'" min="1" style="width:36px">회×<input type="number" data-i="'+i+'" data-k="hd" value="'+(p.hd==null?1:p.hd)+'" min="1" style="width:36px">일</div><div class="hfx" id="hf'+i+'"></div></td>';
+    '<td class="mut"><div id="sp'+i+'"></div><div id="pr'+i+'" style="margin-top:4px;font-weight:800;color:var(--blue);font-size:12.5px"></div><div class="row hf" style="flex-wrap:wrap;justify-content:center;margin-top:6px"><input type="number" data-i="'+i+'" data-k="ha" value="'+(p.ha==null?'':p.ha)+'" placeholder="함량" style="width:52px"><select data-i="'+i+'" data-k="hu" style="width:52px">'+['mg','g','mcg','IU','ml'].map(function(o){return '<option '+(o===(p.hu||'mg')?'selected':'')+'>'+o+'</option>';}).join('')+'</select>×<b id="hn'+i+'" style="font-size:12.5px;font-weight:800;color:var(--ink)">'+hnTxt(p)+'</b>회 × <b id="hd'+i+'" style="font-size:12.5px;font-weight:800;color:var(--ink)">'+hdTxt(p)+'</b><span id="hdu'+i+'">'+hduTxt(p)+'</span></div><div class="hfx" id="hf'+i+'"></div></td>';
   });
   h+=row('개당 원가 (VAT별도) [직접입력]',function(p,i){return sp(inp(i,'c','num'));});
   h+=row('부가세 포함 원가 (참고)',function(p,i){return '<td class="mut">VAT 포함 (+10%)</td><td class="n" id="vat'+i+'" style="font-size:12.5px;color:var(--mut)"></td>';});
@@ -453,9 +505,13 @@ function upd(){
   var S=function(id,txt){var el=document.getElementById(id);if(el)el.textContent=txt;};
   P.forEach(function(p,i){
     var t=C.totals(p),bi=C.baseInfo(p,mode),e=C.economics(p,mode,baseRate,rnd);
-    S('sp'+i,p.cy+' '+dnOf(p)+p.u+' / 총 '+p.q+p.u+mo(p));
+    S('sp'+i,specMain(p));
+    S('pr'+i,periodOf(p));
+    S('hn'+i,hnTxt(p));
+    S('hd'+i,hdTxt(p));
+    S('hdu'+i,hduTxt(p));
     S('dnu'+i,p.u||'정');
-    S('hf'+i,hf(p));
+    S('hf'+i,hfSum(p));
     S('vat'+i,W(C.vatInc(p)));
     var shipEl=document.getElementById('ship'+i);
     if(shipEl)shipEl.innerHTML=t.ship==null?'계산 불가':W(t.ship)+'<small class="alt">VAT별도 '+W(t.ship/1.1)+'</small>';
