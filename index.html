@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>제품개발 손익 시뮬레이터 v2</title><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="손익시뮬"><meta name="theme-color" content="#14213d">
+<title>제품개발 손익 시뮬레이터 v2.1 · 2026-11-24</title><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="손익시뮬"><meta name="theme-color" content="#14213d">
 <style>
 :root{--bg:#f1f4f8;--card:#fff;--ink:#14213d;--mut:#64748b;--line:#d9e0ea;--head:#14213d;--headink:#fff;--sub:#e8eef6;--in:#fff6c2;--inink:#14213d;--ok:#0a8f62;--cost:#1e3a6e;--blue:#2563eb;--warn:#c62828;--sel:#eef6ff;--keybg:#fff1f2;--keyink:#c62828;--keyline:#f87171;
 box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
@@ -61,6 +61,7 @@ ul.f{margin:0;padding-left:16px;color:var(--mut);font-size:12.5px}ul.f li{margin
 .chips{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px;align-items:center}.chips b{margin-right:6px}.chips button{border:1px solid var(--line);background:var(--card);border-radius:14px;padding:4px 9px;cursor:pointer;font-size:12.5px}.chips button.on{background:var(--blue);color:#fff;border-color:var(--blue);font-weight:700}
 .hf input,.hf select{min-width:0;padding:5px 4px}.hfx:not(:empty){margin-top:6px;background:var(--sel);color:var(--blue);font-weight:800;border-radius:4px;padding:4px 8px}
 .tt{font-size:20px;font-weight:800}.hl{background:var(--blue);color:#fff;border-radius:4px;padding:2px 8px;margin-left:4px;white-space:nowrap}
+.vbadge{display:inline-block;font-size:11.5px;font-weight:800;background:#2563eb;color:#fff;border-radius:4px;padding:3px 8px;margin-left:8px;vertical-align:middle;white-space:nowrap;letter-spacing:.2px}
 .cs .card{padding:8px 10px}.cs .card span{min-height:0;line-height:1.25;font-size:13.5px;font-weight:700}.cs .card b{font-size:16.5px;margin-top:2px}.cs .card em{margin-top:0;font-size:10.5px;line-height:1.2}
 .cs{align-items:start}@media(max-width:1100px){.card.ci{grid-column:1/-1}}
 .card table.cit{min-width:0;width:100%;margin-top:4px;border-collapse:collapse;font-size:10.5px;font-variant-numeric:tabular-nums}
@@ -139,7 +140,7 @@ aside .rb div.t{font-size:12.5px}
   tr{page-break-inside:avoid}
 }
 </style></head><body>
-<header><div><h1>제품개발 손익 및 공급가 시뮬레이션 대시보드</h1><p>규격·개발비·추가비용·MOQ·브랜드 수수료·채널 비용을 넣으면 원가율별 공급가와 공헌이익이 바로 계산됩니다 (모든 금액은 부가세 포함(VAT 포함) 기준)</p></div>
+<header><div><h1>제품개발 손익 및 공급가 시뮬레이션 대시보드<span class="vbadge">v2.1 · 2026-11-24</span></h1><p>규격·개발비·추가비용·MOQ·브랜드 수수료·채널 비용을 넣으면 원가율별 공급가와 공헌이익이 바로 계산됩니다 (원가는 부가세 별도(VAT별도)로 입력 · 손익·공급가는 부가세 포함(VAT 포함) 기준)</p></div>
 <div class="btns"><span class="b" id="dtw">기준일자 <input type="date" id="dt"></span><span class="b" id="docno"></span><button class="b" id="rst">새 문서</button><button class="b blue" id="sv">저장</button><button class="b" id="ld">불러오기</button><button class="b blue" id="add">+ 신규 제품 추가</button><button class="b" id="exp">JSON 백업</button><button class="b" id="impb">JSON 가져오기</button><button class="b" id="shr">공유 링크</button><button class="b green" id="csv" title="엑셀에서 바로 열 수 있게 구분·제품별 값/참고 열로 정리해 내보냅니다">엑셀(CSV)</button><button class="b" onclick="print()">견적서 인쇄/PDF</button></div></header>
 <input type="file" id="impf" accept="application/json,.json" style="display:none">
 <div class="warnbar" id="lsWarn" hidden>이 브라우저에서는 자동 저장이 차단되어 있습니다(시크릿 모드·저장 공간 부족 등). 창을 닫으면 입력값이 사라지니 <b>JSON 백업</b>으로 보관해 주세요.</div>
@@ -155,10 +156,11 @@ aside .rb div.t{font-size:12.5px}
 <aside><div class="box"><h3>판매원가율별 수익 구조</h3><div id="rb"></div><div class="lg"><span class="c">원가(기준)</span><span class="pf">단위당 수익금</span></div></div>
 <div class="box"><h3>적용 산출 공식</h3><ul class="f">
 <li><b>손익 기준</b> : 매출·원가·수익금·공헌이익·영업이익은 모두 <b>부가세 포함(VAT 포함)</b> 기준입니다. 부가세는 손익에 넣지 않고 참고로 '부가세 납부액'으로만 표시합니다.</li>
-<li><b>VAT별도 원가(참고)</b> = 원가 ÷ 1.1</li>
+<li><b>원가 입력</b> : 개당 원가는 <b>부가세 별도(VAT별도)</b> 금액으로 입력합니다.</li>
+<li><b>부가세 포함 원가(참고)</b> = 입력 원가(VAT별도) × 1.1 — 아래 손익 계산은 모두 이 VAT 포함 원가를 기준으로 합니다.</li>
 <li><b>VAT별도 공급가(참고)</b> = 공급가 ÷ 1.1</li>
 <li><b>부가세 납부액(참고)</b> = (공급가 − 원가) ÷ 11 — 매출 부가세(VAT 포함 매출의 1/11)에서 매입 부가세(VAT 포함 원가의 1/11)를 뺀 차액</li>
-<li><b>브랜드 수수료 — 원가 마크업형(현행)</b> : 출하원가 = 원가 ÷ (1 − 수수료%). 수수료를 우리 원가에 얹어 판매가에 반영하므로, 판매가에서 수수료를 또 빼지 않습니다(부담 주체는 우리 쪽).</li>
+<li><b>브랜드 수수료 — 원가 마크업형(현행)</b> : 출하원가 = (부가세 포함 원가) ÷ (1 − 수수료%). 수수료를 우리 원가에 얹어 판매가에 반영하므로, 판매가에서 수수료를 또 빼지 않습니다(부담 주체는 우리 쪽).</li>
 <li><b>브랜드 수수료 — 판매가 기준형</b> : 공급가 = 원가 ÷ (1 − 수수료% − 원가율%). 브랜드사가 판매가의 수수료%를 가져가므로 수익금 = 공급가 − 원가 − 공급가×수수료%.<br><span style="font-size:11.5px">※ 이 방식에서 원가율 칸은 '수익÷판매가' 목표로 계산됩니다(수익이 0이 되는 지점이 1−수수료−원가율).</span></li>
 <li><b>권장 공급가</b> = 기준원가 ÷ 판매원가율 (끝수 처리 반영) · <b>수익금</b> = 공급가 − 기준원가 (− 수수료, 판매가 기준형)</li>
 <li><b>공헌이익</b> = 공급가 − 원가 − 브랜드수수료 − 채널수수료 − 배송비 − 광고비 − 반품·불량 손실 − 관리비(예상)<br><span style="font-size:11.5px">(채널 수수료 = 공급가×채널%, 광고비 = 공급가×광고%, 반품손실 = 공급가×반품률, 관리비 = 공급가×관리비율(기본 10%))</span></li>
@@ -191,8 +193,10 @@ var CSIMCORE=(function(){
     if(unit==='900')return v<=900?900:Math.ceil((v-900)/1000)*1000+900;
     return Math.round(v);
   }
-  function cost(p){return N(p.c);}            // 개당 원가 (VAT 포함)
-  function vatEx(p){return N(p.c)/1.1;}       // 참고: 부가세 별도 원가 (원가 ÷ 1.1)
+  // p.c = 개당 원가 입력값 (부가세 별도, VAT별도). 내부 손익·공급가는 VAT 포함 기준으로 환산해 계산한다.
+  function vatEx(p){return N(p.c);}           // 입력값 그대로: 개당 원가 (VAT별도)
+  function vatInc(p){return N(p.c)*1.1;}      // 참고 표시: 부가세 포함 원가 (VAT별도 × 1.1)
+  function cost(p){return vatInc(p);}         // 내부 계산 기준: 개당 원가 (VAT 포함)
   // 브랜드 반영 출하원가 (VAT 포함). 브랜드 X면 원가 그대로
   function shipOf(p){
     var c=cost(p); if(!p.b)return c; var f=N(p.f);
@@ -203,7 +207,7 @@ var CSIMCORE=(function(){
     var c=cost(p), m=N(p.m), sh=shipOf(p), d=N(p.d), e=N(p.e);
     var tm = sh==null?null:sh*m+d+e;
     var tp = c*m+d+e;
-    return {vatEx:vatEx(p),ship:sh,totalMarkup:tm,totalPlain:tp,
+    return {vatEx:vatEx(p),vatInc:vatInc(p),ship:sh,totalMarkup:tm,totalPlain:tp,
       unitMarkup:(tm==null||!(m>0))?null:tm/m, unitPlain:m>0?tp/m:null, m:m};
   }
   // 판매가 계산 기준 원가
@@ -287,7 +291,7 @@ var CSIMCORE=(function(){
       mgmt:mgmt,mgRate:mgRate,
       vatEx:price/1.1,vatPay:(price-cost(p))/11};
   }
-  return {N:N,roundPrice:roundPrice,cost:cost,vatEx:vatEx,shipOf:shipOf,totals:totals,
+  return {N:N,roundPrice:roundPrice,cost:cost,vatEx:vatEx,vatInc:vatInc,shipOf:shipOf,totals:totals,
     baseInfo:baseInfo,priceAt:priceAt,economics:economics,bep:bep,reverseAt:reverseAt};
 })();
 /*CORE-END*/
@@ -301,17 +305,19 @@ function onePct(v){return v==null?'-':one(v)+'%';}
 var C=CSIMCORE;
 var CH={'':{n:'직접입력',r:0},'coupang':{n:'쿠팡',r:11},'naver':{n:'네이버',r:5},'kakao':{n:'카카오',r:5},'kurly':{n:'컬리',r:25},'ssg':{n:'SSG',r:12},'homeshop':{n:'홈쇼핑',r:25},'tmon':{n:'티몬',r:12},'spoon':{n:'스펀몰',r:15},'etc':{n:'기타',r:0}};
 function today(){return new Date(Date.now()-new Date().getTimezoneOffset()*6e4).toISOString().slice(0,10);}
-function mk(o){var d={n:'',mi:'',sb:'',ha:'',hu:'mg',hn:1,hd:1,cy:'1일 1회',q:0,u:'포',c:0,b:0,f:15,m:1000,d:0,e:0,em:'',dr:'',nt:'',bs:'markup',ch:'',cr:0,ds:0,ad:0,rt:0,mg:10};for(var k in o){if(o[k]!==undefined)d[k]=o[k];}return d;}
-var P=[mk({q:26,c:2760,nt:'시뮬레이션 기본 예시',em:'부자재 추가',d:500000}),mk({q:30,c:500,b:1,nt:'브랜드 수수료 15% 적용',em:'시험검사비',d:500000,e:100000,dr:48})];
+function mk(o){var d={n:'',mi:'',sb:'',ha:'',hu:'mg',hn:1,hd:1,cy:'1일 1회',dn:1,q:0,u:'포',c:0,b:0,f:15,m:1000,d:0,e:0,em:'',dr:'',nt:'',bs:'markup',ch:'',cr:0,ds:0,ad:0,rt:0,mg:10};for(var k in o){if(o[k]!==undefined)d[k]=o[k];}return d;}
+var P=[mk({q:26,c:2500,nt:'시뮬레이션 기본 예시 (원가 VAT별도)',em:'부자재 추가',d:500000}),mk({q:30,c:450,b:1,nt:'브랜드 수수료 15% 적용 (원가 VAT별도)',em:'시험검사비',d:500000,e:100000,dr:48})];
 var mode='ship',cur=0,rnd='none',baseRate=35;
 var D={no:'',dt:today()},DOCS=[];
 var STORE_OK=true;
 try{localStorage.setItem('__csim_t','1');localStorage.removeItem('__csim_t');}catch(e){STORE_OK=false;}
 var hashLoaded=false;
-function st(){return {v:2,P:P,mode:mode,R:R,D:{no:D.no,dt:D.dt},rnd:rnd,baseRate:baseRate};}
+function st(){return {v:3,P:P,mode:mode,R:R,D:{no:D.no,dt:D.dt},rnd:rnd,baseRate:baseRate};}
 function applyState(s){
   if(!s)return;
   if(s.P&&s.P.length)P=s.P.map(function(p){return mk(p);});
+  // v3 이전 문서는 개당 원가를 'VAT포함'으로 입력했음 → 같은 금액 의미가 유지되도록 'VAT별도'로 환산(÷1.1)
+  if(!(Number(s.v)>=3))P.forEach(function(p){var c0=Number(p.c)||0;if(c0>0)p.c=Math.round(c0/1.1);});
   mode=(s.mode==='unit')?'unit':'ship';
   if(s.R&&s.R.length)R=s.R.slice();
   if(s.D){D={no:s.D.no||'',dt:s.D.dt||today()};}else{D={no:'',dt:D.dt};}
@@ -329,7 +335,9 @@ $('#dt').value=D.dt;$('#rnd').value=rnd;
 $('#dt').onchange=function(e){D.dt=e.target.value||D.dt;upd();};
 $('#rst').onclick=async function(){if(await cf('새 문서를 시작합니다. 저장하지 않은 입력값은 사라집니다. 계속할까요?')){try{localStorage.removeItem('csim');}catch(e){}location.hash='';location.reload();}};
 var hf=function(p){return p.ha?p.ha+(p.hu||'mg')+'*'+(p.hn==null?1:p.hn)+'회*'+(p.hd==null?1:p.hd)+'일':'';};
-var mo=function(p){var d={'1일 1회':1,'1일 2회':2,'1일 3회':3,'주 1회':1/7}[p.cy];if(!d||!p.q)return'';var m=p.q/(d*30);return' ('+(Number.isInteger(m)?m:Math.round(m*10)/10)+'개월)';};
+// 1회 섭취 수량 (몇 정·포): 기본 1, 0 이하는 1로 본다
+var dnOf=function(p){var v=Number(p.dn);return (isFinite(v)&&v>0)?v:1;};
+var mo=function(p){var d={'1일 1회':1,'1일 2회':2,'1일 3회':3,'주 1회':1/7}[p.cy];if(!d||!p.q)return'';var m=p.q/(d*dnOf(p)*30);return' ('+(Number.isInteger(m)?m:Math.round(m*10)/10)+'개월)';};
 var esc=function(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});};
 // 브랜드 수수료율 빠른선택: 10%~20% 1% 단위 (기본 15%). 범위 밖 값은 '직접'으로 표시하고 옆 칸에 그대로 유지
 var FOPTS=Array.from({length:11},function(_,k){return k+10;});
@@ -362,13 +370,14 @@ function build(){
   var step=function(i,k,d,lab){return '<div class="row"><button class="mini" data-a="st" data-i="'+i+'" data-k="'+k+'" data-d="'+(-d)+'">-'+lab+'</button>'+inp(i,k,'num')+'<button class="mini" data-a="st" data-i="'+i+'" data-k="'+k+'" data-d="'+d+'">+'+lab+'</button></div>';};
   h+=row('제품명',function(p,i){return sp(inp(i,'n','text','placeholder="제품명을 입력하세요"'));});
   h+=row('성분 (주성분 / 부성분)',function(p,i){return '<td><textarea rows="2" placeholder="주성분" data-i="'+i+'" data-k="mi">'+esc(p.mi)+'</textarea></td><td><textarea rows="2" placeholder="부성분" data-i="'+i+'" data-k="sb">'+esc(p.sb)+'</textarea></td>';});
-  h+=row('규격 (섭취주기 / 수량 / 단위)',function(p,i){
+  h+=row('규격 (섭취주기 / 1회 섭취량 / 총 수량 / 단위)',function(p,i){
     return '<td><div class="row" style="flex-wrap:wrap"><select data-i="'+i+'" data-k="cy" style="flex:1;min-width:70px;width:auto">'+['1일 1회','1일 2회','1일 3회','주 1회','1회 용'].map(function(o){return '<option '+(o===p.cy?'selected':'')+'>'+o+'</option>';}).join('')+'</select>'+
-    '<input type="number" data-i="'+i+'" data-k="q" value="'+(p.q===0?'':p.q)+'" min="1" style="width:42px;flex:none;min-width:0"><select data-i="'+i+'" data-k="u" style="width:48px;flex:none;min-width:0">'+['포','정','캡슐','병','개','박스'].map(function(o){return '<option '+(o===p.u?'selected':'')+'>'+o+'</option>';}).join('')+'</select></div></td>'+
+    '<span class="mut" style="font-size:11px;white-space:nowrap">1회</span><input type="number" data-i="'+i+'" data-k="dn" value="'+dnOf(p)+'" min="1" step="1" title="1회 섭취 수량 (몇 정·몇 포)" style="width:36px;flex:none;min-width:0"><span id="dnu'+i+'" style="font-size:11px;white-space:nowrap">'+esc(p.u||'정')+'</span>'+
+    '<span class="mut" style="font-size:11px;white-space:nowrap">총</span><input type="number" data-i="'+i+'" data-k="q" value="'+(p.q===0?'':p.q)+'" min="1" style="width:42px;flex:none;min-width:0"><select data-i="'+i+'" data-k="u" style="width:48px;flex:none;min-width:0">'+['포','정','캡슐','병','개','박스'].map(function(o){return '<option '+(o===p.u?'selected':'')+'>'+o+'</option>';}).join('')+'</select></div></td>'+
     '<td class="mut"><div id="sp'+i+'"></div><div class="row hf" style="flex-wrap:wrap;justify-content:center;margin-top:6px"><input type="number" data-i="'+i+'" data-k="ha" value="'+(p.ha==null?'':p.ha)+'" placeholder="함량" style="width:52px"><select data-i="'+i+'" data-k="hu" style="width:52px">'+['mg','g','mcg','IU','ml'].map(function(o){return '<option '+(o===(p.hu||'mg')?'selected':'')+'>'+o+'</option>';}).join('')+'</select>×<input type="number" data-i="'+i+'" data-k="hn" value="'+(p.hn==null?1:p.hn)+'" min="1" style="width:36px">회×<input type="number" data-i="'+i+'" data-k="hd" value="'+(p.hd==null?1:p.hd)+'" min="1" style="width:36px">일</div><div class="hfx" id="hf'+i+'"></div></td>';
   });
-  h+=row('개당 원가 (VAT포함) [직접입력]',function(p,i){return sp(inp(i,'c','num'));});
-  h+=row('부가세 별도 원가 (참고)',function(p,i){return '<td class="mut">VAT 별도</td><td class="n" id="vat'+i+'" style="font-size:12.5px;color:var(--mut)"></td>';});
+  h+=row('개당 원가 (VAT별도) [직접입력]',function(p,i){return sp(inp(i,'c','num'));});
+  h+=row('부가세 포함 원가 (참고)',function(p,i){return '<td class="mut">VAT 포함 (+10%)</td><td class="n" id="vat'+i+'" style="font-size:12.5px;color:var(--mut)"></td>';});
   h+=row('브랜드 (O/X, 수수료율)',function(p,i){
     return '<td><div class="row"><button class="ox '+(p.b?'on':'')+'" data-a="br" data-i="'+i+'" data-v="1">O</button><button class="ox x '+(p.b?'':'on')+'" data-a="br" data-i="'+i+'" data-v="0">X</button></div></td><td>'+feeCell(p,i)+'</td>';
   });
@@ -444,9 +453,10 @@ function upd(){
   var S=function(id,txt){var el=document.getElementById(id);if(el)el.textContent=txt;};
   P.forEach(function(p,i){
     var t=C.totals(p),bi=C.baseInfo(p,mode),e=C.economics(p,mode,baseRate,rnd);
-    S('sp'+i,p.cy+' / '+p.q+p.u+mo(p));
+    S('sp'+i,p.cy+' '+dnOf(p)+p.u+' / 총 '+p.q+p.u+mo(p));
+    S('dnu'+i,p.u||'정');
     S('hf'+i,hf(p));
-    S('vat'+i,W(C.vatEx(p)));
+    S('vat'+i,W(C.vatInc(p)));
     var shipEl=document.getElementById('ship'+i);
     if(shipEl)shipEl.innerHTML=t.ship==null?'계산 불가':W(t.ship)+'<small class="alt">VAT별도 '+W(t.ship/1.1)+'</small>';
     S('base'+i,bi.ok?'계산 기준 '+W(bi.base):bi.reason);
@@ -471,7 +481,7 @@ function upd(){
     if(cs){
       var vxTag=function(v){return (v==null||!isFinite(Number(v)))?'':' · VAT별도 '+W(Number(v)/1.1);};
       var cards=[
-        ['원가 (VAT포함)',W(C.cost(p)),'VAT별도 '+W(C.vatEx(p))],
+        ['원가 (VAT별도)',W(C.vatEx(p)),'VAT포함 '+W(C.vatInc(p))],
         ['브랜드 반영 출하원가 (VAT포함)',t.ship==null?'-':W(t.ship),(p.b?('수수료 '+one(p.f)+'% · '+(p.bs==='margin'?'판매가 기준':'원가 마크업')):'브랜드 X')+vxTag(t.ship)],
         ['생산 원가 합계 (출하원가×MOQ)',t.ship==null?'-':W(t.ship*t.m),'MOQ '+nf(p.m)+'개'+vxTag(t.ship==null?null:t.ship*t.m)],
         ['기타비용 포함 총합계',t.totalMarkup==null?'-':W(t.totalMarkup),'개발비 '+W(p.d)+' · 추가 '+W(p.e)+vxTag(t.totalMarkup)],
@@ -613,7 +623,7 @@ function quoteHTML(){
   return '<h2>공급가 제안서</h2><p class="qsub">주식회사 라온젠</p>'+
     '<div class="qmeta"><span>문서번호 : '+esc(D.no||'미저장')+'</span><span>기준일자 : '+esc(D.dt)+'</span><span>판매원가율 : '+baseRate+'% · '+(mode==='ship'?'출하원가 기준':'개발비 포함 개당원가 기준')+'</span></div>'+
     '<table><thead><tr><th>No</th><th>제품명</th><th>규격</th><th>성분</th><th>MOQ</th><th>공급가(VAT 포함)</th><th>단위당 수익</th><th>비고</th></tr></thead><tbody>'+rows+'</tbody></table>'+
-    '<div class="qfoot">※ 공급가는 부가세 포함(VAT 포함) 기준입니다. VAT별도 금액은 공급가 ÷ 1.1입니다.<br>※ 상기 단가는 MOQ 기준 권장 공급가로 실제 협의에 따라 달라질 수 있습니다.<br>※ 개발비·추가비용은 별도 협의 대상입니다.</div>'+
+    '<div class="qfoot">※ 공급가는 부가세 포함(VAT 포함) 기준입니다. VAT별도 금액은 공급가 ÷ 1.1입니다.<br>※ 상기 단가는 MOQ 기준 권장 공급가로 실제 협의에 따라 달라질 수 있습니다.<br>※ 개발비·추가비용은 별도 협의 대상입니다.<br>※ 산출 기준: 시뮬레이터 v2.1 (2026-11-24) — 원가 VAT별도 입력값을 ×1.1 환산해 계산.</div>'+
     '<div class="qsign">주식회사 라온젠 (인)</div>';
 }
 document.addEventListener('input',function(e){
@@ -672,7 +682,7 @@ $('#csv').onclick=function(){
   var row=function(l,f){line([l].concat(cols(function(p,i,j){var r=f(p,i)||['',''];return r[j];})));};
   var BE=function(p){return C.economics(p,mode,baseRate,rnd);};
   var rndLabel={'none':'원단위(반올림)','10':'10원','100':'100원','500':'500원','900':'900원 끝수'}[rnd]||rnd;
-  line(['제품개발 손익 및 공급가 시뮬레이션 (모든 금액은 부가세 포함(VAT 포함) 기준)']);
+  line(['제품개발 손익 및 공급가 시뮬레이션 v2.1 (2026-11-24) — 원가 입력은 부가세 별도(VAT별도), 손익·공급가는 부가세 포함(VAT 포함) 기준']);
   L.push([]);
   line(['구분'].concat(cols(function(p,i,j){return (i+1)+'번 제품 '+(j?'참고':'값');})));
   sec('문서 정보');
@@ -682,14 +692,15 @@ $('#csv').onclick=function(){
   line(['끝수 처리',rndLabel]);
   line(['기준 원가율',baseRate+'%']);
   line(['제품 수',P.length+'개']);
-  sec('1. 제품 기본 정보 & 원가 (VAT포함)');
+  sec('1. 제품 기본 정보 & 원가 (원가 입력 VAT별도 · 손익 VAT포함)');
   row('제품명',function(p){return [p.n,'']; });
   row('주성분',function(p){return [p.mi,''];});
   row('부성분',function(p){return [p.sb,''];});
   row('함량규격',function(p){return [hf(p),''];});
-  row('규격(섭취주기/수량)',function(p){return [p.cy+' / '+p.q+p.u+mo(p),''];});
-  row('개당원가(VAT포함)',function(p){return [N(p.c),''];});
-  row('부가세별도원가(참고)',function(p){return [N(C.vatEx(p)),'']; });
+  row('규격(섭취주기/수량)',function(p){return [p.cy+' '+dnOf(p)+p.u+' / 총 '+p.q+p.u+mo(p),''];});
+  row('1회 섭취 수량',function(p){return [dnOf(p)+p.u,p.cy];});
+  row('개당원가(VAT별도)',function(p){return [N(p.c),''];});
+  row('부가세포함원가(참고)',function(p){return [N(C.vatInc(p)),'']; });
   row('브랜드 적용',function(p){return [p.b?'O':'X',p.b?'수수료 '+one(p.f)+'%':'브랜드 수수료 없음'];});
   row('브랜드 수수료율(%)',function(p){return [N(p.f),'']; });
   row('브랜드 수수료 정산방식',function(p){return [p.bs==='margin'?'판매가 기준형':'원가 마크업형',''];});
@@ -729,10 +740,11 @@ $('#csv').onclick=function(){
   row('비고',function(p){return [p.nt,'']; });
   L.push([]);
   line(['※ 모든 금액은 부가세 포함(VAT 포함) 기준이며, VAT별도 금액은 ÷1.1로 계산했습니다. 값 열은 엑셀에서 숫자로 인식됩니다.']);
+  line(['※ 개당원가(VAT별도)는 입력값 그대로이며, 손익 계산에는 ×1.1 한 부가세 포함 원가를 사용했습니다.']);
   line(['※ 수익금 = 공급가 − 원가 / 공헌이익 = 수익금 − 브랜드·채널 수수료 − 배송비 − 광고비 − 반품손실 − 관리비 / 영업이익 = 공헌이익 − 개발비·추가비용(개당)']);
   var txt=L.map(function(r){return r.slice(0,width).map(q).join(',');}).join('\r\n');
   var b=new Blob(['\ufeff'+txt],{type:'text/csv;charset=utf-8'});
-  var a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='제품개발_손익_공급가_시뮬레이션_v2.csv';a.click();
+  var a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='제품개발_손익_공급가_시뮬레이션_v2.1_2026-11-24.csv';a.click();
 };
 function toast(m){var t=$('#toast');t.textContent=m;t.style.opacity=1;clearTimeout(toast.t);toast.t=setTimeout(function(){t.style.opacity=0;},2800);}
 var cf=function(m){return new Promise(function(r){var d=$('#cfd');$('#cm').textContent=m;d.onclose=function(){r(d.returnValue==='ok');};d.showModal();});};
