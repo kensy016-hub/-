@@ -626,6 +626,7 @@ document.addEventListener('input',function(e){
     var c=0,q=0;while(q<t.value.length&&c<n){if(/[\d.]/.test(t.value[q]))c++;q++}t.setSelectionRange(q,q);
   }else P[i][k]=t.type==='number'?(t.value===''?'':+t.value):t.value;
   if(k==='n'){var op=document.querySelector('#sel option[value="'+i+'"]');if(op)op.textContent=(i+1)+'번 '+(t.value||'제품명 미입력');}
+  if(k==='f'){var fs=document.querySelector('select[data-i="'+i+'"][data-k="fs"]');if(fs){var fv=Number(P[i][k]);fs.value=(FOPTS.indexOf(fv)>=0?String(fv):'custom');}}
   upd();
 });
 document.addEventListener('change',function(e){
