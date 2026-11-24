@@ -54,7 +54,10 @@ nav button small{display:none}
     for(var i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);return new TextDecoder('utf-8').decode(u);};
   var f1=document.getElementById('f1'),f2=document.getElementById('f2'),f3=document.getElementById('f3'),
       btns=[].slice.call(document.querySelectorAll('#nav button')),cur=1,
-      f2ready=false,pend=2;
+      f2ready=false,pend=2,
+      _h=(location.hash||'').replace('#',''),
+      shared=null;
+  if(_h.indexOf('d=')===0){try{shared=JSON.parse(decodeURIComponent(atob(_h.slice(2))));}catch(e){shared=null;}}
   f1.srcdoc=dec(document.getElementById('src1').textContent);
   f2.srcdoc=dec(document.getElementById('src2').textContent);
   f3.srcdoc=dec(document.getElementById('src3').textContent);
@@ -71,8 +74,22 @@ nav button small{display:none}
     f2.classList.toggle('on',n===2||n===3);
     f3.classList.toggle('on',n===4);
     if(n===2||n===3){pend=n===3?'m':'p';innerTab(pend);}
-    try{history.replaceState(null,'','#'+n);}catch(e){}
+    if(!shared){try{history.replaceState(null,'','#'+n);}catch(e){}}
   }
+  // 1번 탭의 '공유 링크'는 iframe 안에서 about:srcdoc 주소를 만들기 때문에
+  // 실제 페이지 주소(이 통합본 URL)로 링크를 만들도록 바꿔 끼운다. 공유 링크를 열면 그 값을 1번 탭에 복원한다.
+  f1.addEventListener('load',function(){
+    try{
+      var w=f1.contentWindow,d=w.document,b=d.getElementById('shr');
+      if(b)b.onclick=async function(){
+        var url=location.href.split('#')[0]+'#d='+w.btoa(encodeURIComponent(JSON.stringify(w.st())));
+        try{await w.navigator.clipboard.writeText(url);w.toast('공유 링크를 복사했습니다');}
+        catch(e){d.getElementById('shurl').value=url;try{d.getElementById('shd').showModal();}catch(_){}}
+        if(url.length>8000)w.toast('링크가 깁니다('+w.nf(url.length)+'자). 메신저에 따라 잘릴 수 있으니 JSON 백업도 함께 보관하세요');
+      };
+      if(shared)try{w.applyState(shared);w.build();w.toast('공유 링크의 입력값을 불러왔습니다');}catch(e){}
+    }catch(e){}
+  });
   btns.forEach(function(b){b.addEventListener('click',function(){show(+b.dataset.tab);});});
 
   f2.addEventListener('load',function(){
