@@ -37,9 +37,9 @@ nav button.on b{background:#14213d}
 #stage{position:relative;flex:1 1 auto;min-height:0;background:#f1f4f8}
 iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:none;background:#fff}
 iframe.on{display:block}
-@media (max-width:900px){nav{gap:8px}nav button{font-size:15.5px;gap:9px;padding:11px 11px}}
-/* 좁은 화면: 2x2 그리드로 4개 탭을 크게 분리 */
-@media (max-width:768px){
+@media (max-width:1100px){nav{gap:8px}nav button{font-size:15.5px;gap:9px;padding:11px 11px}}
+/* 좁은 화면(태블릿·모바일 900px 이하): 2x2 그리드로 4개 탭을 크게 분리 */
+@media (max-width:900px){
  header{padding:8px 9px 0}
  nav{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;padding-bottom:9px}
  nav button{flex-direction:column;align-items:flex-start;justify-content:center;gap:7px;
