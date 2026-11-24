@@ -331,11 +331,13 @@ $('#rst').onclick=async function(){if(await cf('새 문서를 시작합니다. �
 var hf=function(p){return p.ha?p.ha+(p.hu||'mg')+'*'+(p.hn==null?1:p.hn)+'회*'+(p.hd==null?1:p.hd)+'일':'';};
 var mo=function(p){var d={'1일 1회':1,'1일 2회':2,'1일 3회':3,'주 1회':1/7}[p.cy];if(!d||!p.q)return'';var m=p.q/(d*30);return' ('+(Number.isInteger(m)?m:Math.round(m*10)/10)+'개월)';};
 var esc=function(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});};
-var FOPTS=Array.from({length:30},function(_,k){return k+1;});
+// 브랜드 수수료율 빠른선택: 10%~20% 1% 단위 (기본 15%). 범위 밖 값은 '직접'으로 표시하고 옆 칸에 그대로 유지
+var FOPTS=Array.from({length:11},function(_,k){return k+10;});
 function isMobile(){return window.innerWidth<=700;}
 function feeCell(p,i){
-  var v=Number(p.f),custom=FOPTS.indexOf(v)<0,dis=p.b?'':'disabled';
-  return '<div class="row"><select data-i="'+i+'" data-k="fs" style="width:auto;min-width:58px" '+dis+'>'+
+  var v=Number(p.f);if(!isFinite(v))v=15;
+  var custom=FOPTS.indexOf(v)<0,dis=p.b?'':'disabled';
+  return '<div class="row"><select data-i="'+i+'" data-k="fs" title="10~20% 1% 단위 (기본 15%) · 범위 밖은 직접입력" style="width:auto;min-width:58px" '+dis+'>'+
     FOPTS.map(function(o){return '<option value="'+o+'" '+(v===o?'selected':'')+'>'+o+'%</option>';}).join('')+
     '<option value="custom" '+(custom?'selected':'')+'>직접</option></select>'+
     '<input type="text" inputmode="decimal" class="nm keyin" data-i="'+i+'" data-k="f" value="'+Number(v).toLocaleString('ko-KR',{maximumFractionDigits:2})+'" style="width:44px" '+dis+'><span style="font-size:12px">%</span></div>';
