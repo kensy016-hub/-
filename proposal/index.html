@@ -205,14 +205,19 @@ main.main{flex:1;min-width:0;padding:14px 16px 40px}
   border-radius:7px;padding:5px 9px;min-width:0}
 .m-tbl .row span{font-size:9.5px;color:var(--muted);font-weight:800;flex:0 0 auto}
 .m-tbl .row b{font-size:11px;font-weight:800;text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.m-feat{flex:0 0 auto;border:1px solid #e6edf6;border-radius:9px;padding:10px 12px 6px;background:#fcfdff}
+.m-feat{flex:1 1 auto;min-height:0;border:1px solid #e6edf6;border-radius:9px;padding:10px 12px 4px;background:#fcfdff;display:flex;flex-direction:column}
 .m-feat h4{font-size:10px;font-weight:800;color:var(--navy);letter-spacing:.2px;margin-bottom:6px;display:flex;align-items:center;gap:6px}
 .m-feat h4:after{content:"";flex:1;height:1px;background:#e6edf6}
-.m-feat ul{margin:0;padding:0;list-style:none}
-.m-feat li{position:relative;font-size:13px;line-height:1.55;color:#33445c;padding:9px 0 9px 16px;border-bottom:1px dashed #e8eef6}
+.m-feat ul{margin:0;padding:0;list-style:none;flex:1 1 auto;display:flex;flex-direction:column;min-height:0}
+.m-feat li{position:relative;flex:1 1 0;min-height:0;font-size:13px;line-height:1.5;color:#33445c;padding:4px 0 4px 16px;border-bottom:1px dashed #e8eef6;display:flex;align-items:center}
 .m-feat li:last-child{border-bottom:0}
-.m-feat li:before{content:"";position:absolute;left:2px;top:13px;width:6px;height:6px;border-radius:50%;background:var(--gold)}
+.m-feat li:before{content:"";position:absolute;left:2px;top:50%;margin-top:-3px;width:6px;height:6px;border-radius:50%;background:var(--gold)}
 .m-terms{display:flex;align-items:center;gap:6px;font-size:10px;color:#6b7c93;font-weight:700;background:#f7f9fc;border:1px dashed #d9e3ee;border-radius:7px;padding:6px 9px;flex:0 0 auto;margin-top:auto}
+.m-cond{flex:0 0 auto;border:1px solid #e6edf6;border-radius:9px;background:#fbfcfe;padding:8px 12px 4px}
+.m-cond h4{font-size:10px;font-weight:800;color:var(--navy);letter-spacing:.2px;margin-bottom:2px}
+.m-cond .row{display:flex;justify-content:space-between;align-items:baseline;gap:8px;padding:4px 0;border-top:1px dashed #eaf0f7;font-size:10.5px}
+.m-cond .row span{color:var(--muted);font-weight:800}
+.m-cond .row b{font-weight:800;color:var(--ink)}
 .m-terms b{color:var(--navy);font-weight:800}
 .s-note{margin:7px 34px 0;font-size:10px;color:#41516a;border-left:3px solid var(--gold);padding:1px 0 1px 8px;line-height:1.4;flex:0 0 auto}
 .s-foot{flex:0 0 auto;margin-top:auto;display:flex;justify-content:space-between;align-items:center;padding:5px 34px 8px;font-size:9px;color:#9aa8b9}
@@ -1300,7 +1305,13 @@ function slideHTML(it, idx, total, f) {
           <div class="row"><span>브랜드</span><b>${esc(p.brand || '-')}</b></div>
         </div>
         <div class="m-feat"><h4>제품 포인트</h4><ul>${points.map(t => `<li>${esc(t)}</li>`).join('')}</ul></div>
-        <div class="m-terms">납품 <b>1카톤 ${p.carton ? p.carton + '개' : '별도 확인'}</b> · 공급가 <b>VAT 별도</b> · 견적 유효 <b>제안일로부터 30일</b></div>
+        <div class="m-cond">
+          <h4>거래 조건</h4>
+          <div class="row"><span>납품 단위</span><b>1카톤 ${p.carton ? p.carton + '개' : '별도 확인'}</b></div>
+          <div class="row"><span>공급가 기준</span><b>부가세(VAT) 별도</b></div>
+          <div class="row"><span>견적 유효</span><b>제안일로부터 30일</b></div>
+          <div class="row"><span>결제 조건</span><b>별도 협의</b></div>
+        </div>
       </div>
     </div>
     ${note ? `<div class="s-note">${note}</div>` : ''}
@@ -1639,17 +1650,20 @@ function exportPPTX() {
         s.addText(sp[1], { x: bx + X(96), y: by + X(5), w: X(172), h: X(18), fontFace: F, fontSize: 8, bold: true, color: INK, align: 'right', fit: 'shrink', valign: 'middle' });
       });
       // 제품 포인트
-      s.addShape(pptx.ShapeType.rect, { x: RX, y: X(247), w: RW, h: X(288), fill: { color: 'FCFDFF' }, line: { color: 'E6EDF6' } });
+      s.addShape(pptx.ShapeType.rect, { x: RX, y: X(247), w: RW, h: X(176), fill: { color: 'FCFDFF' }, line: { color: 'E6EDF6' } });
       s.addText('제품 포인트', { x: RX + X(9), y: X(253), w: 3, h: X(15), fontFace: F, fontSize: 7.5, bold: true, color: NAVY });
       const pts = ((p.points && p.points.length) ? p.points : (p.feats || ['제품 상세 정보는 별도 문의 바랍니다.'])).slice(0, 5);
       s.addText(pts.map(t => ({ text: t, options: { bullet: { code: '25CF' }, breakLine: true } })),
-        { x: RX + X(9), y: X(268), w: RW - X(18), h: X(258), fontFace: F, fontSize: 9.5, color: '33445C', lineSpacingMultiple: 1.9, fit: 'shrink', valign: 'middle' });
+        { x: RX + X(9), y: X(266), w: RW - X(18), h: X(150), fontFace: F, fontSize: 9, color: '33445C', lineSpacingMultiple: 1.55, fit: 'shrink', valign: 'top' });
       // 약관
-      s.addShape(pptx.ShapeType.rect, { x: RX, y: X(542), w: RW, h: X(26), fill: { color: 'F7F9FC' }, line: { color: 'D9E3EE', dashType: 'dash' } });
-      s.addText([{ text: '납품 ', options: { color: MUTED } }, { text: '1카톤 ' + (p.carton ? p.carton + '개' : '별도 확인'), options: { bold: true, color: NAVY } },
-                 { text: ' · 공급가 ', options: { color: MUTED } }, { text: 'VAT 별도', options: { bold: true, color: NAVY } },
-                 { text: ' · 견적 유효 ', options: { color: MUTED } }, { text: '제안일로부터 30일', options: { bold: true, color: NAVY } }],
-        { x: RX + X(9), y: X(546), w: RW - X(18), h: X(18), fontFace: F, fontSize: 7, valign: 'middle' });
+      s.addShape(pptx.ShapeType.rect, { x: RX, y: X(432), w: RW, h: X(103), fill: { color: 'FBFCFE' }, line: { color: 'E6EDF6' } });
+      s.addText('거래 조건', { x: RX + X(9), y: X(437), w: 3, h: X(14), fontFace: F, fontSize: 7.5, bold: true, color: NAVY });
+      [['납품 단위', '1카톤 ' + (p.carton ? p.carton + '개' : '별도 확인')], ['공급가 기준', '부가세(VAT) 별도'], ['견적 유효', '제안일로부터 30일'], ['결제 조건', '별도 협의']].forEach((r, ri) => {
+        const ry = X(454) + ri * X(19);
+        s.addText(r[0], { x: RX + X(9), y: ry, w: X(120), h: X(16), fontFace: F, fontSize: 7, bold: true, color: MUTED, valign: 'middle' });
+        s.addText(r[1], { x: RX + X(330), y: ry, w: RW - X(339), h: X(16), fontFace: F, fontSize: 7, bold: true, color: INK, align: 'right', valign: 'middle' });
+        if (ri) s.addShape(pptx.ShapeType.line, { x: RX + X(9), y: ry, w: RW - X(18), h: 0, line: { color: 'EAF0F7', width: 0.5 } });
+      });
       // 비고/바닥
       const footNote = it.note ? '비고 · ' + it.note : (f.memo ? '거래 조건 · ' + f.memo : '');
       if (footNote) s.addText(footNote, { x: X(34), y: X(578), w: X(900), h: X(16), fontFace: F, fontSize: 7, color: '41516A' });
