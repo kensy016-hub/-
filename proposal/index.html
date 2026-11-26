@@ -262,8 +262,10 @@ dialog::backdrop{background:rgba(16,26,42,.5)}
   .folders{margin-top:10px}
   main.main{padding:12px 12px 34px}
   .newbox .row{grid-template-columns:1fr}
-  .folders{flex-direction:row;flex-wrap:wrap;gap:6px}
-  .fitem{flex:1 1 100%}
+  .folders{flex-direction:row;flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;gap:6px;padding-bottom:5px}
+  .fitem{flex:0 0 auto;min-width:168px;max-width:76vw}
+  .fmain{padding:7px 9px}
+  .fmain .fname{font-size:12.5px}
   #newbox{display:none}
   #newbox.open{display:block}
   .only-mobile{display:inline-flex}
