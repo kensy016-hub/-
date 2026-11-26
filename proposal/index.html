@@ -247,10 +247,12 @@ dialog::backdrop{background:rgba(16,26,42,.5)}
   .sellist{max-height:none}
 }
 @media (max-width:880px){
-  header.top{padding:10px 12px;gap:8px}
-  header.top h1{font-size:15px;width:100%}
-  header.top h1 span{display:block;margin:2px 0 0;font-size:10.5px}
-  header.top .right{margin-left:0;width:100%;justify-content:space-between}
+  header.top{padding:8px 12px;gap:8px;flex-wrap:nowrap}
+  header.top h1{font-size:14.5px;flex:1;min-width:0;letter-spacing:-.5px;line-height:1.25}
+  header.top h1 span{display:block;margin:1px 0 0;font-size:9.5px;letter-spacing:0}
+  header.top .right{margin-left:auto;width:auto;flex:0 0 auto}
+  #saveState{display:none}
+  header.top .btn.sm{padding:6px 9px;font-size:11.5px}
   .app{display:block}
   aside.side{position:static;width:auto;max-height:none;border-right:0;border-bottom:1px solid var(--line);padding:12px}
   main.main{padding:12px 12px 34px}
@@ -1255,7 +1257,10 @@ function setTab(tab) {
   if (tab === 'view') renderPreview();
   if (window.innerWidth <= 880) {
     const el = tab === 'view' ? $('#viewView') : $('#pickView');
-    if (el) setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'start' }), 40);
+    if (el) setTimeout(() => {
+      const off = ($('header.top').offsetHeight || 0) + 8;
+      window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - off, behavior: 'smooth' });
+    }, 40);
   } else {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
