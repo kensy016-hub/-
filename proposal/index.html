@@ -916,6 +916,7 @@ const $ = (s, r) => (r || document).querySelector(s);
 const $$ = (s, r) => Array.from((r || document).querySelectorAll(s));
 const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const won = n => (n === null || n === undefined || n === '' || isNaN(n)) ? '-' : Math.round(Number(n)).toLocaleString('ko-KR') + '원';
+const r0 = v => (v === null || v === undefined || v === '' || isNaN(Number(v))) ? null : Math.round(Number(v));
 const numOrNull = v => (v === '' || v === null || v === undefined || isNaN(Number(v))) ? null : Math.round(Number(v) * 100) / 100;
 const today = () => { const d = new Date(); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); };
 const uid = p => p + Math.random().toString(36).slice(2, 8) + Date.now().toString(36).slice(-4);
@@ -1113,7 +1114,7 @@ function toggleProduct(pid) {
   if (idx >= 0) f.items.splice(idx, 1);
   else {
     const p = byId(pid);
-    f.items.push({ pid, supply: p ? p.supply : null, retail: p ? p.retail : null, note: '' });
+    f.items.push({ pid, supply: p ? r0(p.supply) : null, retail: p ? r0(p.retail) : null, note: '' });
   }
   save(); renderAll();
 }
@@ -1558,9 +1559,9 @@ function addCustomProduct(fd) {
     name,
     spec: String(fd.get('spec') || '').trim(),
     carton: String(fd.get('carton') || '').replace(/[^0-9]/g, ''),
-    supply: numOrNull(fd.get('supply')),
-    retail: numOrNull(fd.get('retail')),
-    online: numOrNull(fd.get('online')),
+    supply: r0(fd.get('supply')),
+    retail: r0(fd.get('retail')),
+    online: r0(fd.get('online')),
     feats: String(fd.get('feats') || '').split('\n').map(s => s.trim()).filter(Boolean),
     img: ''
   };
@@ -1660,7 +1661,7 @@ function bind() {
     const f = curFolder(); if (!f) return;
     const have = new Set(f.items.map(i => i.pid));
     let add = 0;
-    filteredProducts().forEach(p => { if (!have.has(p.id)) { f.items.push({ pid: p.id, supply: p.supply, retail: p.retail, note: '' }); add++; } });
+    filteredProducts().forEach(p => { if (!have.has(p.id)) { f.items.push({ pid: p.id, supply: r0(p.supply), retail: r0(p.retail), note: '' }); add++; } });
     save(); renderAll(); toast(add ? add + '개 제품을 담았습니다' : '이미 모두 담겨 있습니다');
   });
   $('#noneBtn').addEventListener('click', () => {
