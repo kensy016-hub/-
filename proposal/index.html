@@ -174,15 +174,15 @@ main.main{flex:1;min-width:0;padding:14px 16px 40px}
 .s-spec .row{display:flex;align-items:baseline;justify-content:space-between;gap:8px;background:#f7f9fc;border:1px solid #e6edf6;border-radius:7px;padding:5px 9px}
 .s-spec .row span{font-size:10px;color:var(--muted);font-weight:700;flex:0 0 auto}
 .s-spec .row b{font-size:11.5px;font-weight:800;text-align:right}
-.s-info{min-width:0}
+.s-info{min-width:0;display:flex;flex-direction:column;gap:9px}
 .s-func{display:flex;gap:7px;align-items:flex-start;background:#f0f6f2;border:1px solid #d6e8dd;border-radius:9px;padding:8px 10px}
 .s-func i{font-style:normal;font-size:9.5px;font-weight:800;color:#fff;background:var(--green);border-radius:4px;padding:2px 5px;flex:0 0 auto;margin-top:1px}
 .s-func b{font-size:12px;font-weight:800;color:#204f3b;line-height:1.4}
-.s-feat{margin-top:9px}
+.s-feat{margin-top:0;flex:1 1 auto;min-height:0}
 .s-feat h4{font-size:10px;font-weight:800;color:var(--navy);letter-spacing:.3px;margin-bottom:5px;display:flex;align-items:center;gap:6px}
 .s-feat h4:after{content:"";flex:1;height:1px;background:#e6edf6}
 .s-feat ul{margin:0;padding:0;list-style:none}
-.s-feat li{position:relative;font-size:11.5px;line-height:1.42;color:#33445c;padding-left:13px;margin-bottom:4px}
+.s-feat li{position:relative;font-size:12px;line-height:1.5;color:#33445c;padding-left:13px;margin-bottom:5px}
 .s-feat li:before{content:"";position:absolute;left:2px;top:5px;width:5px;height:5px;border-radius:50%;background:var(--gold)}
 .s-price{background:linear-gradient(180deg,#f7fafe,#eef4fb);border:1px solid #d8e4f1;border-radius:12px;padding:12px 13px;align-self:start}
 .s-price .pc{margin-bottom:9px}
@@ -198,10 +198,12 @@ main.main{flex:1;min-width:0;padding:14px 16px 40px}
 .kp .im img{width:100%;height:100%;object-fit:cover;object-position:top center;display:block}
 .kp .cap{padding:4px 9px;font-size:9.5px;font-weight:800;color:#5b6c82;background:#f2f6fb;border-top:1px solid #e8eff7;flex:0 0 auto;display:flex;justify-content:space-between;gap:6px}
 .kp .cap em{font-style:normal;color:#9aa8b9;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:60%}
-.kp.txt{padding:10px 12px;justify-content:center;gap:6px;background:#f7fafd}
+.kp.txt{padding:13px 13px;justify-content:flex-start;gap:5px;background:#f8fbfe;border-top:3px solid #dfe9f4}
 .kp.txt .no{font-size:9.5px;font-weight:800;color:var(--gold);letter-spacing:1.2px}
-.kp.txt b{font-size:11.5px;font-weight:800;color:var(--navy);line-height:1.35}
+.kp.txt b{font-size:13px;font-weight:800;color:var(--navy);line-height:1.4}
 .kp.txt p{margin:0;font-size:10.5px;color:#5b6c82;line-height:1.45}
+.s-terms{margin-top:auto;display:flex;align-items:center;gap:6px;font-size:10px;color:#6b7c93;font-weight:700;background:#f7f9fc;border:1px dashed #d9e3ee;border-radius:7px;padding:6px 9px}
+.s-terms b{color:var(--navy);font-weight:800}
 .s-note{margin:8px 38px 0;font-size:10.5px;color:#41516a;border-left:3px solid var(--gold);padding:1px 0 1px 9px;line-height:1.4;flex:0 0 auto}
 .s-foot{flex:0 0 auto;margin-top:auto;display:flex;justify-content:space-between;align-items:center;padding:5px 38px 9px;font-size:9.5px;color:#9aa8b9}
 .s-foot .bar{height:1px;flex:1;background:#eef2f7;margin:0 12px}
@@ -1200,7 +1202,7 @@ function slideHTML(it, idx, total, f) {
   let cells = kps.map((src, i) => `<div class="kp"><div class="im"><img src="${src}" alt=""></div>
       <div class="cap"><span>상세페이지 키포인트 ${i === 0 ? '①' : '②'}</span><em>${esc(p.brand || '')}</em></div></div>`).join('');
   if (kps.length === 0) {
-    cells += points.slice(0, 3).map((t, i) => `<div class="kp txt"><span class="no">POINT 0${i + 1}</span><b>${esc(t)}</b></div>`).join('');
+    cells += points.slice(0, 3).map((t, i) => `<div class="kp txt"><span class="no">POINT 0${i + 1}</span><b>${esc(t)}</b><p>${esc(p.func || '')}</p></div>`).join('');
   } else if (kps.length === 1) {
     cells += `<div class="kp txt"><span class="no">SUMMARY</span><b>${esc(p.func || '')}</b><p>${esc(p.spec || '')} · 1카톤 ${p.carton ? p.carton + '개' : '-'}</p></div>`;
     cells += `<div class="kp txt"><span class="no">PACK</span><b>${cartonPrice ? won(cartonPrice) : '별도 문의'}</b><p>1카톤 공급가${p.carton ? ' (' + p.carton + '개)' : ''}</p></div>`;
@@ -1233,6 +1235,7 @@ function slideHTML(it, idx, total, f) {
       <div class="s-info">
         <div class="s-func"><i>기능성</i><b>${esc(p.func || (p.feats || [])[0] || '-')}</b></div>
         <div class="s-feat"><h4>제품 포인트</h4><ul>${points.map(t => `<li>${esc(t)}</li>`).join('')}</ul></div>
+        <div class="s-terms">납품 <b>1카톤 ${p.carton ? p.carton + '개' : '별도 확인'}</b> · 공급가 <b>VAT 별도</b> · 견적 유효 <b>제안일로부터 30일</b></div>
       </div>
       <div class="s-price">
         <div class="pc"><small>공급가 (VAT 별도)</small><b>${won(supp)}</b></div>
