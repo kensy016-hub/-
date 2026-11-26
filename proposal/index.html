@@ -1552,7 +1552,7 @@ function exportPPTX() {
     pptx.author = '주식회사 라온젠';
     pptx.company = '주식회사 라온젠';
     pptx.title = '제품 공급 제안서 · ' + f.name + ' · ' + f.date;
-    const NAVY = '1D3C66', GOLD = 'C9A227', INK = '16233A', MUTED = '6B7C93', LINE = 'DEE6F1';
+    const NAVY = '1D3C66', GOLD = 'C9A227', INK = '16233A', MUTED = '6B7C93', LINE = 'DEE6F1', GREEN = '2F7D5B';
     const F = '맑은 고딕';
 
     // 표지
@@ -1802,7 +1802,7 @@ async function exportXLSX() {
       if (!data) continue;
       const id = wb.addImage({ base64: data, extension: 'jpeg' });
       ws.addImage(id, {
-        tl: { col: 0.10, row: (im.row - 1) + 0.06 },
+        tl: { col: 1.04, row: (im.row - 1) + 0.05 },
         ext: { width: IMG_PX, height: IMG_PX },
         editAs: 'oneCell'
       });
