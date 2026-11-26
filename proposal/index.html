@@ -1253,7 +1253,12 @@ function setTab(tab) {
   $('#pickView').hidden = tab !== 'pick';
   $('#viewView').hidden = tab !== 'view';
   if (tab === 'view') renderPreview();
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  if (window.innerWidth <= 880) {
+    const el = tab === 'view' ? $('#viewView') : $('#pickView');
+    if (el) setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'start' }), 40);
+  } else {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
 }
 
 function renderAll() {
